@@ -1,3 +1,5 @@
+Cuando ya este instalado para visualizar el proyecto 
+ php -S localhost:3000 -t public<br>
 1 PASO:
 -Insatalar GIT https://git-scm.com/downloads/win<br>
 
