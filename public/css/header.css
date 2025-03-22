@@ -8,8 +8,8 @@ nav{
     padding: 10px;
 }
 nav >img{
-    height: 55px;
-    width: 70px; 
+    height: 40px;
+    width: 50px; 
     object-fit: cover;
 }
 nav .menu ul{
