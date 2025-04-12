@@ -1,12 +1,208 @@
 main{
     height: auto;
     width: 100%;
-    background-color: black;
+    background-color: rgb(0, 0, 0);
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5%;
+    padding-bottom: 2%;
+}
+.wrap{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5%;
 }
 
-.section-1{
+.wrap .container{
+    height: 400px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: start;
+}
+
+.card{
+    width: 80px;
+    border-radius: .75rem;
+    background-size: cover;
+    background-position: center center;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 2rem;
+    margin: 0 10px;
+    display: flex;
+    align-items: flex-end;
+    transition: .6s cubic-bezier(.28,-0.03,0,.99);
+    background-color: rgb(255, 255, 255);
+}
+.card > .row{
+    color: white;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.card >.row > .icon{
+    background: linear-gradient(to right, #481B9A, #FF4EC4);
+    color: white;
+    border-radius: 50%;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+}
+.card >.row > .icon:hover{
+    background: linear-gradient(to right, #481B9A, #8B004B);
+}
+.card >.row > .icon svg{
+    margin-left: 5px;
+    height: 30px;
+}
+.card >.row > .description{
+    display: flex;
+    color: black;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+    height: 80px;
+    width: 520px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition-delay:.3s ;
+    transition: all .3 ease;
+}
+.description p{
+    color: white;
+    margin: 0;
+}
+.description h4{
+    text-transform: uppercase;
+    color: gray;
+    margin: 0;
+}
+input  {
+    display: none;
+}
+input:checked +label{
+    width: 600px;
+}
+input:checked + label .description {
+    opacity: 1 !important;
+    transform: translateY(0px) !important;
+}
+
+.card[for="c1"]{
+    background-image: url("../img/quevedo.jpg");
+}
+
+.card[for="c2"]{
+    background-image: url("../img/AnueDobleA.jpg");
+}
+.card[for="c3"]{
+    background-image: url("../img/AngelCaido.jpg");
+}
+.card[for="c4"]{
+    background-image: url("../img/ConejoMalo.jpg");
+}
+.section1{
+    max-width: 1370px;
+    width: 1370px;
+    height: auto;
+    color: white;
+    text-align: center;
+}
+.section1 h1{
+    font-size: 3rem;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 0
+}
+.section1 h3{
+    margin-top: 0;
+    margin-bottom: 5%;
+}
+.section1 .options{
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+.section1 .options div img{
+    height: 80px;
+    width: 200px;
+}
+.section1 .options div h2{
+    font-family: 'Poppins', sans-serif;
+    margin-top: 0;
+}
+
+.section1[data-animation="show"] {
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.6s ease-in, transform 0.6s ease-in;
+    --opacity: 1;
+    --transform: scale(1);
+}
+
+.section1.unset {
+    opacity: var(--opacity);
+    transform: var(--transform);
+}
+
+.animacion-lenta {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-in, transform 0.6s ease-in;
+}
+
+.animacion-lenta.unset {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.section1 .options {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-in 0.5s, transform 0.6s ease-in 0.5s;
+}
+
+.section1 .options.unset {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .section-1{
     width: 20%; 
 }
 .section-1 h1{
@@ -96,4 +292,4 @@ main{
 .novedad img,
 .album img{
     border-radius: 10%;
-}
+} */

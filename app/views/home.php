@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="css/comun.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/header.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/footer.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -17,6 +17,119 @@
         include ("layouts/header.php");
     ?>
     <main>
+        <div class="wrap">
+            <div class="container">
+                <input type="radio" name="slide" id="c1" checked>
+                <label for="c1" class="card">
+                    <div class="row">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                            </svg>
+                        </div>
+                        <div class="description">
+                            <h4>Anuel</h4>
+                            <p>dqwdwq</p>
+                        </div>
+                    </div>
+                </label>
+                <input type="radio" name="slide" id="c2" >
+                <label for="c2" class="card">
+                    <div class="row">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                            </svg>
+                        </div>
+                        <div class="description">
+                            <h4>Anuel</h4>
+                            <p>dqwdwq</p>
+                        </div>
+                    </div>
+                </label>
+                <input type="radio" name="slide" id="c3" >
+                <label for="c3" class="card">
+                    <div class="row">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                            </svg>
+                        </div>
+                        <div class="description">
+                            <h4>Anuel</h4>
+                            <p>dqwdwq</p>
+                        </div>
+                    </div>
+                </label>
+                <input type="radio" name="slide" id="c4" >
+                <label for="c4" class="card">
+                    <div class="row">
+                        <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                            </svg>
+                        </div>
+                        <div class="description">
+                            <h4>Anuel</h4>
+                            <p>dqwdwq</p>
+                        </div>
+                    </div>
+                </label>
+            </div> 
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="section1" data-animation="show">
+        <h1 class="animacion-lenta">Discover new music</h1>
+        <h3 class="animacion-lenta">Tus canciones favoritas, artistas y albums</h3>
+        <div class="options show">
+            <div class="option1" data-animation="show">
+                <img src="img/options/music-svgrepo-com.svg">
+                <h2>Browse</h2>
+            </div>
+            <div class="option2" data-animation="show">
+                <img src="img/options/search-magnifying-glass-svgrepo-com.svg">
+                <h2>Search</h2>
+            </div>
+            <div class="option3" data-animation="show">
+                <img src="img/options/heart-svgrepo-com.svg"> 
+                <h2>Favorite</h2>
+            </div>
+        </div>
+    </div> 
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- <main>
         <section class="section-1">
             <h1>ASIDE</h1>
         </section>
@@ -126,10 +239,12 @@
             </div>
         </section>
 
-    </main>
+    </main>  -->
 
-    <?php 
+     <?php 
         include ("layouts/footer.php");
-    ?>
+    ?> 
+    <script src="js/header.js"></script>
+    <script src="js/home.js"></script>
 </body>
 </html>
