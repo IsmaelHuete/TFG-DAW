@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="css/error.css">
 </head>
 <body>
-    <h2>404<h2>
-    <h1>Pagina no encontrada<h1>
+    <h2>404</h2>
+    <hr>
+    <h1>Pagina no encontrada</h1>
 </body>
 </html>

@@ -1,0 +1,96 @@
+main{
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+}
+.difuminado {
+    position: absolute;
+    top: -120px;
+    left: 65%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 400px;
+    background: white;
+    border-radius: 50%;
+    filter: blur(180px); 
+    opacity: 0.3; 
+    z-index: 0; 
+    pointer-events: none; 
+}
+main >h1{
+    background: linear-gradient(to right, #481B9A 20%, #FF4EC4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    font-size: 3rem;
+}
+.plan{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    gap: 30px;
+    position: relative;
+}
+.plan div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 0 0 0.5px gray;
+    border-radius: 15px;
+    background-color: #050505;
+    padding: 30px;
+    cursor: pointer;
+}
+.plan div h2{
+    margin: 0;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.plan  img{
+    height: 130px;
+    width: 200px;
+    position: absolute;
+    top:-30px;
+    left: -70px;
+    rotate: -40deg;
+    opacity: 0.8;
+}
+.plan div span:nth-child(2){
+    font-size: 2rem;
+    font-weight: 700;
+}
+.plan div span:nth-child(3){
+    color: #d4d4d4;
+}
+.plan div span:nth-child(2) .letra{
+    font-size: 1.1rem;
+    color: #d4d4d4;
+}
+.plan div ul {
+    text-align: start;
+    padding: 0;
+}
+.plan div ul li{
+    list-style: none;
+    color: #d4d4d4;
+    margin: 5px;
+}
+form button{
+    width: 100%;
+    color: white;
+    padding: 15px;
+    border: none;
+    outline: none;
+    background: linear-gradient(to right, #481B9A 20%, #FF4EC4);
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}

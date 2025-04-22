@@ -1,3 +1,13 @@
+<?php
+require_once '../config/Conexion_BBDD.php';
+
+// Ahora puedes usar $pdo para hacer consultas
+$stmt = $pdo->query("SELECT * FROM usuario");
+
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    echo $row['nombre'] . "<br>";
+}
+?>
 <!DOCTYpE html>
 <html lang="en">
 <head>
@@ -11,8 +21,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 </head>
-
 <body>
+    <div class="oferta">
+        <p>🔥 Musicfy Premium te lleva más lejos. Escucha sin conexión, sin cortes y con calidad HD. Suscríbete y transforma tu forma de escuchar música.</p>
+    </div>
     <?php 
         include ("layouts/header.php");
     ?>
@@ -29,7 +41,7 @@
                         </div>
                         <div class="description">
                             <h4>Anuel</h4>
-                            <p>dqwdwq</p>
+                            <p>4.234.123</p>
                         </div>
                     </div>
                 </label>
@@ -43,7 +55,7 @@
                         </div>
                         <div class="description">
                             <h4>Anuel</h4>
-                            <p>dqwdwq</p>
+                            <p>2.324.645</p>
                         </div>
                     </div>
                 </label>
@@ -57,7 +69,7 @@
                         </div>
                         <div class="description">
                             <h4>Anuel</h4>
-                            <p>dqwdwq</p>
+                            <p>6.234.645</p>
                         </div>
                     </div>
                 </label>
@@ -70,7 +82,7 @@
                         </div>
                         <div class="description">
                             <h4>Anuel</h4>
-                            <p>dqwdwq</p>
+                            <p>1.234.867</p>
                         </div>
                     </div>
                 </label>
@@ -241,6 +253,43 @@
 
     </main>  -->
 
+    <div class="banners">
+        <div class="container-banner">
+
+            <div class="section-banner">
+                <div class="text">
+                    <h2>📣 Obtén Musicfy Premium</h2>
+                    <span>Escucha música sin anuncios</span>
+                </div>
+                <a href="premium"><button>Suscribirse</button></a>
+            </div>
+
+            <div class="section-banner">
+                <div class="text">
+                    <h2>🎧 Crea tu playlist personalizada</h2>
+                    <span>En segundos, según tu mood</span>
+                </div>
+                <button>Empieza ahora</button>
+            </div>
+
+            <div class="section-banner">
+                <div class="text">
+                    <h2>📈 Lo más escuchado esta semana</h2>
+                    <span>Reggaetón, Pop, Electrónica...</span>
+                </div>
+                <button>Ver charts</button>
+            </div>
+
+            <div class="section-banner">
+                <div class="text">
+                    <h2>💬 Testimonio destacado</h2>
+                    <span>“Musicfy cambió cómo descubro música.”</span>
+                </div>
+                <button>Leer más</button>
+            </div>
+
+        </div>
+    </div>
      <?php 
         include ("layouts/footer.php");
     ?> 

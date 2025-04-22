@@ -28,6 +28,9 @@ function getRoute($uri) {
     else if($uri === "/playlists"){
         return 'app/views/playlists.php';
     }
+    else if($uri === "/premium"){
+        return 'app/views/premium.php';
+    }
     else if($uri === "/404"){
         return 'app/views/404.php';
     }else{

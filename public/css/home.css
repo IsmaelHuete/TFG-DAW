@@ -9,6 +9,35 @@ main{
     padding-top: 5%;
     padding-bottom: 2%;
 }
+.oferta {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    padding: 5px 0;
+    z-index: 999;
+    background: linear-gradient(to right, #481B9A, #FF4EC4, #481B9A);
+    background-size: 600% 600%;
+    animation: gradient 10s linear infinite;
+}
+
+.oferta p {
+    margin: 0;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50% ; }
+    50%{background-position: 100% 50%;}
+    100% { background-position: 100% 50% 0%; }
+}
+
+.oferta p{
+    margin: 0;
+}
+
 .wrap{
     width: 100%;
     display: flex;
@@ -172,10 +201,71 @@ input:checked + label .description {
     opacity: 1;
     transform: translateY(0);
 }
+.banners {
+    width: 100%;
+    background:rgb(9, 9, 9);
+    display: flex;
+    justify-content: center;
+    padding: 40px 0px;
+}
 
+.container-banner {
+    max-width: 1370px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
 
+.section-banner {
+    background: linear-gradient(to right, #481B9A, #FF4EC4);
+    color: white;
+    border-radius: 16px;
+    padding: 20px;
+    opacity: 0.6px;
+    width: 23%;
+    min-width: 200px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
 
+.section-banner .text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.section-banner a {
+    text-decoration: none;
+}
+.section-banner h2 {
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: bold;
+}
 
+.section-banner span {
+    font-size: 0.9rem;
+    color: #e5e5e5;
+}
+
+.section-banner button {
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+.section-banner button:hover {
+    background-color: #ddd;
+}
 
 
 

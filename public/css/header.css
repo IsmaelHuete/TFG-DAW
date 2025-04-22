@@ -13,7 +13,7 @@ nav{
     justify-content: center;
     min-height: 80px;
     position: fixed;
-    top: 0;
+    top: 27px;
 }
 .nav-section{
     width: 100%;

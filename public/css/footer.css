@@ -7,7 +7,7 @@ footer{
     height: auto;
     background-color: black;
     color: white;
-    padding: 3% 0 1% 0
+    padding: 2% 0 1% 0
 }
 .footer-section {
     width: 1370px;
@@ -90,12 +90,14 @@ footer{
 }
 .bottom-footer ul li{
     list-style: none; 
+    text-decoration: none;
 }
 .bottom-footer ul li a,
 .bottom-footer ul li p{
     margin: 0;
     padding: 0; 
     color: gray;
+    text-decoration: none;
 }
 .bottom-footer .contactos{
     flex: 1;

@@ -6,7 +6,7 @@
             <ul>
                 <li><a href="/myMusic">My Music</a></li>
                 <li><a href="/playlists">Playlists</a></li>
-                <li><a href="/premiun">Premiun</a></li>
+                <li><a href="/premium">Premiun</a></li>
                 <li>
                     <button><a href="/login">Sign in</a></button>
                     <button><a href="/register">Register</a></button>
