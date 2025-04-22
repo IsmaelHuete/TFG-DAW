@@ -15,11 +15,9 @@
         $tipo = $_POST['tipo'];
 
         $id_usuario = $usuarioModel->registrar($nombre, $email, $password);
-
         if ($tipo === 'normal') {
             $normalModel->registrar($id_usuario);
         } elseif ($tipo === 'artista') {
-            $nombre_artistico = $_POST['nombre_artistico'] ?? '';
             $biografia = $_POST['biografia'] ?? '';
             $artistaModel->registrar($id_usuario, $nombre_artistico, $biografia);
         }

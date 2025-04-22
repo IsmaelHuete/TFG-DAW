@@ -1,13 +1,4 @@
-<?php
-require_once '../config/Conexion_BBDD.php';
 
-// Ahora puedes usar $pdo para hacer consultas
-$stmt = $pdo->query("SELECT * FROM usuario");
-
-while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    echo $row['nombre'] . "<br>";
-}
-?>
 <!DOCTYpE html>
 <html lang="en">
 <head>
