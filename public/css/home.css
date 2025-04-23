@@ -203,7 +203,7 @@ input:checked + label .description {
 }
 .banners {
     width: 100%;
-    background:rgb(9, 9, 9);
+    background:black;
     display: flex;
     justify-content: center;
     padding: 40px 0px;

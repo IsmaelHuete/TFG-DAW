@@ -1,8 +1,5 @@
 <footer>
-    <div class="footer-section">
-        
-    </div>
-    <div class="bottom-footer">
+    <div class="bottom-footer" style="border-top: 1px solid rgb(65, 65, 65);">
         <ul>
             <li><p>&copy; 2025 TFG.</p></li>
             <li><a href="#terms">Términos de servicio</a></li>

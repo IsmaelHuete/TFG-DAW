@@ -5,19 +5,18 @@ footer{
     flex-direction: column;
     width: 100%;
     height: auto;
-    background-color: black;
+    background-color: rgb(14, 14, 14);
     color: white;
-    padding: 2% 0 1% 0
+    padding: 1% 0 1% 0
 }
 .footer-section {
     width: 1370px;
     max-width: 100%;
     display: flex;
     align-items: flex-start;
-    background-color: black;
+    background-color: rgb(14, 14, 14);
     color: white;
     padding: 2% 0;
-    border-bottom: 1px solid rgb(65, 65, 65);
     flex-wrap: wrap;
     gap: 20px;
 }
@@ -79,7 +78,7 @@ footer{
     justify-content: space-between;
     align-items: center;
     margin-top: 1%;
-    
+    border-top: 1px solid rgb(65, 65, 65);
 }
 .bottom-footer ul{
     flex: 2;

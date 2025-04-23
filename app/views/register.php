@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once '../config/Conexion_BBDD.php';
     require_once '../app/models/usuario.php';
     require_once '../app/models/normal.php';
@@ -8,8 +9,6 @@
     $normalModel = new Normal($pdo);
     $artistaModel = new Artista($pdo);
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        echo "<script>alert('Llega aquí');</script>";
-
         $nombre = $_POST['nombre'];
         $email = $_POST['email'];
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -22,12 +21,12 @@
         } elseif ($tipo === 'artista') {
             $artistaModel->registrar();
         } 
-        header("Location: login");
+        $_SESSION['email']=$email;
+        $_SESSION['tipo']=$tipo;
+        header("Location: /");
         exit;
     }
 ?>
-
-
 
 <!DOCTYpE html>
 <html lang="en">
@@ -48,7 +47,7 @@
             <img src="/img/image-brand.png">
             <h2>Crea tu cuenta</h2>
             <form action="register" method="POST">
-            <input type="text" name="nombre" placeholder="Nombre completo" required>
+                <input type="text" name="nombre" placeholder="Nombre completo" required>
                 <input type="email" name="email" placeholder="Correo electrónico" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
                 <input type="date" name="f_nacimiento" placeholder="Fecha de nacimiento" required>
@@ -69,6 +68,5 @@
     ?> 
     <script src="js/header.js"></script>
     <script src="js/home.js"></script>
-    
 </body>
 </html>

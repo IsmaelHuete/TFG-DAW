@@ -124,8 +124,30 @@ nav .menu ul{
     margin: 0;
     flex-wrap: wrap;
 }
+
 nav li{
     padding: 0px 10px 0px 10px;
+}
+nav ul li:nth-child(4){
+    display: flex;
+    color:  white;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+ul li p {
+    display: flex;
+    align-items: center;
+}
+ul li p svg{
+   height: 15px;
+   width: 15px;
+   margin-left: 5px;
+}
+ul li svg{
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
 }
 ul li button{
     outline: none;

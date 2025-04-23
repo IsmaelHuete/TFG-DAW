@@ -1,3 +1,26 @@
+<?php
+    session_start();
+    require_once '../config/Conexion_BBDD.php';
+    require_once '../app/models/usuario.php';
+    require_once '../app/models/normal.php';
+    require_once '../app/models/artista.php';
+
+    $usuarioModel = new Usuario($pdo);
+    $normalModel = new Normal($pdo);
+    $artistaModel = new Artista($pdo);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $nombre = $_POST['nombre'];
+        $email = $_POST['password'];
+        $password = $_POST['password'];
+        $usuarioModel->login($nombre, $password);
+        $_SESSION['email']=$email;
+        $_SESSION['tipo']=$tipo;
+        header("Location: /");
+        exit;
+    }
+?>
+
+
 <!DOCTYpE html>
 <html lang="en">
 <head>
@@ -16,10 +39,10 @@
         <div class="registro">
             <img src="/img/image-brand.png">
             <h2>Inicia sesion</h2>
-            <form>
-                <input type="text" placeholder="Nombre completo" required>
-                <input type="password" placeholder="Contraseña" required>
-                <button type="submit">Iniciar sesion</button>
+            <form action="login" method="POST">
+                <input type="email" name="email" placeholder="Correo electrónico" required>
+                <input type="password" name="password" placeholder="Contraseña" required>
+                <button type="submit" name="iniciarSesion">Iniciar sesion</button>
             </form>
             <span> <a href="#">¿Olvidaste tu contraseña?</a></span>
             <p>No tienes una cuenta?</p>
