@@ -7,9 +7,11 @@ class Artista {
     public function __construct($pdo) {
         $this->db = $pdo;
     }
-    public function registrar($id_usuario) {
-        $stmt = $this->db->prepare("INSERT INTO normal (id_usuario, fecha_registro) VALUES (?, NOW())");
-        return $stmt->execute([$id_usuario]);
+    public function registrar() {
+        $stmt = $this->db->prepare("INSERT INTO artista (id_usuario) VALUES (?)");
+        $id_usuario = $this->db->lastInsertId();
+        $stmt->execute([$id_usuario]);
+        
     }
 }
 ?>

@@ -8,20 +8,21 @@
     $normalModel = new Normal($pdo);
     $artistaModel = new Artista($pdo);
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        
+        echo "<script>alert('Llega aquí');</script>";
+
         $nombre = $_POST['nombre'];
         $email = $_POST['email'];
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $f_nacimiento = $_POST['f_nacimiento'] ?? null;        
         $tipo = $_POST['tipo'];
-
-        $id_usuario = $usuarioModel->registrar($nombre, $email, $password);
+ 
+        $usuarioModel->registrar($email, $nombre, $f_nacimiento, $password);
         if ($tipo === 'normal') {
-            $normalModel->registrar($id_usuario);
+            $normalModel->registrar();
         } elseif ($tipo === 'artista') {
-            $biografia = $_POST['biografia'] ?? '';
-            $artistaModel->registrar($id_usuario, $nombre_artistico, $biografia);
-        }
-        header("Location: /login");
+            $artistaModel->registrar();
+        } 
+        header("Location: login");
         exit;
     }
 ?>
@@ -46,15 +47,16 @@
         <div class="registro">
             <img src="/img/image-brand.png">
             <h2>Crea tu cuenta</h2>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-                <input type="text" name="nombre" placeholder="Nombre completo" required>
+            <form action="register" method="POST">
+            <input type="text" name="nombre" placeholder="Nombre completo" required>
                 <input type="email" name="email" placeholder="Correo electrónico" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
+                <input type="date" name="f_nacimiento" placeholder="Fecha de nacimiento" required>
                 <select name="tipo" required>
                     <option value="">Tipo de usuario</option>
                     <option value="normal">Normal</option>
                     <option value="artista">Artista</option>
-                </select>
+                </select> 
                 <button type="submit" name="registrarse">Registrarse</button>
             </form>
             <p>¿Ya tienes cuenta? <a href="login">Inicia sesion</a></p>

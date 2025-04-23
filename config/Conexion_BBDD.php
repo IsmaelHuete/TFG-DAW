@@ -1,9 +1,9 @@
 <?php
 $host = 'localhost'; 
 $port = '5432'; 
-$dbname = 'Musicfy';
+$dbname = 'bbdd_tfg';
 $user = 'postgres';
-$password = 'huete123';
+$password = '1234';
 
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
