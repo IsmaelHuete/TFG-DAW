@@ -280,7 +280,7 @@
 
         </div>
     </div>
-     <?php 
+    <?php 
         include ("layouts/footer.php");
     ?> 
     <script src="js/header.js"></script>
