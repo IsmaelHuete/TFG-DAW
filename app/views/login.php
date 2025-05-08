@@ -10,7 +10,7 @@
     $artistaModel = new Artista($pdo);
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nombre = $_POST['nombre'];
-        $email = $_POST['password'];
+        $email = $_POST['email'];
         $password = $_POST['password'];
         $usuarioModel->login($nombre, $password);
         $_SESSION['email']=$email;
