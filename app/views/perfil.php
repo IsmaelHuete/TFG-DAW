@@ -1,15 +1,67 @@
 <?php
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
-    
-    if (!isset($_SESSION['email'])) {
-        header("Location: /login");
-        exit;
-    }
-    
-    $email = $_SESSION['email'];
-    $tipo = $_SESSION['tipo'] ?? 'normal';
+    // Incluir la conexión a la base de datos
+        require_once '../config/Conexion_BBDD.php';
+
+    // Iniciar la sesión
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['email'])) {
+            header("Location: /login");
+            exit;
+        }
+
+
+    // Función para formatear el número de reproducciones
+        function formatReproductions($number) {
+        if ($number >= 1000000) {
+            return number_format($number / 1000000, ) . 'm';
+        } elseif ($number >= 1000) {
+            return number_format($number / 1000, ) . 'k'; 
+        }
+        return $number; 
+        }
+
+    // Obtener el email del usuario desde la sesión
+    // Verificar si el usuario está autenticado
+        $email = $_SESSION['email'];
+    // Verificar el tipo de cuenta del usuario
+        $tipo = $_SESSION['tipo'] ?? 'normal';
+
+    // Obtener el nombre del usuario desde su email
+        $stmt = $pdo->prepare("SELECT nombre FROM usuario WHERE email = ?");
+        $stmt->execute([$email]);
+        $nombre_usuario = $stmt->fetchColumn();
+
+
+    // Obtener el tipo de cuenta del usuario   
+        if ($tipo === 'artista') {
+            // Obtener ID del usuario desde su email
+                $stmt = $pdo->prepare("SELECT id_usuario FROM usuario WHERE email = ?");
+                $stmt->execute([$email]);
+                $id_usuario = $stmt->fetchColumn();
+
+            // Canciones subidas
+                $stmt = $pdo->prepare("SELECT COUNT(*) FROM canciones WHERE id_usuario = ?");
+                $stmt->execute([$id_usuario]);
+                $num_canciones = $stmt->fetchColumn();
+
+            // Álbumes publicados
+                $stmt = $pdo->prepare("SELECT COUNT(*) FROM albums WHERE id_usuario = ?");
+                $stmt->execute([$id_usuario]);
+                $num_albums = $stmt->fetchColumn();
+
+            // Total de reproducciones
+                $stmt = $pdo->prepare("
+                    SELECT COALESCE(SUM(c.reproducciones), 0)
+                    FROM canciones c
+                    JOIN albums a ON c.id_album = a.id_album
+                    WHERE a.id_usuario = ?
+                ");
+                $stmt->execute([$id_usuario]);
+                $total_reproducciones = $stmt->fetchColumn();
+        }
 ?>
 <!DOCTYpE html>
 <html lang="en">
@@ -20,7 +72,7 @@
     <link rel="stylesheet" href="css/comun.css">
     <link rel="stylesheet" href="css/perfil.css">
     <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/header1.css">
     <link rel="stylesheet" href="css/footer.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -32,47 +84,40 @@
     <main>
     <div class="contenedor-perfil">
             <div class="encabezado-perfil">
-                <div class="avatar-perfil">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="80" height="80">
-                        <defs>
-                            <linearGradient id="grad-avatar" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="20%" stop-color="#481B9A" />
-                                <stop offset="100%" stop-color="#FF4EC4" />
-                            </linearGradient>
-                        </defs>
-                        <path stroke="url(#grad-avatar)" fill="none" stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
-                </div>
+                <!-- Foto de perfil y datos del usuario -->
                 <div class="info-perfil">
-                    <h1>Mi Perfil</h1>
-                </div>
-            </div>
-
-            <div class="contenido-perfil">
-                <div class="seccion-perfil">
+                    <h1>
+                        <?php echo $nombre_usuario ?>
+                    </h1>
                     <h2>Datos de la cuenta</h2>
-                    <div class="tarjeta-info">
-                        <div class="item-info">
-                            <span class="etiqueta">Correo:</span>
-                            <span class="dato"><?php echo htmlspecialchars($email); ?></span>
-                        </div>
-                        <div class="item-info">
-                            <span class="etiqueta">Tipo de cuenta:</span>
-                            <span class="dato"><?php echo htmlspecialchars(ucfirst($tipo)); ?></span>
-                        </div>
-                        <div class="item-info">
-                            <span class="etiqueta">Plan actual:</span>
-                            <span class="dato insignia-premium">
-                                <?php if ($tipo === 'artista' || isset($_SESSION['premium'])): ?>
-                                    Premium
-                                <?php else: ?>
-                                    Gratuito
-                                <?php endif; ?>
-                            </span>
-                        </div>
+                    <div class="item-info">
+                        <span class="etiqueta">Usuario:</span>
+                        <!-- Para acortar el email -->
+                        <span class="dato"><?php echo preg_replace('/^(.{6}).*(@.*)$/', '$1...$2', $email); ?></span>
+
+                    </div>
+                    <div class="item-info">
+                        <span class="etiqueta">Tipo de cuenta:</span>
+                        <span class="dato"><?php echo htmlspecialchars(ucfirst($tipo)); ?></span>
+                    </div>
+                    <div class="item-info">
+                        <span class="etiqueta">Plan actual:</span>
+                        <span class="dato insignia-premium">
+                            <?php if ($tipo === 'artista' || isset($_SESSION['premium'])): ?>
+                                Premium
+                            <?php else: ?>
+                                Gratuito
+                            <?php endif; ?>
+                        </span>
                     </div>
                 </div>
-
+                <div class="foto-perfil">
+                    <img src="/img/ConejoMalo.jpg" alt="Foto de perfil del usuario">
+                </div>
+            </div>
+ 
+            <div class="contenido-perfil">
+                <!-- Si el usuario no es artista, se le muestra la opción de hacerse premium -->
                 <?php if ($tipo !== 'artista'): ?>
                 <div class="seccion-perfil">
                     <h2>Mejora tu cuenta</h2>
@@ -84,30 +129,31 @@
                         <a href="/premium" class="boton-mejora">Hazte Premium</a>
                     </div>
                 </div>
+                <!-- Si el usuario es artista, se le muestra la zona de artista -->
                 <?php else: ?>
-                <div class="seccion-perfil">
-                    <h2>Zona de Artista</h2>
-                    <div class="estadisticas-artista">
-                        <div class="tarjeta-dato">
-                            <div class="valor-dato">0</div>
-                            <div class="texto-dato">Canciones</div>
+                    <div class="seccion-perfil">
+                        <h2>Zona de Artista</h2>
+                        <div class="estadisticas-artista">
+                            <div class="tarjeta-dato">
+                                <div class="valor-dato"><?= $num_canciones ?></div>
+                                <div class="texto-dato">Canciones</div>
+                            </div>
+                            <div class="tarjeta-dato">
+                                <div class="valor-dato"><?= $num_albums ?></div>
+                                <div class="texto-dato">Álbumes</div>
+                            </div>
+                            <div class="tarjeta-dato">
+                               <div class="valor-dato"><?= formatReproductions($total_reproducciones) ?></div>
+                                <div class="texto-dato">Reproducciones</div>
+                            </div>
                         </div>
-                        <div class="tarjeta-dato">
-                            <div class="valor-dato">0</div>
-                            <div class="texto-dato">Álbumes</div>
-                        </div>
-                        <div class="tarjeta-dato">
-                            <div class="valor-dato">0</div>
-                            <div class="texto-dato">Reproducciones</div>
+                        <div class="acciones-artista">
+                            <a href="/subir" class="boton-subir">Subir música</a>
+                            <a href="/estadisticas" class="boton-stat">Ver estadísticas</a>
                         </div>
                     </div>
-                    <div class="acciones-artista">
-                        <a href="#" class="boton-accion">Subir música</a>
-                        <a href="#" class="boton-accion">Ver estadísticas</a>
-                    </div>
-                </div>
                 <?php endif; ?>
-                
+                <!-- Sección de opciones de cuenta -->
                 <div class="seccion-perfil">
                     <h2>Opciones de cuenta</h2>
                     <div class="acciones-cuenta">

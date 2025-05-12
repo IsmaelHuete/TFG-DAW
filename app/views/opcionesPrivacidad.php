@@ -5,19 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Opciones de Privacidad</title>
     <link rel="stylesheet" href="css/comun.css">
-    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/header1.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/privacidad.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <?php 
-        include ("layouts/header.php");
+        include ("layouts/header1.php");
     ?>
 
-    <div class="premium-banner">
-        Tú tienes el control. Personaliza cómo Musicfy gestiona tus datos y experiencias. Tu privacidad, tus reglas.
-    </div>
 
     <div class="terms-container">
         <h1>Opciones de Privacidad</h1>
@@ -99,5 +96,7 @@
     <?php 
         include ("layouts/footer.php");
     ?>
+    <script src="js/header.js"></script>
+    <script src="js/home.js"></script>
 </body>
 </html>
