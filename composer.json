@@ -5,5 +5,7 @@
             "Ismae\\TfgDawIsmaelHueteMarcosGuerroAlonsoEsteban\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "james-heinrich/getid3": "^1.9"
+    }
 }
