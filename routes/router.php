@@ -24,6 +24,10 @@
                 return 'app/views/politicaPrivacidad.php';
             case '/choices':
                 return 'app/views/opcionesPrivacidad.php';
+            case '/subircancion':
+                return 'app/views/subirCancion.php';
+            case '/uploadcanciones':
+                return 'app/views/uploadCanciones.php';
             default:
                 header("Location: /404");
                 exit();

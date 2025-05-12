@@ -148,7 +148,7 @@
                             </div>
                         </div>
                         <div class="acciones-artista">
-                            <a href="/subir" class="boton-subir">Subir música</a>
+                            <a href="/subircancion" class="boton-subir">Subir música</a>
                             <a href="/estadisticas" class="boton-stat">Ver estadísticas</a>
                         </div>
                     </div>
