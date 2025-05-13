@@ -22,6 +22,16 @@
             }
             return false;
         }
+        public function getNombreByEmail($email) {
+            $stmt = $this->db->prepare("SELECT nombre FROM usuario WHERE email = ?");
+            $stmt->execute([$email]);
+            return $stmt->fetchColumn();
+        }
+        public function getIdByEmail($email) {
+            $stmt = $this->db->prepare("SELECT id_usuario FROM usuario WHERE email = ?");
+            $stmt->execute([$email]);
+            return $stmt->fetchColumn();
+        }
 
         public function getUsuarioById($id_usuario) {
             $stmt = $this->db->prepare("SELECT * FROM usuario WHERE id_usuario = ?");

@@ -1,12 +1,14 @@
 <?php
-    // Incluir la conexión a la base de datos
+    // Incluir los archivos necesarios
         require_once '../config/Conexion_BBDD.php';
+        require_once '../app/models/usuario.php';
+        require_once '../app/models/artista.php';
 
-    // Iniciar la sesión
+    // Comprobar si la sesión está iniciada
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-
+    // Comprobar si el usuario está autenticado
         if (!isset($_SESSION['email'])) {
             header("Location: /login");
             exit;
@@ -23,45 +25,24 @@
         return $number; 
         }
 
-    // Obtener el email del usuario desde la sesión
-    // Verificar si el usuario está autenticado
+    // Crear una instancia de la clase PDO
+        $usuarioModel = new Usuario($pdo);
+        $artistaModel = new Artista($pdo);
+
+    // Obtener el email del usuario de la sesión
         $email = $_SESSION['email'];
-    // Verificar el tipo de cuenta del usuario
         $tipo = $_SESSION['tipo'] ?? 'normal';
 
-    // Obtener el nombre del usuario desde su email
-        $stmt = $pdo->prepare("SELECT nombre FROM usuario WHERE email = ?");
-        $stmt->execute([$email]);
-        $nombre_usuario = $stmt->fetchColumn();
+    // Obtener el nombre del usuario
+        $nombre_usuario = $usuarioModel->getNombreByEmail($email);
 
-
-    // Obtener el tipo de cuenta del usuario   
+    // Si el usuario es artista
         if ($tipo === 'artista') {
-            // Obtener ID del usuario desde su email
-                $stmt = $pdo->prepare("SELECT id_usuario FROM usuario WHERE email = ?");
-                $stmt->execute([$email]);
-                $id_usuario = $stmt->fetchColumn();
-
-            // Canciones subidas
-                $stmt = $pdo->prepare("SELECT COUNT(*) FROM canciones WHERE id_usuario = ?");
-                $stmt->execute([$id_usuario]);
-                $num_canciones = $stmt->fetchColumn();
-
-            // Álbumes publicados
-                $stmt = $pdo->prepare("SELECT COUNT(*) FROM albums WHERE id_usuario = ?");
-                $stmt->execute([$id_usuario]);
-                $num_albums = $stmt->fetchColumn();
-
-            // Total de reproducciones
-                $stmt = $pdo->prepare("
-                    SELECT COALESCE(SUM(c.reproducciones), 0)
-                    FROM canciones c
-                    JOIN albums a ON c.id_album = a.id_album
-                    WHERE a.id_usuario = ?
-                ");
-                $stmt->execute([$id_usuario]);
-                $total_reproducciones = $stmt->fetchColumn();
-        }
+            $id_usuario = $usuarioModel->getIdByEmail($email);
+            $num_canciones = $artistaModel->getNumeroCanciones($id_usuario);
+            $num_albums = $artistaModel->getNumeroAlbums($id_usuario);
+            $total_reproducciones = $artistaModel->getTotalReproducciones($id_usuario);
+}
 ?>
 <!DOCTYpE html>
 <html lang="en">
@@ -74,8 +55,6 @@
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/header1.css">
     <link rel="stylesheet" href="css/footer.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
 </head>
 <body>
     <?php 
@@ -148,7 +127,7 @@
                             </div>
                         </div>
                         <div class="acciones-artista">
-                            <a href="/subircancion" class="boton-subir">Subir música</a>
+                            <a href="/miMusica" class="boton-subir">Subir música</a>
                             <a href="/estadisticas" class="boton-stat">Ver estadísticas</a>
                         </div>
                     </div>
