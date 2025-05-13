@@ -38,5 +38,16 @@
             $stmt->execute([$id_usuario]);
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
+
+        public function actualizarFotoPerfil($email, $rutaRelativa) {
+            $stmt = $this->db->prepare("UPDATE usuario SET foto_perfil = ? WHERE email = ?");
+            return $stmt->execute([$rutaRelativa, $email]);
+        }
+
+        public function obtenerFotoPerfil($email) {
+            $stmt = $this->db->prepare("SELECT foto_perfil FROM usuario WHERE email = ?");
+            $stmt->execute([$email]);
+            return $stmt->fetchColumn();
+        }
     }
 ?>
