@@ -61,8 +61,8 @@
                     $ruta_relativa = "uploads/perfiles/" . $nombre_archivo;
                     $ruta_destino = $ruta_relativa; 
 
-                    if (!is_dir("/uploads/perfiles")) {
-                    mkdir("/uploads/perfiles", 0777, true);
+                    if (!is_dir("public/uploads/perfiles")) {
+                    mkdir("public/uploads/perfiles", 0777, true);
                     }
 
                     if (move_uploaded_file($archivo['tmp_name'], $ruta_destino)) {
@@ -131,7 +131,7 @@
                     </form>
                     <?php
                         $foto = $usuarioModel->obtenerFotoPerfil($email);
-                        $ruta_foto = $foto ? $foto : '/img/image/brand.jpg';
+                        $ruta_foto = $foto ? $foto : '/img/image-brand.png';
                         /* echo $mensaje ?? ''; // Mostrar mensaje de subida */
                     ?>
                     <img src="<?= htmlspecialchars($ruta_foto) ?>" alt="Foto de perfil del usuario" >

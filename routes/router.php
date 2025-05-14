@@ -28,6 +28,8 @@
                 return 'app/views/miMusica.php';
             case '/uploadcanciones':
                 return 'app/views/uploadCanciones.php';
+            case '/subircancion':
+                return 'app/views/subirCancion.php';
             default:
                 header("Location: /404");
                 exit();
