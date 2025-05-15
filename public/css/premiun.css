@@ -50,7 +50,7 @@ main >h1{
 }
 .plan div h2{
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.3rem;
     margin-bottom: 10px;
 }
 
@@ -81,16 +81,17 @@ main >h1{
 .plan div ul li{
     list-style: none;
     color: #d4d4d4;
-    margin: 5px;
+    margin: 5px 0px 10px 0px;
 }
 form a{
-    width: 100%;
+    width: 100px;
     color: white;
-    padding: 15px;
+    padding: 10px 40px 10px 40px;
     border: none;
     outline: none;
     background: linear-gradient(to right, #481B9A 20%, #FF4EC4);
     border-radius: 10px;
     font-size: 1.2rem;
     cursor: pointer;
-    text-decoration: none;}
+    text-decoration: none;
+}

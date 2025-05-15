@@ -16,7 +16,7 @@
     <main>
         <h1>Elige tu plan</h1>
         <div class="plan">
-        <img class="vendido" src="/img/plan/ChatGPT_Image_Apr_15__2025__10_12_12_PM-removebg-preview.png">
+            <img class="vendido" src="/img/plan/ChatGPT_Image_Apr_15__2025__10_12_12_PM-removebg-preview.png">
             <div class="basico">
                 <h2>Premium Mensual</h2>
                 <span>$9.99<span class="letra"> / mes</span></span>
@@ -27,12 +27,12 @@
                     <li>&#10003;  1 dispositivo</li>
                 </ul>
                 <form>
-                    <a href="/checkout?plan=mensual">Seleccionar plan</a>
+                    <a href="/checkout?plan=mensual">Mensual</a>
                 </form>
             </div>
             <div class="premiun">
                 <h2>Premium Anual</h2>
-                <span>$99.99 / año</span>
+                <span>$99.99 <span class="letra"> / año</span></span>
                 <ul>
                     <li>&#10003;  Reproduccion ilimitada</li>
                     <li>&#10003;  Sin anuncios</li>
@@ -40,7 +40,7 @@
                     <li>&#10003;  5 dispositivo</li>
                 </ul>
                 <form>
-                    <a href="/checkout?plan=anual">Seleccionar plan</a>
+                    <a href="/checkout?plan=anual">Anual</a>
                 </form>
             </div>
         </div>

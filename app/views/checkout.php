@@ -27,8 +27,8 @@ $beneficios = $detalles[$plan]['beneficios'];
     <link rel="stylesheet" href="css/comun.css">
     <link rel="stylesheet" href="css/header1.css">
     <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/privacidad.css">
     <link rel="stylesheet" href="css/checkout.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -63,4 +63,5 @@ $beneficios = $detalles[$plan]['beneficios'];
         include ("layouts/footer.php");
     ?>
 </footer>
+<script src="js/header.js"></script>
 </html>
