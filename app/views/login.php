@@ -12,7 +12,7 @@
         $nombre = $_POST['nombre'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $usuarioModel->login($nombre, $password);
+        $usuarioModel->login($email, $password);
         $_SESSION['email']=$email;
         $_SESSION['tipo']=$tipo;
         header("Location: /");
