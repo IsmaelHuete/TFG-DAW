@@ -14,18 +14,25 @@ $resultado = [
 if ($q !== '') {
     $like = '%' . strtolower($q) . '%';
 
-    // Canciones
+    // Canciones + ID del álbum
     $stmt = $pdo->prepare("
-        SELECT canciones.id_cancion, canciones.nombre_c, albums.nombre AS album
+        SELECT canciones.id_cancion, canciones.nombre_c, canciones.id_album, albums.nombre AS album
         FROM canciones
         LEFT JOIN albums ON canciones.id_album = albums.id_album
         WHERE LOWER(canciones.nombre_c) LIKE ?
         LIMIT 10
     ");
     $stmt->execute([$like]);
-    $resultado['canciones'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $canciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Artistas (añadimos id_usuario)
+    // Añadir la ruta de imagen basada en id_album
+    foreach ($canciones as &$cancion) {
+        $id_album = $cancion['id_album'];
+        $cancion['foto_album'] = $id_album ? "/uploads/foto-album/{$id_album}.jpg" : "/uploads/foto-album/default.jpg";
+    }
+    $resultado['canciones'] = $canciones;
+
+    // Artistas
     $stmt = $pdo->prepare("
         SELECT id_usuario, nombre
         FROM usuario

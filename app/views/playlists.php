@@ -15,22 +15,27 @@ document.getElementById('buscador').addEventListener('keyup', function () {
         .then(data => {
             let html = '';
 
+            // Canciones
             if (data.canciones.length > 0) {
-                html += '<h3>Canciones</h3><ul>';
+                html += '<h3>Canciones</h3><ul style="list-style: none; padding: 0;">';
                 data.canciones.forEach(c => {
                     html += `
-                        <li>
-                            <strong>${c.nombre_c}</strong> (Álbum: ${c.album})<br>
-                            <audio controls>
-                                <source src="/uploads/canciones/${c.id_cancion}.mp3" type="audio/mpeg">
-                                Tu navegador no soporta audio.
-                            </audio>
+                        <li style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <img src="${c.foto_album}" alt="Carátula" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px; border-radius: 8px;">
+                            <div>
+                                <strong>${c.nombre_c}</strong> (Álbum: ${c.album})<br>
+                                <audio controls>
+                                    <source src="/uploads/canciones/${c.id_cancion}.mp3" type="audio/mpeg">
+                                    Tu navegador no soporta audio.
+                                </audio>
+                            </div>
                         </li>
                     `;
                 });
                 html += '</ul>';
             }
 
+            // Artistas
             if (data.artistas.length > 0) {
                 html += '<h3>Artistas</h3><ul>';
                 data.artistas.forEach(a => {
@@ -39,6 +44,7 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                 html += '</ul>';
             }
 
+            // Álbumes
             if (data.albums.length > 0) {
                 html += '<h3>Álbumes</h3><ul>';
                 data.albums.forEach(a => {

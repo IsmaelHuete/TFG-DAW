@@ -31,23 +31,27 @@ $stmt = $pdo->prepare("
 ");
 $stmt->execute([$id_album]);
 $canciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Ruta de la imagen del álbum
+$foto_album = "/uploads/foto-album/" . $id_album . ".jpg";
 ?>
 
 <h2><?= htmlspecialchars($album['nombre_album']) ?></h2>
 <p><strong>Artista:</strong> <?= htmlspecialchars($album['nombre_artista']) ?></p>
 
 <h3>Canciones:</h3>
-<ul>
-    <?php foreach ($canciones as $c): ?>
-        <li>
-            <?= htmlspecialchars($c['nombre_c']) ?><br>
+<?php foreach ($canciones as $c): ?>
+    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+        <img src="<?= $foto_album ?>" alt="Carátula del álbum" style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px; border-radius: 8px;">
+        <div>
+            <strong><?= htmlspecialchars($c['nombre_c']) ?></strong><br>
             <audio controls data-id="<?= $c['id_cancion'] ?>">
                 <source src="/uploads/canciones/<?= htmlspecialchars($c['id_cancion']) ?>.mp3" type="audio/mpeg">
                 Tu navegador no soporta audio.
             </audio>
-        </li>
-    <?php endforeach; ?>
-</ul>
+        </div>
+    </div>
+<?php endforeach; ?>
 
 <script>
 // Al empezar una reproducción, parar todas las demás
@@ -64,13 +68,11 @@ document.querySelectorAll('audio').forEach(audio => {
     let reproducido = false;
 
     audio.addEventListener('timeupdate', () => {
-        // Solo registrar una vez
         if (reproducido) return;
 
         const segundos = audio.currentTime;
         const porcentaje = segundos / audio.duration;
 
-        // Se registra si han pasado al menos 10 segundos o el 30%
         if (segundos >= 10 || porcentaje >= 0.3) {
             reproducido = true;
 
