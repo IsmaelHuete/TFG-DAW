@@ -30,6 +30,10 @@
                 return 'app/views/uploadCanciones.php';
             case '/subircancion':
                 return 'app/views/subirCancion.php';
+            case '/checkout':
+                return 'app/views/checkout.php';
+            case '/pago_exito':
+                return 'app/views/pago_exito.php';
             default:
                 header("Location: /404");
                 exit();

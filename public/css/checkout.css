@@ -1,0 +1,60 @@
+.checkout-container {
+    max-width: 600px;
+    margin: 10rem auto;
+    background: rgba(20, 20, 20, 0.95);
+    padding: 2.5rem;
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 0 25px rgba(0,0,0,0.4);
+    font-family: 'Poppins', sans-serif;
+}
+
+.checkout-box {
+    background: #1e1e1e;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-top: 1.5rem;
+}
+
+.checkout-plan {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.checkout-beneficios {
+    font-size: 1rem;
+    color: #ccc;
+    margin-bottom: 1.5rem;
+}
+
+.checkout-precio {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.25rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.btn-confirmar {
+    background: linear-gradient(to right, #481B9A 20%, #FF4EC4);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.checkout-back {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: #aaa;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.checkout-back:hover {
+    color: white;
+}

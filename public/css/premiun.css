@@ -54,7 +54,7 @@ main >h1{
     margin-bottom: 10px;
 }
 
-.plan  img{
+.plan img{
     height: 130px;
     width: 200px;
     position: absolute;
@@ -83,7 +83,7 @@ main >h1{
     color: #d4d4d4;
     margin: 5px;
 }
-form button{
+form a{
     width: 100%;
     color: white;
     padding: 15px;
@@ -93,4 +93,4 @@ form button{
     border-radius: 10px;
     font-size: 1.2rem;
     cursor: pointer;
-}
+    text-decoration: none;}
