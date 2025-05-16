@@ -1,53 +1,39 @@
 <?php
-require_once  '../config/Conexion_BBDD.php';
+require_once __DIR__ . '/../../config/Conexion_BBDD.php';
 
 $id_artista = $_GET['id'] ?? null;
 
 if (!$id_artista) {
-    echo "Artista no encontrado.";
+    echo "Artista no especificado.";
     exit;
 }
 
 // Obtener datos del artista
-$stmt = $pdo->prepare("SELECT nombre, foto_perfil FROM usuario WHERE id_usuario = ? AND id_usuario IN (SELECT id_usuario FROM artista)");
+$stmt = $pdo->prepare("
+    SELECT nombre FROM usuario WHERE id_usuario = ? AND id_usuario IN (SELECT id_usuario FROM artista)
+");
 $stmt->execute([$id_artista]);
 $artista = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$artista) {
-    echo "Artista no válido.";
+    echo "Artista no encontrado.";
     exit;
 }
 
-// Obtener canciones del artista
+// Obtener sus álbumes
 $stmt = $pdo->prepare("
-    SELECT id_cancion, nombre_c
-    FROM canciones
-    WHERE id_usuario = ?
-    ORDER BY id_cancion ASC
+    SELECT id_album, nombre FROM albums WHERE id_usuario = ?
 ");
 $stmt->execute([$id_artista]);
-$canciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$albums = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<h2><?= htmlspecialchars($artista['nombre']) ?></h2>
-
-<?php if ($artista['foto_perfil']): ?>
-    <img src="/uploads/perfiles/<?= htmlspecialchars($artista['foto_perfil']) ?>" alt="Foto de perfil" width="200">
-<?php else: ?>
-    <p>Este artista no tiene foto de perfil.</p>
-<?php endif; ?>
-
-<h3>Canciones:</h3>
+<h2>Artista: <?= htmlspecialchars($artista['nombre']) ?></h2>
+<h3>Álbumes:</h3>
 <ul>
-    <?php foreach ($canciones as $c): ?>
-        <li>
-            <strong><?= htmlspecialchars($c['nombre_c']) ?></strong><br>
-            <audio controls data-id="<?= $c['id_cancion'] ?>">
-                <source src="/uploads/canciones/<?= htmlspecialchars($c['id_cancion']) ?>.mp3" type="audio/mpeg">
-                Tu navegador no soporta el reproductor de audio.
-            </audio>
-        </li>
-    <?php endforeach; ?>
+<?php foreach ($albums as $a): ?>
+    <li><a href="#" class="enlace-album" data-id="<?= $a['id_album'] ?>"><?= htmlspecialchars($a['nombre']) ?></a></li>
+<?php endforeach; ?>
 </ul>
 
 <script>
@@ -84,6 +70,20 @@ document.querySelectorAll('audio').forEach(audio => {
                 body: JSON.stringify({ id_cancion: idCancion })
             });
         }
+    });
+});
+
+// Hacer que los enlaces de álbum dentro de artista también funcionen con AJAX
+document.querySelectorAll('.enlace-album').forEach(link => {
+    link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const id = this.dataset.id;
+
+        fetch('/views/album.php?id=' + id)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('contenido-principal').innerHTML = html;
+            });
     });
 });
 </script>

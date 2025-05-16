@@ -45,12 +45,13 @@ if ($q !== '') {
 
     // Álbumes
     $stmt = $pdo->prepare("
-        SELECT albums.id_album, albums.nombre, usuario.nombre AS artista
+        SELECT albums.id_album, albums.id_usuario, albums.nombre, usuario.nombre AS artista
         FROM albums
         JOIN usuario ON albums.id_usuario = usuario.id_usuario
         WHERE LOWER(albums.nombre) LIKE ?
         LIMIT 10
     ");
+
     $stmt->execute([$like]);
     $resultado['albums'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

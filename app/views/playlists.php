@@ -1,5 +1,10 @@
 <input type="text" id="buscador" placeholder="Buscar canción, artista o álbum..." autocomplete="off">
+
 <div id="resultados"></div>
+
+<div id="contenido-principal">
+
+</div>
 
 <script>
 document.getElementById('buscador').addEventListener('keyup', function () {
@@ -48,14 +53,43 @@ document.getElementById('buscador').addEventListener('keyup', function () {
             if (data.albums.length > 0) {
                 html += '<h3>Álbumes</h3><ul>';
                 data.albums.forEach(a => {
-                    html += `<li><a href="/album?id=${a.id_album}">${a.nombre}</a> (Artista: ${a.artista})</li>`;
+                    html += `<li><a href="#" class="enlace-album" data-id="${a.id_album}">${a.nombre}</a> (Artista: ${a.artista})</li>`;
                 });
                 html += '</ul>';
             }
 
+
             if (!html) html = '<p>No se encontraron resultados.</p>';
 
             document.getElementById('resultados').innerHTML = html;
+
+            // Delegar eventos para navegación AJAX
+            document.querySelectorAll('.enlace-album').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const id = this.dataset.id;
+
+                    fetch('/ajax/album.php?id=' + id)
+                        .then(res => res.text())
+                        .then(html => {
+                            document.getElementById('contenido-principal').innerHTML = html;
+                        });
+                });
+            });
+
+            // Y para artistas:
+            document.querySelectorAll('.enlace-artista').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const id = this.dataset.id;
+
+                    fetch('/ajax/artista.php?id=' + id)
+                        .then(res => res.text())
+                        .then(html => {
+                            document.getElementById('contenido-principal').innerHTML = html;
+                        });
+                });
+            });
         });
 });
 </script>
