@@ -1,10 +1,41 @@
-<input type="text" id="buscador" placeholder="Buscar canción, artista o álbum..." autocomplete="off">
 
-<div id="resultados"></div>
-
-<div id="contenido-principal">
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/comun.css">
+    <link rel="stylesheet" href="css/playlist.css">
+    <link rel="stylesheet" href="css/header1.css">
+    <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+    <?php 
+        include ("layouts/header1.php");
+    ?>
+    <main>
+        <div class="container">
+            <input type="text" id="buscador" placeholder="Buscar canción, artista o álbum..." autocomplete="off">
+            <div class="reproductor">
+                <div id="resultados"></div>
+                <div id="contenido-principal"></div>
+            </div>
+        </div>
+    </main>
+    
+<?php 
+        include ("layouts/footer.php");
+    ?>
 </div>
+<script src="js/header.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>
+
+
+
+
 
 <script>
 document.getElementById('buscador').addEventListener('keyup', function () {
@@ -21,7 +52,7 @@ document.getElementById('buscador').addEventListener('keyup', function () {
             let html = '';
 
             // Canciones
-            if (data.canciones.length > 0) {
+            /* if (data.canciones.length > 0) {
                 html += '<h3>Canciones</h3><ul style="list-style: none; padding: 0;">';
                 data.canciones.forEach(c => {
                     html += `
@@ -38,22 +69,28 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                     `;
                 });
                 html += '</ul>';
-            }
+            } */
 
             // Artistas
-            if (data.artistas.length > 0) {
+           /*  if (data.artistas.length > 0) {
                 html += '<h3>Artistas</h3><ul>';
                 data.artistas.forEach(a => {
-                    html += `<li><a href="/artista?id=${a.id_usuario}">${a.nombre}</a></li>`;
-                });
+                html += `<li><a href="#" class="enlace-artista" data-id="${a.id_usuario}">${a.nombre}</a></li>`;
+            });
                 html += '</ul>';
             }
-
+ */
+            // Álbumes
             // Álbumes
             if (data.albums.length > 0) {
-                html += '<h3>Álbumes</h3><ul>';
+                html += '<h3>Álbumes</h3><ul style="display:flex; flex-wrap: wrap; gap: 10px; list-style: none;">';
                 data.albums.forEach(a => {
-                    html += `<li><a href="#" class="enlace-album" data-id="${a.id_album}">${a.nombre}</a> (Artista: ${a.artista})</li>`;
+                    html += `
+                        <li class="card-album" style="width: 120px; cursor: pointer;" data-id="${a.id_album}">
+                            <img src="/uploads/foto-album/${a.id_album}.jpg" alt="${a.nombre}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                            <p>${a.nombre}</p>
+                        </li>
+                    `;
                 });
                 html += '</ul>';
             }
@@ -64,18 +101,18 @@ document.getElementById('buscador').addEventListener('keyup', function () {
             document.getElementById('resultados').innerHTML = html;
 
             // Delegar eventos para navegación AJAX
-            document.querySelectorAll('.enlace-album').forEach(link => {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const id = this.dataset.id;
+            document.querySelectorAll('.card-album').forEach(card => {
+            card.addEventListener('click', function () {
+                const id = this.dataset.id;
 
-                    fetch('/ajax/album.php?id=' + id)
-                        .then(res => res.text())
-                        .then(html => {
-                            document.getElementById('contenido-principal').innerHTML = html;
-                        });
-                });
+                fetch('/ajax/album.php?id=' + id)
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('contenido-principal').innerHTML = html;
+                        activarEventosAudio();
+                    });
             });
+        });
 
             // Y para artistas:
             document.querySelectorAll('.enlace-artista').forEach(link => {
@@ -87,9 +124,46 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                         .then(res => res.text())
                         .then(html => {
                             document.getElementById('contenido-principal').innerHTML = html;
+                            activarEventosAudio();
                         });
                 });
             });
         });
 });
+// Asegura que solo se reproduzca una canción a la vez
+document.addEventListener('play', function (e) {
+    const audios = document.querySelectorAll('audio');
+    audios.forEach(audio => {
+        if (audio !== e.target) {
+            audio.pause();
+        }
+    });
+}, true);
+// Función que activa el seguimiento de reproducción (se llamará tras cada carga AJAX)
+function activarEventosAudio() {
+    document.querySelectorAll('audio').forEach(audio => {
+        let reproducido = false;
+
+        audio.addEventListener('timeupdate', () => {
+            if (reproducido) return;
+
+            const segundos = audio.currentTime;
+            const porcentaje = segundos / audio.duration;
+
+            if (segundos >= 10 || porcentaje >= 0.3) {
+                reproducido = true;
+
+                const idCancion = audio.dataset.id;
+
+                fetch('/repro.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id_cancion: idCancion })
+                });
+            }
+        });
+    });
+}
 </script>
