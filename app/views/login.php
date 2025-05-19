@@ -9,15 +9,23 @@
     $normalModel = new Normal($pdo);
     $artistaModel = new Artista($pdo);
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $nombre = $_POST['nombre'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $usuarioModel->login($email, $password);
-        $_SESSION['email']=$email;
-        $_SESSION['tipo']=$tipo;
-        header("Location: /");
-        exit;
+
+        $usuario = $usuarioModel->login($email, $password);
+        
+        if ($usuario) {
+            $_SESSION['email'] = $usuario['email'];
+            $_SESSION['tipo'] = $usuarioModel->obtenerTipo($email);
+            $_SESSION['plan'] = $usuario['plan'];  
+
+            header("Location: /");
+            exit;
+        } else {
+            $mensaje = "❌ Credenciales incorrectas.";
+        }
     }
+
 ?>
 
 <!DOCTYpE html>

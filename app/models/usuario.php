@@ -49,5 +49,26 @@
             $stmt->execute([$email]);
             return $stmt->fetchColumn();
         }
+
+        public function obtenerTipo($email) {
+        // Obtener ID del usuario
+        $stmt = $this->db->prepare("SELECT id_usuario FROM usuario WHERE email = ?");
+        $stmt->execute([$email]);
+        $id_usuario = $stmt->fetchColumn();
+
+        if (!$id_usuario) {
+            return null; // o lanzar excepción si prefieres
+        }
+
+        // Verificar si es artista
+        $stmt = $this->db->prepare("SELECT 1 FROM artista WHERE id_usuario = ?");
+        $stmt->execute([$id_usuario]);
+
+        if ($stmt->fetch()) {
+            return 'artista';
+        }
+
+        return 'normal';
+    }
     }
 ?>

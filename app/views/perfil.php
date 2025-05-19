@@ -115,12 +115,13 @@
                     <div class="item-info">
                         <span class="etiqueta">Plan actual:</span>
                         <span class="dato insignia-premium">
-                            <?php if ($tipo === 'artista' || isset($_SESSION['premium'])): ?>
+                            <?php if ($_SESSION['plan'] === "premium"): ?>
                                 Premium
                             <?php else: ?>
                                 Gratuito
                             <?php endif; ?>
                         </span>
+
                     </div>
                 </div>
                 <div class="foto-perfil">
