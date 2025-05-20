@@ -167,3 +167,57 @@ function activarEventosAudio() {
     });
 }
 </script>
+
+
+<?php
+// --- Lógica de playlists al final de playlists.php ---
+require_once '../config/Conexion_BBDD.php';
+require_once '../app/models/usuario.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['email'])) {
+    header("Location: /login");
+    exit;
+}
+
+$usuarioModel = new Usuario($pdo);
+$id_usuario = $usuarioModel->getIdByEmail($_SESSION['email']);
+
+// Crear nueva playlist si se envió el formulario
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre_playlist'])) {
+    $nombre_playlist = trim($_POST['nombre_playlist']);
+    if ($nombre_playlist !== '') {
+        $stmt = $pdo->prepare("INSERT INTO playlists (nombre, id_usuario) VALUES (?, ?)");
+        $stmt->execute([$nombre_playlist, $id_usuario]);
+    }
+}
+
+// Obtener playlists del usuario
+$stmt = $pdo->prepare("SELECT * FROM playlists WHERE id_usuario = ?");
+$stmt->execute([$id_usuario]);
+$playlists = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<div class="mis-playlists" style="margin-top: 30px;">
+    <h2>Mis playlists</h2>
+    <?php if (count($playlists) === 0): ?>
+        <p>No tienes ninguna playlist aún.</p>
+        <form method="POST" style="margin-top: 15px;">
+            <input type="text" name="nombre_playlist" placeholder="Nombre de la playlist" required>
+            <button type="submit">Crear playlist</button>
+        </form>
+    <?php else: ?>
+        <ul>
+            <?php foreach ($playlists as $playlist): ?>
+                <li>
+                    <a href="/playlist?id=<?= $playlist['id_playlist'] ?>">
+                        <?= htmlspecialchars($playlist['nombre']) ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</div>
