@@ -204,12 +204,16 @@ $playlists = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div class="mis-playlists" style="margin-top: 30px;">
     <h2>Mis playlists</h2>
     <?php if (count($playlists) === 0): ?>
-        <p>No tienes ninguna playlist aún.</p>
+        <p>¡Crea tu primera playlist!</p>
+            <?php endif; ?>
+
+     
+        
         <form method="POST" style="margin-top: 15px;">
             <input type="text" name="nombre_playlist" placeholder="Nombre de la playlist" required>
             <button type="submit">Crear playlist</button>
         </form>
-    <?php else: ?>
+    
         <ul>
             <?php foreach ($playlists as $playlist): ?>
                 <li>
@@ -219,5 +223,5 @@ $playlists = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </li>
             <?php endforeach; ?>
         </ul>
-    <?php endif; ?>
+    
 </div>
