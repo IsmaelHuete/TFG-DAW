@@ -3,10 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 $plan = $_GET['plan'] ?? 'mensual';
-
 $detalles = [
-    'mensual' => ['precio' => .99, 'beneficios' => 'Acceso ilimitado sin anuncios.'],
-    'anual' => ['precio' => 99.99, 'beneficios' => '12 meses por el precio de 10.']
+    'mensual' => ['precio' => 9.99, 'titulo' => 'Premium Mensual', 'descripcion' => ['Reproducción ilimitada', 'Sin anuncios', 'Calidad estándar', '1 dispositivo']],
+    'anual' => ['precio' => 99.99, 'titulo' => 'Premium Anual', 'descripcion' => ['Reproducción ilimitada', 'Sin anuncios', 'Alta fidelidad', '5 dispositivos']],
 ];
 
 if (!isset($detalles[$plan])) {
@@ -15,7 +14,7 @@ if (!isset($detalles[$plan])) {
 }
 
 $precio = $detalles[$plan]['precio'];
-$beneficios = $detalles[$plan]['beneficios'];
+$beneficios = $detalles[$plan]['descripcion'];
 ?>
 
 <!DOCTYpE html>
@@ -44,13 +43,12 @@ $beneficios = $detalles[$plan]['beneficios'];
                 <!-- Columna izquierda: Info del plan -->
                 <div class="plan">
                     <div class="basico">
-                        <h2>Premium Mensual</h2>
-                        <span>$9.99<span class="letra"> / año</span></span>
+                        <h2><?= $detalles[$plan]['titulo'] ?></h2>
+                        <span>$<?= number_format($detalles[$plan]['precio'], 2) ?><span class="letra"> / <?= $plan === 'mensual' ? 'mes' : 'año' ?></span></span>
                         <ul>
-                            <li>&#10003;  Reproduccion ilimitada</li>
-                            <li>&#10003;  Sin anuncios</li>
-                            <li>&#10003;  Calidad estandar</li>
-                            <li>&#10003;  1 dispositivo</li>
+                            <?php foreach ($detalles[$plan]['descripcion'] as $beneficio): ?>
+                                <li>&#10003; <?= $beneficio ?></li>
+                            <?php endforeach; ?>
                         </ul>
                     </div>
                 </div>

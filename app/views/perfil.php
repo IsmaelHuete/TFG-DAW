@@ -115,7 +115,7 @@
                     <div class="item-info">
                         <span class="etiqueta">Plan actual:</span>
                         <span class="dato insignia-premium">
-                            <?php if ($_SESSION['plan'] === "premium"): ?>
+                            <?php if ($_SESSION['tipo'] === "premium"): ?>
                                 Premium
                             <?php else: ?>
                                 Gratuito

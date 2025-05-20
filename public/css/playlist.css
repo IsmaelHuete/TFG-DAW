@@ -44,7 +44,8 @@ main{
 }
 
 .reproductor::-webkit-scrollbar {
-    width: 8px;
+    width: 5px;
+    height: 40px;
 }
 
 .reproductor::-webkit-scrollbar-track {
