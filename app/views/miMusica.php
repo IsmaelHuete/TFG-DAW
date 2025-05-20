@@ -6,7 +6,7 @@ require_once '../app/models/artista.php';
 
 session_start();
 
-if (!isset($_SESSION['email']) || $_SESSION['tipo'] !== 'artista') {
+/* if (!isset($_SESSION['email']) || $_SESSION['tipo'] !== 'artista') {
     header("Location: /login");
     exit;
 }
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $albums = $artistaModel->getAlbumsByUsuario($id_usuario); // actualizar lista
 }
 
-$canciones = $artistaModel->getCancionesByUsuario($id_usuario);
+$canciones = $artistaModel->getCancionesByUsuario($id_usuario); */
 ?>
 
 <!DOCTYPE html>
@@ -93,12 +93,12 @@ $canciones = $artistaModel->getCancionesByUsuario($id_usuario);
 </head>
 <body>
     <?php include("layouts/header1.php"); ?>
-    <main>
+    <!-- <main>
         <div class="container">
             <h2>Subir canción</h2>
-            <?php if ($mensaje): ?>
+             <?php if ($mensaje): ?>
                 <p><strong><?= htmlspecialchars($mensaje) ?></strong></p>
-            <?php endif; ?>
+            <?php endif; ?> 
 
                  <form action="" method="POST" enctype="multipart/form-data">
                 <label>Selecciona un álbum existente:</label>
@@ -165,7 +165,7 @@ $canciones = $artistaModel->getCancionesByUsuario($id_usuario);
                 Tu navegador no soporta el audio.
             </audio>
     </div>
-
+ -->
     <?php include("layouts/footer.php"); ?>
     <script src="js/header.js"></script>
     <script src="js/home.js"></script>
