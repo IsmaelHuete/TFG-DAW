@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/comun.css">
-    <link rel="stylesheet" href="css/playlist.css">
+    <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/header1.css">
     <link rel="stylesheet" href="css/footer.css">
 </head>
@@ -29,6 +29,29 @@
     ?>
 </div>
 
+<div id="reproductor-persistente" class="reproductor-persistente">
+    <div class="reproductor-izquierda">
+        <img id="cover-img" src="/img/image-brand.png" alt="Portada" style="width:50px;height:50px;" />
+        <div>
+            <div id="titulo-cancion">Sin canción</div>
+            <div id="nombre-artista">Desconocido</div>
+        </div>
+    </div>
+    <div class="reproductor-centro">
+    <div class="controles">
+        <button id="btn-prev">⏮️</button>
+        <button id="btn-play">▶️</button>
+        <button id="btn-next">⏭️</button>
+    </div>
+    <input type="range" id="barra-progreso" value="0" step="1">
+</div>
+    <div class="reproductor-derecha">
+        <input type="range" id="volumen" min="0" max="1" step="0.01" value="1">
+    </div>
+    <audio id="audio-player" src=""></audio>
+</div>
+
+
 <!-- Modal para seleccionar playlist -->
 <div id="modal-playlists" class="modal" style="display:none;">
     <div class="modal-content">
@@ -38,9 +61,13 @@
     </div>
 </div>
 
+
+
+
 <script src="js/header.js"></script>
 <script src="js/home.js"></script>
 <script src="js/playlist-modal.js"></script>
+<script src="js/reproductor.js"></script>
 </body>
 </html>
 
@@ -195,7 +222,7 @@ function activarEventosAudio() {
 
 
 <?php
-// --- Lógica de playlists al final de playlists.php ---
+// --- Lógica de playlists al final de index.php ---
 require_once '../config/Conexion_BBDD.php';
 require_once '../app/models/usuario.php';
 

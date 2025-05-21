@@ -10,7 +10,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <div class="menu">
             <ul>
                 <li><a href="/myMusic">My Music</a></li>
-                <li><a href="/playlists">Playlists</a></li>
+                <li><a href="/index">Reproductor</a></li>
                 <li><a href="/premium">Premiun</a></li>
                 <li>
                   <?php

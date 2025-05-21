@@ -13,7 +13,7 @@
             <h2>Explora</h2>
             <ul>
                 <li><a href="#music">Escuchar música</a></li>
-                <li><a href="#playlists">Playlists</a></li>
+                <li><a href="#index">Reproductor</a></li>
                 <li><a href="#artists">Artistas</a></li>
                 <li><a href="#albums">Álbumes</a></li>
                 <li><a href="#blog">Blog</a></li>

@@ -3,7 +3,7 @@ require_once '../config/Conexion_BBDD.php';
 session_start();
 
 if (!isset($_SESSION['email']) || !isset($_POST['nombre'])) {
-    header('Location: /playlists');
+    header('Location: /index');
     exit;
 }
 
@@ -19,4 +19,4 @@ $id_usuario = $stmt->fetchColumn();
 $stmt = $pdo->prepare("INSERT INTO playlists (nombre, id_usuario) VALUES (?, ?)");
 $stmt->execute([$nombre, $id_usuario]);
 
-header('Location: /playlists');
+header('Location: /index');

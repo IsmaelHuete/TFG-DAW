@@ -8,8 +8,8 @@
                 return 'app/views/login.php';
             case '/register':
                 return 'app/views/register.php';
-            case '/playlists':
-                return 'app/views/playlists.php';
+            case '/index':
+                return 'app/views/index.php';
             case '/perfil':
                 return 'app/views/perfil.php';
             case '/premium':

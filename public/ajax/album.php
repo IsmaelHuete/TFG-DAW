@@ -35,7 +35,7 @@ $foto_album = "/uploads/foto-album/{$id_album}.jpg";
 <h2><?= htmlspecialchars($album['nombre_album']) ?></h2>
 <?php foreach ($canciones as $c):?>
 
-    <div class="container-cancion">
+    <div class="container-cancion" >
         <div class="add-playlist" data-id="<?= $c['id_cancion'] ?>">
             <!-- Corazón blanco (visible al inicio) -->
             <svg class="corazon-blanco" width="20px" height="20px" viewBox="-2.08 -2.08 20.16 20.16" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer;">
@@ -54,9 +54,13 @@ $foto_album = "/uploads/foto-album/{$id_album}.jpg";
             </svg>
         </div>
 
+
         <div class="img-wrapper">
             <img src="<?= $foto_album ?>" alt="Carátula del álbum">
-            <div class="hover-overlay">
+            <div class="hover-overlay" data-src="/uploads/canciones/<?= $c['id_cancion'] ?>.mp3"
+                data-title="<?= htmlspecialchars($c['nombre_c']) ?>"
+                data-artist="<?= htmlspecialchars($album['nombre_artista']) ?>"
+                data-cover="<?= $foto_album ?>">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px">
                     <defs>
                         <linearGradient id="grad-play" x1="0%" y1="0%" x2="100%" y2="0%">
