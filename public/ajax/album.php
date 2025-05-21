@@ -36,24 +36,24 @@ $foto_album = "/uploads/foto-album/{$id_album}.jpg";
 <?php foreach ($canciones as $c):?>
 
     <div class="container-cancion">
-        <div class="add-playlist">
-                <!-- Corazón blanco -->
-                <svg width="20px" height="20px" viewBox="-2.08 -2.08 20.16 20.16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1.24264 8.24264L8 15L14.7574 8.24264C15.553 7.44699 16 6.36786 16 5.24264V5.05234C16 2.8143 14.1857 1 11.9477 1C10.7166 1 9.55233 1.55959 8.78331 2.52086L8 3.5L7.21669 2.52086C6.44767 1.55959 5.28338 1 4.05234 1C1.8143 1 0 2.8143 0 5.05234V5.24264C0 6.36786 0.44699 7.44699 1.24264 8.24264Z" fill="#ffffff"></path>
-                </svg>
+        <div class="add-playlist" data-id="<?= $c['id_cancion'] ?>">
+            <!-- Corazón blanco (visible al inicio) -->
+            <svg class="corazon-blanco" width="20px" height="20px" viewBox="-2.08 -2.08 20.16 20.16" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer;">
+                <path d="M1.24264 8.24264L8 15L14.7574 8.24264C15.553 7.44699 16 6.36786 16 5.24264V5.05234C16 2.8143 14.1857 1 11.9477 1C10.7166 1 9.55233 1.55959 8.78331 2.52086L8 3.5L7.21669 2.52086C6.44767 1.55959 5.28338 1 4.05234 1C1.8143 1 0 2.8143 0 5.05234V5.24264C0 6.36786 0.44699 7.44699 1.24264 8.24264Z" fill="#ffffff"></path>
+            </svg>
 
-                <!-- Corazón degradado -->
-                <svg width="20px" height="20px" viewBox="-2.08 -2.08 20.16 20.16" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#481B9A; stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#FF4EC4; stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M1.24264 8.24264L8 15L14.7574 8.24264C15.553 7.44699 16 6.36786 16 5.24264V5.05234C16 2.8143 14.1857 1 11.9477 1C10.7166 1 9.55233 1.55959 8.78331 2.52086L8 3.5L7.21669 2.52086C6.44767 1.55959 5.28338 1 4.05234 1C1.8143 1 0 2.8143 0 5.05234V5.24264C0 6.36786 0.44699 7.44699 1.24264 8.24264Z"
-                        fill="url(#grad)" />
-                </svg>
-            </div>
+            <!-- Corazón degradado (oculto al inicio) -->
+            <svg class="corazon-gradient" width="20px" height="20px" viewBox="-2.08 -2.08 20.16 20.16" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <defs>
+                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#481B9A; stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#FF4EC4; stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path d="M1.24264 8.24264L8 15L14.7574 8.24264C15.553 7.44699 16 6.36786 16 5.24264V5.05234C16 2.8143 14.1857 1 11.9477 1C10.7166 1 9.55233 1.55959 8.78331 2.52086L8 3.5L7.21669 2.52086C6.44767 1.55959 5.28338 1 4.05234 1C1.8143 1 0 2.8143 0 5.05234V5.24264C0 6.36786 0.44699 7.44699 1.24264 8.24264Z" fill="url(#grad)" />
+            </svg>
+        </div>
+
         <div class="img-wrapper">
             <img src="<?= $foto_album ?>" alt="Carátula del álbum">
             <div class="hover-overlay">

@@ -34,6 +34,10 @@
                 return 'app/views/checkout.php';
             case '/pago_exito':
                 return 'app/views/pago_exito.php';
+            case '/test':
+                return 'public/ajax/test-platlist.php';
+            case '/test2':
+                return 'public/ajax/canciones_en_playlist.php';
             default:
                 header("Location: /404");
                 exit();
