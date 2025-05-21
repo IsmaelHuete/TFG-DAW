@@ -1,0 +1,95 @@
+body {
+  background: black;
+
+}
+.difuminado {
+    position: absolute;
+    top: -120px;
+    left: 65%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 400px;
+    background: white;
+    border-radius: 50%;
+    filter: blur(180px); 
+    opacity: 0.3; 
+    z-index: 0; 
+    pointer-events: none; 
+}
+
+main{
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.registro{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    width: 400px;
+    height: auto;
+    font-family: 'Poppins', sans-serif;
+}
+.registro img{
+    height: 90px;
+    width: 90px;
+}
+.registro h2{
+    font-size: 2.1rem;
+    margin-bottom: 20px;
+}
+.registro form{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+}
+::placeholder{
+    font-size: 1.1rem;
+}
+form input{
+    background-color: transparent;
+    border: none;
+    box-shadow: 0 0 0 0.5px gray;
+    padding: 17px 0px 17px 10px;
+    border-radius: 10px;
+    color: gray;
+    font-size: 1.1rem;
+}
+form button{
+    color: white;
+    padding: 15px;
+    border: none;
+    outline: none;
+    background: linear-gradient(to right, #481B9A 20%, #FF4EC4);
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+span{
+    margin: 10px;
+    color: gray;
+}
+span > a{
+    color: gray;
+}
+span > a:hover{
+    color: #721b9a;
+}
+p{
+    color: gray;
+    margin-bottom: 1px;
+}
+a{
+    color:#721b9a;
+    cursor: pointer;
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+}
+

@@ -1,0 +1,385 @@
+main{
+    height: auto;
+    width: 100%;
+    background-color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5%;
+    padding-bottom: 2%;
+}
+.oferta {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    padding: 5px 0;
+    z-index: 999;
+    background: linear-gradient(to right, #481B9A, #FF4EC4, #481B9A);
+    background-size: 600% 600%;
+    animation: gradient 10s linear infinite;
+}
+
+.oferta p {
+    margin: 0;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50% ; }
+    50%{background-position: 100% 50%;}
+    100% { background-position: 100% 50% 0%; }
+}
+
+.oferta p{
+    margin: 0;
+}
+
+.wrap{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5%;
+}
+
+.wrap .container{
+    height: 400px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: start;
+}
+
+.card{
+    width: 80px;
+    border-radius: .75rem;
+    background-size: cover;
+    background-position: center center;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 2rem;
+    margin: 0 10px;
+    display: flex;
+    align-items: flex-end;
+    transition: .6s cubic-bezier(.28,-0.03,0,.99);
+    background-color: rgb(255, 255, 255);
+}
+.card > .row{
+    color: white;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.card >.row > .icon{
+    background: linear-gradient(to right, #481B9A, #FF4EC4);
+    color: white;
+    border-radius: 50%;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+}
+.card >.row > .icon:hover{
+    background: linear-gradient(to right, #481B9A, #8B004B);
+}
+.card >.row > .icon svg{
+    margin-left: 5px;
+    height: 30px;
+}
+.card >.row > .description{
+    display: flex;
+    color: black;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+    height: 80px;
+    width: 520px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition-delay:.3s ;
+    transition: all .3 ease;
+}
+.description p{
+    color: white;
+    margin: 0;
+}
+.description h4{
+    text-transform: uppercase;
+    color: gray;
+    margin: 0;
+}
+input  {
+    display: none;
+}
+input:checked +label{
+    width: 600px;
+}
+input:checked + label .description {
+    opacity: 1 !important;
+    transform: translateY(0px) !important;
+}
+
+.card[for="c1"]{
+    background-image: url("../img/quevedo.jpg");
+}
+
+.card[for="c2"]{
+    background-image: url("../img/AnueDobleA.jpg");
+}
+.card[for="c3"]{
+    background-image: url("../img/AngelCaido.jpg");
+}
+.card[for="c4"]{
+    background-image: url("../img/ConejoMalo.jpg");
+}
+.section1{
+    max-width: 1370px;
+    width: 1370px;
+    height: auto;
+    color: white;
+    text-align: center;
+}
+.section1 h1{
+    font-size: 3rem;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 0
+}
+.section1 h3{
+    margin-top: 0;
+    margin-bottom: 5%;
+}
+.section1 .options{
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+.section1 .options div img{
+    height: 80px;
+    width: 200px;
+}
+.section1 .options div h2{
+    font-family: 'Poppins', sans-serif;
+    margin-top: 0;
+}
+
+.section1[data-animation="show"] {
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.6s ease-in, transform 0.6s ease-in;
+    --opacity: 1;
+    --transform: scale(1);
+}
+
+.section1.unset {
+    opacity: var(--opacity);
+    transform: var(--transform);
+}
+
+.animacion-lenta {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-in, transform 0.6s ease-in;
+}
+
+.animacion-lenta.unset {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.section1 .options {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-in 0.5s, transform 0.6s ease-in 0.5s;
+}
+
+.section1 .options.unset {
+    opacity: 1;
+    transform: translateY(0);
+}
+.banners {
+    width: 100%;
+    background:black;
+    display: flex;
+    justify-content: center;
+    padding: 40px 0px;
+}
+
+.container-banner {
+    max-width: 1370px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.section-banner {
+    background: linear-gradient(to right, #481B9A, #FF4EC4);
+    color: white;
+    border-radius: 16px;
+    padding: 20px;
+    opacity: 0.6px;
+    width: 23%;
+    min-width: 200px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.section-banner .text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.section-banner a {
+    text-decoration: none;
+}
+.section-banner h2 {
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: bold;
+}
+
+.section-banner span {
+    font-size: 0.9rem;
+    color: #e5e5e5;
+}
+
+.section-banner button {
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+.section-banner button:hover {
+    background-color: #ddd;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .section-1{
+    width: 20%; 
+}
+.section-1 h1{
+    color:  white;
+}
+.section-2{
+    height: 600px;
+    width: 50%;
+    background-color: black;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+.section-2::-webkit-scrollbar-button {
+    display: none;
+}
+
+.section-2::-webkit-scrollbar {
+    width: 10px;  
+}
+
+.section-2::-webkit-scrollbar-track {
+    background: #1b1b1b;
+    border-radius: 5px; 
+}
+
+.section-2::-webkit-scrollbar-thumb {
+    background: #363636; 
+    border-radius: 5px; 
+}
+.novedades-populares,
+.albums-populares,
+.artist-populares{
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+    margin-bottom: 2%;
+    flex-wrap: wrap;
+    cursor: pointer;
+
+}
+.section-2 .header-sections{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+.section-2 .header-sections span{
+    font-size: 0.7rem;
+}
+.section-2 img{
+    height: 140px;
+    width: 140px;
+    object-fit: cover;
+}
+.section-2 .novedades,
+.section-2 .albums,
+.section-2 .artistas{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.artista img{
+    border-radius: 50%;
+}
+
+.novedad p,
+.album p,
+.artista p{
+    color: white;
+    margin-top: 10px;
+}
+.novedad p:nth-child(2),
+.album p:nth-child(2),
+.artista p:nth-child(2){
+    font-size: 0.8rem;
+}
+.novedad p:nth-child(3),
+.album p:nth-child(3),
+.artista p:nth-child(3){
+    font-size: 0.7rem;
+}
+.novedad img,
+.album img{
+    border-radius: 10%;
+} */

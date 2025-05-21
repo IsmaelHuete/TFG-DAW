@@ -1,0 +1,302 @@
+.contenido-perfil {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.encabezado-perfil {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, rgba(72, 27, 154, 0.1), rgba(255, 78, 196, 0.1));
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.foto-perfil {
+    height: 250px;
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.foto-perfil img {
+    width: 200px; 
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover; 
+    background-position: center;
+}
+
+.avatar-perfil {
+    margin-right: 30px;
+}
+
+
+
+.boton-subir-foto {
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 0;
+}
+
+.boton-subir-foto svg{
+    height: 20px;
+    width: 20px;
+}
+
+.boton-foto{
+    cursor: pointer;
+    position: absolute;
+    bottom: -20px;
+    right: 80px;
+    border: none;
+    outline: none;
+    border-radius: 50px;
+    padding: 10px 15px 10px 15px;
+}
+
+.info-perfil {
+    width: 30%;
+}
+.info-perfil h2 {
+    color: #999;
+}
+.info-perfil h1 {
+    font-size: 2.5rem;
+    margin: 0 0 10px;
+    background: linear-gradient(90deg, #481B9A, #FF4EC4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 600;
+}
+
+.info-perfil .email {
+    font-size: 1.2rem;
+    color: #fff;
+    margin: 5px 0;
+}
+
+.info-perfil .tipo {
+    color: #ccc;
+    font-size: 1rem;
+}
+
+.contenido-perfil {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.seccion-perfil {
+    background-color: #121212;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.seccion-perfil h2 {
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #fff;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.tarjeta-info, .upgrade-card {
+    background-color: #1E1E1E;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.item-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+
+.item-info:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.item-info .etiqueta {
+    color: #999;
+}
+
+.item-info .dato {
+    color: #fff;
+    font-weight: 500;
+}
+
+.insignia-premium {
+    background: linear-gradient(90deg, #481B9A, #FF4EC4);
+    padding: 5px 15px;
+    border-radius:  7px;
+    font-size: 0.9rem;
+}
+
+.tarjeta-mejora {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-mejora {
+    flex: 1;
+}
+
+.info-mejora h3 {
+    font-size: 1.3rem;
+    margin: 0 0 10px;
+    color: #fff;
+}
+
+.info-mejora p {
+    color: #ccc;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.boton-mejora {
+    background: linear-gradient(90deg, #481B9A, #FF4EC4);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.boton-mejora:hover {
+    transform: translateY(-3px);
+}
+
+.estadisticas-artista {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.tarjeta-dato {
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.valor-dato {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #D72AC5;
+    margin-bottom: 5px;
+}
+
+.texto-dato {
+    color: #3C3D4D;
+    font-size: 0.9rem;
+}
+
+.acciones-artista {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+.boton-subir {
+  background: linear-gradient(90deg, #481B9A, #FF4EC4);
+  border-radius: 10px;
+  padding: 10px 20px 10px 20px;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.boton-stat {
+  background: linear-gradient(90deg, #1E032A, #400244);
+  border-radius: 10px;
+  padding: 10px 15px 10px 15px;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.boton-stat,
+.boton-subir:hover {
+  opacity: 0.9;
+}
+
+
+
+.acciones-cuenta {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.boton-salir, .boton-config {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.boton-salir {
+    background-color: #a61e4d;
+    color: white;
+}
+
+.boton-salir:hover {
+    background-color: #c92a6d;
+}
+
+.boton-config {
+    background-color: #333;
+    color: white;
+}
+
+.boton-config {
+    background-color: #444;
+}
+
+@media (max-width: 768px) {
+    .cabecera-perfil {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .avatar-perfil {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    
+    .contenido-perfil {
+        grid-template-columns: 1fr;
+    }
+    
+    .tarjeta-mejora {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .estadisticas-artista {
+        grid-template-columns: 1fr;
+    }
+    
+    .acciones-artista {
+        flex-direction: column;
+    }
+}

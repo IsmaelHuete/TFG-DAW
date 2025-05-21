@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /TFG-DAW-Ismael-Huete-Marcos-Guerro-Alonso-Esteban/
+
+# Redirigir solicitudes sin el prefijo '/TFG-DAW-Ismael-Huete-Marcos-Guerro-Alonso-Esteban'
+RewriteRule ^(.*)$ /$1 [L,R=301]

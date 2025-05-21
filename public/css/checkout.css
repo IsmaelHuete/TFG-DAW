@@ -1,0 +1,207 @@
+
+main{
+    height: auto;
+    width: 100%;
+    background-color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5%;
+    padding-bottom: 2%;
+}
+
+.checkout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+}
+
+.checkout-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  padding: 30px;
+  border-radius: 20px;
+  gap: 40px;
+}
+
+.plan{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    gap: 30px;
+    position: relative;
+}
+.plan div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 0 0 0.5px gray;
+    border-radius: 15px;
+    background-color: #050505;
+    padding: 30px;
+    cursor: pointer;
+}
+.plan div h2{
+    margin: 0;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.plan img{
+    height: 130px;
+    width: 200px;
+    position: absolute;
+    top:-30px;
+    left: -70px;
+    rotate: -40deg;
+    opacity: 0.8;
+}
+.plan div span:nth-child(2){
+    font-size: 2rem;
+    font-weight: 700;
+}
+.plan div span:nth-child(3){
+    color: #d4d4d4;
+}
+.plan div span:nth-child(2) .letra{
+    font-size: 1.1rem;
+    color: #d4d4d4;
+}
+.plan div ul {
+    text-align: start;
+    padding: 0;
+}
+.plan div ul li{
+    list-style: none;
+    color: #d4d4d4;
+    margin: 5px 0px 10px 0px;
+}
+
+
+.checkout-plan-box,
+.checkout-form-box {
+  flex: 1;
+}
+
+.checkout-plan-box {
+  background: #2a2a2a;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.checkout-precio {
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
+
+.checkout-form-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.checkout-form-box input {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background-color: #333;
+  color: white;
+}
+.checkout-form-box h2 {
+  margin: 0px 0px 10px 0px;
+}
+.checkout-form-box input::placeholder {
+  color: #999;
+}
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-wrapper input {
+  width: 91%;
+  border-radius: 10px;
+  border: none;
+  background-color: #333;
+  color: white;
+  font-size: 1rem;
+}
+
+.card-icons {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 5px;
+}
+
+.card-icons img {
+  height: 22px;
+  width: auto;
+  pointer-events: none;
+}
+
+.btn-confirmar {
+  margin-top: 10px;
+  background: linear-gradient(to right, #481B9A, #FF4EC4);
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.btn-paypal {
+  background: linear-gradient(to right, #5ec4ff, #2400f0);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  height: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  position: relative;
+  margin-bottom: 5px;
+}
+.btn-paypal svg{
+  height: 80px;
+  width: 80px;
+  position: absolute;
+  top: -13px;
+  left: 93px;
+}
+.btn-paypal:hover,
+.btn-confirmar:hover {
+  opacity: 0.7;
+}
+.pago-option{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+}
+.pago-option p{
+    margin: 20px 0px  20px 0px;
+}
+hr{
+    border: none;
+    box-shadow: 0 0 0 0.5px gray;
+}
+.pago-option hr{
+    width:100px !important
+    
+}

@@ -1,0 +1,11 @@
+{
+    "name": "ismae/tfg-daw-ismael-huete-marcos-guerro-alonso-esteban",
+    "autoload": {
+        "psr-4": {
+            "Ismae\\TfgDawIsmaelHueteMarcosGuerroAlonsoEsteban\\": "src/"
+        }
+    },
+    "require": {
+        "james-heinrich/getid3": "^1.9"
+    }
+}
