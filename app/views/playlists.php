@@ -28,8 +28,19 @@
         include ("layouts/footer.php");
     ?>
 </div>
+
+<!-- Modal para seleccionar playlist -->
+<div id="modal-playlists" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="cerrar-modal" style="float:right;cursor:pointer;">&times;</span>
+        <h3>Elige una playlist</h3>
+        <ul id="lista-playlists"></ul>
+    </div>
+</div>
+
 <script src="js/header.js"></script>
-    <script src="js/home.js"></script>
+<script src="js/home.js"></script>
+<script src="js/playlist-modal.js"></script>
 </body>
 </html>
 
