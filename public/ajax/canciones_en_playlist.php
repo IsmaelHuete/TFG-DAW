@@ -1,8 +1,8 @@
 <?php
 session_start();
+
 require_once __DIR__ . '/../../config/Conexion_BBDD.php';
 require_once __DIR__ . '/../../app/models/usuario.php';
-
 
 header('Content-Type: application/json');
 

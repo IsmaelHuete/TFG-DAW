@@ -37,7 +37,7 @@
             case '/test':
                 return 'public/ajax/test-platlist.php';
             case '/test2':
-                return 'public/ajax/obtener_playlists_usuario.php';
+                return 'public/ajax/canciones_en_playlist.php';
             default:
                 header("Location: /404");
                 exit();

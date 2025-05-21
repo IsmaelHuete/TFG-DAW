@@ -121,7 +121,21 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                     .then(html => {
                         document.getElementById('contenido-principal').innerHTML = html;
                         activarEventosAudio();
+
+                        // ✅ Después de insertar el HTML, marcar corazones
+                        fetch('/ajax/canciones_en_playlist.php')
+                            .then(res => res.json())
+                            .then(ids => {
+                                document.querySelectorAll('.add-playlist').forEach(div => {
+                                    const id = div.dataset.id;
+                                    if (ids.includes(parseInt(id))) {
+                                        div.querySelector('.corazon-blanco').style.display = 'none';
+                                        div.querySelector('.corazon-gradient').style.display = 'inline';
+                                    }
+                                });
+                            });
                     });
+
             });
         });
 
