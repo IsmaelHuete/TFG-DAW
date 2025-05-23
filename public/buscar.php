@@ -45,6 +45,7 @@ if ($q !== '') {
     $stmt->execute([$like]);
     $resultado['artistas'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
     // Álbumes
     $stmt = $pdo->prepare("
         SELECT albums.id_album, albums.id_usuario, albums.nombre, usuario.nombre AS artista
