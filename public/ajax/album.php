@@ -92,4 +92,21 @@ $foto_album = "/uploads/foto-album/{$id_album}.jpg";
 
 <?php endforeach; ?>
 
-<script>activarEventosAudio();</script>
+<script>
+function activarResaltadoCancion() {
+    document.querySelectorAll('.hover-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function () {
+            document.querySelectorAll('.container-cancion').forEach(div => {
+                div.classList.remove('cancion-activa');
+            });
+            const cancionDiv = this.closest('.container-cancion');
+            if (cancionDiv) {
+                cancionDiv.classList.add('cancion-activa');
+            }
+        });
+    });
+}
+
+activarEventosAudio();
+activarResaltadoCancion();
+</script>

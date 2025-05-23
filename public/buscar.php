@@ -16,10 +16,12 @@ if ($q !== '') {
 
     // Canciones + ID del álbum
     $stmt = $pdo->prepare("
-        SELECT canciones.id_cancion, canciones.nombre_c, canciones.id_album, albums.nombre AS album
-        FROM canciones
-        LEFT JOIN albums ON canciones.id_album = albums.id_album
-        WHERE LOWER(canciones.nombre_c) LIKE ?
+        SELECT c.id_cancion, c.nombre_c, c.id_album, c.reproducciones, c.duracion, 
+            a.nombre AS album, u.nombre AS artista
+        FROM canciones c
+        LEFT JOIN albums a ON c.id_album = a.id_album
+        LEFT JOIN usuario u ON c.id_usuario = u.id_usuario
+        WHERE LOWER(c.nombre_c) LIKE ?
         LIMIT 10
     ");
     $stmt->execute([$like]);
@@ -34,7 +36,7 @@ if ($q !== '') {
 
     // Artistas
     $stmt = $pdo->prepare("
-        SELECT id_usuario, nombre
+        SELECT id_usuario, nombre,foto_perfil
         FROM usuario
         WHERE id_usuario IN (SELECT id_usuario FROM artista)
         AND LOWER(nombre) LIKE ?

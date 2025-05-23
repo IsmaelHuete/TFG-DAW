@@ -66,7 +66,7 @@
                     }
 
                     if (move_uploaded_file($archivo['tmp_name'], $ruta_destino)) {
-                    $usuarioModel->actualizarFotoPerfil($email, "/" . $ruta_relativa); 
+                    $usuarioModel->actualizarFotoPerfil($email, $nombre_archivo);
                     $mensaje = "✅ Foto subida correctamente.";
                     } else {
                     $mensaje = "❌ Error al guardar la imagen.";

@@ -8,10 +8,11 @@ if (!$id || !is_numeric($id)) {
     exit;
 }
 
-// Obtener nombre del artista
 $stmt = $pdo->prepare("
-    SELECT nombre FROM usuario 
-    WHERE id_usuario = ? AND id_usuario IN (SELECT id_usuario FROM artista)
+    SELECT nombre, foto_perfil 
+    FROM usuario 
+    WHERE id_usuario = ? 
+    AND id_usuario IN (SELECT id_usuario FROM artista)
 ");
 $stmt->execute([$id]);
 $artista = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -21,76 +22,92 @@ if (!$artista) {
     exit;
 }
 
-// Obtener álbumes del artista
-$stmt = $pdo->prepare("SELECT id_album, nombre FROM albums WHERE id_usuario = ?");
-$stmt->execute([$id]);
-$albums = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$ruta_foto = $artista['foto_perfil'] ? "/uploads/perfiles/" . $artista['foto_perfil'] : "/uploads/perfiles/default.jpg";
 
-// Obtener todas las canciones del artista (de cualquier álbum)
+// Obtener canciones del artista (con duración y reproducciones)
 $stmt = $pdo->prepare("
-    SELECT c.id_cancion, c.nombre_c, c.id_album, a.nombre AS nombre_album
+    SELECT c.id_cancion, c.nombre_c, c.id_album, c.duracion, c.reproducciones, a.nombre AS nombre_album
     FROM canciones c
     JOIN albums a ON c.id_album = a.id_album
     WHERE a.id_usuario = ?
 ");
 $stmt->execute([$id]);
 $canciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
-<h2>Artista: <?= htmlspecialchars($artista['nombre']) ?></h2>
+<h2><?= htmlspecialchars($artista['nombre']) ?></h2>
 
-<?php if (count($albums) > 0): ?>
-    <h3>Álbumes:</h3>
-    <ul>
-        <?php foreach ($albums as $a): ?>
-            <li>
-                <a href="#" class="enlace-album" data-id="<?= $a['id_album'] ?>">
-                    <?= htmlspecialchars($a['nombre']) ?>
-                </a>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-<?php else: ?>
-    <p>Este artista no tiene álbumes aún.</p>
-<?php endif; ?>
+<?php foreach ($canciones as $c): ?>
+    <?php
+        $foto_album = "/uploads/foto-album/{$c['id_album']}.jpg";
+        $ruta_mp3 = "/uploads/canciones/{$c['id_cancion']}.mp3";
+    ?>
+    <div class="container-cancion">
+        <div class="add-playlist" data-id="<?= $c['id_cancion'] ?>">
+            <svg class="corazon-blanco" width="20px" height="20px" viewBox="-2.08 -2.08 20.16 20.16" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer;">
+                <path d="M1.24264 8.24264L8 15L14.7574 8.24264C15.553 7.44699 16 6.36786 16 5.24264V5.05234C16 2.8143 14.1857 1 11.9477 1C10.7166 1 9.55233 1.55959 8.78331 2.52086L8 3.5L7.21669 2.52086C6.44767 1.55959 5.28338 1 4.05234 1C1.8143 1 0 2.8143 0 5.05234V5.24264C0 6.36786 0.44699 7.44699 1.24264 8.24264Z" fill="#ffffff"></path>
+            </svg>
+            <svg class="corazon-gradient" width="20px" height="20px" viewBox="-2.08 -2.08 20.16 20.16" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <defs>
+                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#481B9A; stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#FF4EC4; stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path d="M1.24264 8.24264L8 15L14.7574 8.24264C15.553 7.44699 16 6.36786 16 5.24264V5.05234C16 2.8143 14.1857 1 11.9477 1C10.7166 1 9.55233 1.55959 8.78331 2.52086L8 3.5L7.21669 2.52086C6.44767 1.55959 5.28338 1 4.05234 1C1.8143 1 0 2.8143 0 5.05234V5.24264C0 6.36786 0.44699 7.44699 1.24264 8.24264Z" fill="url(#grad)" />
+            </svg>
+        </div>
 
-<?php if (count($canciones) > 0): ?>
-    <h3>Canciones:</h3>
-    <ul style="list-style: none; padding: 0;">
-        <?php foreach ($canciones as $c): ?>
-            <?php $foto_album = "/uploads/foto-album/{$c['id_album']}.jpg"; ?>
-            <li style="display: flex; align-items: center; margin-bottom: 15px;">
-                <img src="<?= $foto_album ?>" alt="Carátula" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px; border-radius: 8px;">
-                <div>
-                    <strong><?= htmlspecialchars($c['nombre_c']) ?></strong> (Álbum: <?= htmlspecialchars($c['nombre_album']) ?>)<br>
-                    <audio controls data-id="<?= $c['id_cancion'] ?>">
-                        <source src="/uploads/stream.php?file=<?= $c['id_cancion'] ?>.mp3" type="audio/mpeg">
-                        Tu navegador no soporta audio.
-                    </audio>
-                </div>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-<?php else: ?>
-    <p>Este artista no tiene canciones aún.</p>
-<?php endif; ?>
+        <div class="img-wrapper">
+            <img src="<?= $foto_album ?>" alt="Carátula del álbum">
+            <div class="hover-overlay"
+                data-src="<?= $ruta_mp3 ?>"
+                data-title="<?= htmlspecialchars($c['nombre_c']) ?>"
+                data-artist="<?= htmlspecialchars($artista['nombre']) ?>"
+                data-cover="<?= $foto_album ?>">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px">
+                    <defs>
+                        <linearGradient id="grad-play" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#481B9A; stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#FF4EC4; stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#grad-play)" fill-rule="evenodd" clip-rule="evenodd"
+                        d="M5.46484 3.92349C4.79896 3.5739 4 4.05683 4 4.80888V19.1911C4 19.9432 4.79896 20.4261 5.46483 20.0765L19.1622 12.8854C19.8758 12.5108 19.8758 11.4892 19.1622 11.1146L5.46484 3.92349Z"/>
+                </svg>
+            </div>
+        </div>
 
-<!-- Activar AJAX para álbumes y eventos de reproducción -->
+        <div class="cancion">
+            <div class="info-cancion">
+                <strong><?= htmlspecialchars($c['nombre_c']) ?></strong>
+                <span><?= htmlspecialchars($artista['nombre']) ?></span>
+            </div>
+
+            <div class="stat-cancion">
+                <span><?= htmlspecialchars($c['reproducciones']) ?></span>
+                <span><?= htmlspecialchars($c['duracion']) ?></span>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
+
 <script>
-document.querySelectorAll('.enlace-album').forEach(link => {
-    link.addEventListener('click', function (e) {
-        e.preventDefault();
-        const id = this.dataset.id;
-
-        fetch('/ajax/album.php?id=' + id)
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById('contenido-principal').innerHTML = html;
-                activarEventosAudio();
+function activarResaltadoCancion() {
+    document.querySelectorAll('.hover-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function () {
+            document.querySelectorAll('.container-cancion').forEach(div => {
+                div.classList.remove('cancion-activa');
             });
+            const cancionDiv = this.closest('.container-cancion');
+            if (cancionDiv) {
+                cancionDiv.classList.add('cancion-activa');
+            }
+        });
     });
-});
+}
 
-// Activar eventos para los audios cargados
 activarEventosAudio();
+activarResaltadoCancion();
 </script>
