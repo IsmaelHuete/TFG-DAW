@@ -6,36 +6,48 @@ if (!file_exists($file)) {
     exit;
 }
 
-$fp = fopen($file, 'rb');
 $size = filesize($file);
-$length = $size;
 $start = 0;
 $end = $size - 1;
+
 header('Content-Type: audio/mpeg');
 header('Accept-Ranges: bytes');
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
 
 if (isset($_SERVER['HTTP_RANGE'])) {
-    preg_match('/bytes=(\d+)-(\d+)?/', $_SERVER['HTTP_RANGE'], $matches);
+    if (preg_match('/bytes=(\d+)-(\d+)?/', $_SERVER['HTTP_RANGE'], $matches)) {
+        $start = intval($matches[1]);
+        if (isset($matches[2]) && is_numeric($matches[2])) {
+            $end = intval($matches[2]);
+        }
+        if ($end > $size - 1) {
+            $end = $size - 1;
+        }
+        $length = $end - $start + 1;
 
-    $start = intval($matches[1]);
-    if (isset($matches[2])) {
-        $end = intval($matches[2]);
+        header('HTTP/1.1 206 Partial Content');
+        header("Content-Range: bytes $start-$end/$size");
+        header("Content-Length: $length");
+
+        $fp = fopen($file, 'rb');
+        fseek($fp, $start);
+        $buffer = 8192;
+
+        while (!feof($fp) && ($pos = ftell($fp)) <= $end) {
+            if ($pos + $buffer > $end) {
+                $buffer = $end - $pos + 1;
+            }
+            echo fread($fp, $buffer);
+            flush();
+        }
+        fclose($fp);
+        exit;
     }
-
-    $length = $end - $start + 1;
-    fseek($fp, $start);
-    header('HTTP/1.1 206 Partial Content');
-    header("Content-Range: bytes $start-$end/$size");
 }
 
-header("Content-Length: $length");
-
-$buffer = 1024 * 8;
-while (!feof($fp) && ($pos = ftell($fp)) <= $end) {
-    if ($pos + $buffer > $end) {
-        $buffer = $end - $pos + 1;
-    }
-    echo fread($fp, $buffer);
-    flush();
-}
-fclose($fp);
+// No range request: enviar todo el archivo
+header("Content-Length: $size");
+readfile($file);
+exit;

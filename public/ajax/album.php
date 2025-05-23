@@ -28,13 +28,15 @@ $stmt = $pdo->prepare("SELECT id_cancion, nombre_c, reproducciones, duracion FRO
 $stmt->execute([$id_album]);
 $canciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
- 
+
 $foto_album = "/uploads/foto-album/{$id_album}.jpg";
 ?>
 
 <h2><?= htmlspecialchars($album['nombre_album']) ?></h2>
 <?php foreach ($canciones as $c):?>
-
+    <?php 
+        $ruta_mp3 = "/uploads/stream.php?file={$c['id_cancion']}.mp3"; 
+    ?>
     <div class="container-cancion" >
         <div class="add-playlist" data-id="<?= $c['id_cancion'] ?>">
             <!-- Corazón blanco (visible al inicio) -->
@@ -57,7 +59,7 @@ $foto_album = "/uploads/foto-album/{$id_album}.jpg";
 
         <div class="img-wrapper">
             <img src="<?= $foto_album ?>" alt="Carátula del álbum">
-            <div class="hover-overlay" data-src="/uploads/canciones/<?= $c['id_cancion'] ?>.mp3"
+            <div class="hover-overlay" data-src="<?= $ruta_mp3 ?>"
                 data-title="<?= htmlspecialchars($c['nombre_c']) ?>"
                 data-artist="<?= htmlspecialchars($album['nombre_artista']) ?>"
                 data-cover="<?= $foto_album ?>">

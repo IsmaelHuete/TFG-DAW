@@ -14,11 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let indiceActual = 0;
 
     function cargarCancion(cancion) {
-        audio.src = cancion.src || `/uploads/canciones/${cancion.id}.mp3`;
+        audio.src = `/uploads/stream.php?file=${cancion.id}.mp3`;
         titulo.textContent = cancion.titulo || "Sin título";
         artista.textContent = cancion.artista || "Desconocido";
         portada.src = cancion.cover || `/uploads/foto-album/${cancion.id_album}.jpg`;
-        reproductor.style.display = "flex"; // ✅ Mostrar reproductor
+        reproductor.style.display = "flex";
     }
 
     function reproducir() {
@@ -90,7 +90,34 @@ document.addEventListener("DOMContentLoaded", () => {
             reproducir();
         }
     });
+// Rotación de la imagen del álbum
+let rotation = 0;
+let spinning = false;
+let animationFrameId = null;
 
+function rotate() {
+    if (!spinning) return;
+    rotation += 0.1; // Velocidad de rotación
+    portada.style.transform = `rotate(${rotation}deg)`;
+    animationFrameId = requestAnimationFrame(rotate);
+}
+
+audio.addEventListener('play', () => {
+    if (!spinning) {
+        spinning = true;
+        animationFrameId = requestAnimationFrame(rotate);
+    }
+});
+
+audio.addEventListener('pause', () => {
+    spinning = false;
+    cancelAnimationFrame(animationFrameId);
+});
+
+audio.addEventListener('ended', () => {
+    spinning = false;
+    cancelAnimationFrame(animationFrameId);
+});
 });
 
 

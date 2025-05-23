@@ -4,7 +4,7 @@ const pauseBtn = document.getElementById('pause-btn');
 const barra = document.getElementById('barra-progreso');
 const tiempoActual = document.getElementById('tiempo-actual');
 const duracionTotal = document.getElementById('duracion-total');
-const albumCover = document.getElementById('album-cover');
+const albumCover = document.getElementById('cover-img');
 
 const retrocederBtn = document.getElementById('retroceder');
 const adelantarBtn = document.getElementById('adelantar');

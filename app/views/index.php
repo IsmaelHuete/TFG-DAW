@@ -43,7 +43,7 @@
         <button id="btn-play">▶️</button>
         <button id="btn-next">⏭️</button>
     </div>
-    <input type="range" id="barra-progreso" value="0" step="1">
+    <input type="range" id="barra-progreso" value="0" step="0.01">
 </div>
     <div class="reproductor-derecha">
         <input type="range" id="volumen" min="0" max="1" step="0.01" value="1">
@@ -84,9 +84,41 @@ document.getElementById('buscador').addEventListener('keyup', function () {
         .then(data => {
             let html = '';
  
+
+                if (data.canciones.length > 0) {
+
+// ARTISTAS
+            if (data.artistas.length > 0) {
+                html += '<h2>Artistas</h2><ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none;">';
+                data.artistas.forEach(a => {
+                    const rutaFoto = a.foto_perfil ? `/uploads/perfiles/${a.foto_perfil}` : '/uploads/perfiles/default.jpg';
+
+                    html += `
+                        <li class="card-artista" style="width: 120px; cursor: pointer;" data-id="${a.id_usuario}">
+                            <img src="${rutaFoto}" alt="${a.nombre}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
+                            <p style="text-align: center;">${a.nombre}</p>
+                        </li>
+                    `;
+                });
+                html += '</ul>';
+            }
+
+            // ÁLBUMES
+            if (data.albums.length > 0) {
+                html += '<h2>Álbumes</h2><ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none;">';
+                data.albums.forEach(a => {
+                    html += `
+                        <li class="card-album" style="width: 120px; cursor: pointer;" data-id="${a.id_album}">
+                            <img src="/uploads/foto-album/${a.id_album}.jpg" alt="${a.nombre}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                            <p style="text-align: center;">${a.nombre}</p>
+                        </li>
+                    `;
+                });
+                html += '</ul>';
+            }
+
             // Canciones
             // CANCIONES como cards visuales
-                if (data.canciones.length > 0) {
                     html += '<h2>Canciones</h2>';
                     data.canciones.forEach(c => {
                         html += `
@@ -122,6 +154,7 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                                         </div>
                                         <div class="stat-cancion">
                                             <span>${c.reproducciones ?? 0}</span>
+                                            <svg fill="#ffffff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 47 47" xml:space="preserve" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M24.104,41.577c-0.025,0-0.053-0.001-0.078-0.001c-1.093-0.035-2.025-0.802-2.271-1.867l-5.46-23.659l-3.199,8.316 c-0.357,0.93-1.252,1.544-2.249,1.544H2.41c-1.331,0-2.41-1.079-2.41-2.41c0-1.331,1.079-2.41,2.41-2.41h6.78l5.433-14.122 c0.38-0.989,1.351-1.612,2.418-1.54c1.057,0.074,1.941,0.831,2.18,1.863l5.186,22.474l4.618-15.394 c0.276-0.923,1.078-1.592,2.035-1.702c0.953-0.107,1.889,0.36,2.365,1.198l4.127,7.222h7.037c1.331,0,2.41,1.079,2.41,2.41 c0,1.331-1.079,2.41-2.41,2.41h-8.436c-0.865,0-1.666-0.463-2.094-1.214l-2.033-3.559l-5.616,18.722 C26.104,40.88,25.164,41.577,24.104,41.577z"></path> </g> </g> </g></svg>
                                             <span>${c.duracion ?? '00:00'}</span>
                                         </div>
                                     </div>
@@ -130,35 +163,7 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                     });
                     html += '</ul>';
                 }
-            // ARTISTAS
-            if (data.artistas.length > 0) {
-                html += '<h3>Artistas</h3><ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none;">';
-                data.artistas.forEach(a => {
-                    const rutaFoto = a.foto_perfil ? `/uploads/perfiles/${a.foto_perfil}` : '/uploads/perfiles/default.jpg';
-
-                    html += `
-                        <li class="card-artista" style="width: 120px; cursor: pointer;" data-id="${a.id_usuario}">
-                            <img src="${rutaFoto}" alt="${a.nombre}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
-                            <p style="text-align: center;">${a.nombre}</p>
-                        </li>
-                    `;
-                });
-                html += '</ul>';
-            }
-
-            // ÁLBUMES
-            if (data.albums.length > 0) {
-                html += '<h3>Álbumes</h3><ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none;">';
-                data.albums.forEach(a => {
-                    html += `
-                        <li class="card-album" style="width: 120px; cursor: pointer;" data-id="${a.id_album}">
-                            <img src="/uploads/foto-album/${a.id_album}.jpg" alt="${a.nombre}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
-                            <p style="text-align: center;">${a.nombre}</p>
-                        </li>
-                    `;
-                });
-                html += '</ul>';
-            }
+            
 
             // Playliost
            /*  if (data.playlist.length > 0) {
@@ -183,20 +188,8 @@ document.getElementById('buscador').addEventListener('keyup', function () {
 
 
             document.getElementById('resultados').innerHTML = html;
-            document.querySelectorAll('.hover-overlay').forEach(overlay => {
-                overlay.addEventListener('click', function (e) {
-                    // Quitar la clase de todas
-                    document.querySelectorAll('.container-cancion').forEach(div => {
-                        div.classList.remove('cancion-activa');
-                    });
-                    // Añadir la clase solo a la seleccionada
-                    const cancionDiv = this.closest('.container-cancion');
-                    if (cancionDiv) {
-                        cancionDiv.classList.add('cancion-activa');
-                    }
-                    // Permitir que siga el resto de la lógica de reproducción
-                });
-            });
+            
+
             // EVENTO ÁLBUM
             document.querySelectorAll('.card-album').forEach(card => {
                 card.addEventListener('click', function () {
@@ -207,6 +200,7 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                         .then(html => {
                             document.getElementById('contenido-principal').innerHTML = html;
                             activarEventosAudio();
+                            activarResaltadoCancion();
                             marcarCorazones();
                         });
                 });
@@ -222,6 +216,7 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                         .then(html => {
                             document.getElementById('contenido-principal').innerHTML = html;
                             activarEventosAudio();
+                            activarResaltadoCancion();
                             marcarCorazones();
                         });
                 });
@@ -271,19 +266,40 @@ function marcarCorazones() {
     fetch('/ajax/canciones_en_playlist.php')
         .then(res => res.json())
         .then(ids => {
-            document.querySelectorAll('.add-playlist').forEach(div => {
-                const id = div.dataset.id;
-                if (ids.includes(parseInt(id))) {
-                    div.querySelector('.corazon-blanco').style.display = 'none';
-                    div.querySelector('.corazon-gradient').style.display = 'inline';
-                }
-            });
+            // Espera a que el DOM esté listo
+            setTimeout(() => {
+                document.querySelectorAll('.add-playlist').forEach(div => {
+                    const id = div.dataset.id;
+                    if (ids.includes(parseInt(id))) {
+                        div.querySelector('.corazon-blanco')?.classList.add('oculto');
+                        div.querySelector('.corazon-gradient')?.classList.remove('oculto');
+                    } else {
+                        div.querySelector('.corazon-blanco')?.classList.remove('oculto');
+                        div.querySelector('.corazon-gradient')?.classList.add('oculto');
+                    }
+                });
+            }, 50); // espera 50ms tras pintar el HTML
         });
 }
+document.addEventListener('click', function (e) {
+    const overlay = e.target.closest('.hover-overlay');
+    if (!overlay) return;
+
+    // Quitar anteriores
+    document.querySelectorAll('.container-cancion').forEach(div => {
+        div.classList.remove('cancion-activa');
+    });
+
+    // Añadir al clicado
+    const cancionDiv = overlay.closest('.container-cancion');
+    if (cancionDiv) {
+        cancionDiv.classList.add('cancion-activa');
+    }
+});
 </script>
 
 
-
+<!-- 
 <?php
 // --- Lógica de playlists al final de index.php ---
 require_once '../config/Conexion_BBDD.php';
@@ -314,7 +330,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre_playlist'])) {
 $stmt = $pdo->prepare("SELECT * FROM playlists WHERE id_usuario = ?");
 $stmt->execute([$id_usuario]);
 $playlists = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
+?> -->
 
 <!-- <div class="mis-playlists" style="margin-top: 30px;">
     <h2>Mis playlists</h2>
