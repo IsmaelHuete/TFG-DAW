@@ -33,8 +33,8 @@
                             </svg>
                         </div>
                         <div class="description">
-                            <h4>Anuel</h4>
-                            <p>4.234.123</p>
+                            <h4>Quevedo</h4>
+                            <p>25.563.510</p>
                         </div>
                     </div>
                 </label>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="description">
                             <h4>Anuel</h4>
-                            <p>2.324.645</p>
+                            <p>34.282.946</p>
                         </div>
                     </div>
                 </label>
@@ -61,8 +61,8 @@
                             </svg>
                         </div>
                         <div class="description">
-                            <h4>Anuel</h4>
-                            <p>6.234.645</p>
+                            <h4>Arcangel</h4>
+                            <p>24.776.694</p>
                         </div>
                     </div>
                 </label>
@@ -74,8 +74,8 @@
                             </svg>
                         </div>
                         <div class="description">
-                            <h4>Anuel</h4>
-                            <p>1.234.867</p>
+                            <h4>Bad Bunny</h4>
+                            <p>83.710.525</p>
                         </div>
                     </div>
                 </label>

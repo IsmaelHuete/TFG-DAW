@@ -83,3 +83,39 @@ body {
     padding: 10px;
     font-weight: 500;
 }
+
+@media (max-width: 768px) {
+  .terms-container {
+    padding: 20px 15px;
+    margin-top: 40px;
+  }
+
+  .terms-container h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .terms-container h2 {
+    font-size: 1.4rem;
+    padding: 4px 10px;
+  }
+
+  .terms-container h3 {
+    font-size: 1.1rem;
+  }
+
+  .terms-container p,
+  .terms-container li {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .premium-banner {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .terms-container .highlighted {
+    padding: 12px;
+  }
+}
