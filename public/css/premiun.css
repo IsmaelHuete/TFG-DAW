@@ -95,3 +95,24 @@ form a{
     cursor: pointer;
     text-decoration: none;
 }
+
+.plan {
+  flex-direction: column;
+  gap: 20px;
+}
+.plan div {
+  width: 100%;
+  max-width: 350px;
+}
+
+@media (min-width: 768px) {
+  .plan {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  .plan div {
+    width: 350px;
+  }
+}
