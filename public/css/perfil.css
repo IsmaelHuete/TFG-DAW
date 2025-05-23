@@ -273,11 +273,32 @@
 }
 
 @media (max-width: 768px) {
-    .cabecera-perfil {
+    .contenedor-perfil {
+        margin-top: 80px;
+    }
+    .encabezado-perfil {
         flex-direction: column;
+        align-items: center;
         text-align: center;
+        padding: 20px;
+        gap: 20px;
     }
     
+    .info-perfil {
+    width: 100%;
+    }
+
+    .foto-perfil {
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    }
+
+    .foto-perfil img {
+    width: 80px;
+    height: 80px;
+    }
+
     .avatar-perfil {
         margin-right: 0;
         margin-bottom: 20px;
@@ -300,3 +321,4 @@
         flex-direction: column;
     }
 }
+

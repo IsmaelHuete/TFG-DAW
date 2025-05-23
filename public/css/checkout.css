@@ -205,3 +205,56 @@ hr{
     width:100px !important
     
 }
+
+.checkout-content {
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .checkout-content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .checkout-plan-box,
+  .checkout-form-box {
+    width: 50%;
+  }
+}
+
+@media (min-width: 768px) {
+  .checkout-content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .checkout-plan-box,
+  .checkout-form-box {
+    max-width: 50%;
+  }
+
+  .checkout-plan-box {
+    padding: 40px;
+  }
+
+  .checkout-form-box form {
+    padding: 0 10px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .checkout-content {
+    gap: 60px;
+  }
+
+  .checkout-form-box input,
+  .input-wrapper input {
+    font-size: 1.1rem;
+  }
+
+  .btn-confirmar,
+  .btn-paypal {
+    font-size: 1.1rem;
+    padding: 16px;
+  }
+}
