@@ -85,7 +85,6 @@ document.getElementById('buscador').addEventListener('keyup', function () {
             let html = '';
  
 
-                if (data.canciones.length > 0) {
 
 // ARTISTAS
             if (data.artistas.length > 0) {
@@ -119,6 +118,8 @@ document.getElementById('buscador').addEventListener('keyup', function () {
 
             // Canciones
             // CANCIONES como cards visuales
+            if (data.canciones.length > 0) {
+
                     html += '<h2>Canciones</h2>';
                     data.canciones.forEach(c => {
                         html += `
