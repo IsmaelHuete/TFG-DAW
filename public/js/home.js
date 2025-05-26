@@ -20,3 +20,7 @@ headings.forEach(head => observer.observe(head));
 observer.observe(options);  
 
 observer.observe(section1); 
+document.getElementById('foto').addEventListener('change', function(){
+    const fileName = this.files[0]?.name || 'Ningún archivo seleccionado';
+    document.getElementById('archivo-seleccionado').textContent = fileName;
+});

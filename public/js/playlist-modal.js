@@ -19,8 +19,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 lista.innerHTML = '';
                 playlists.forEach(p => {
                     const li = document.createElement('li');
-                    li.textContent = p.nombre;
-                    li.style.cursor = 'pointer';
+                    li.classList.add('playlist-item-modal'); // Para que puedas aplicar estilos
+
+                    const rutaFoto = (p.foto && p.foto.trim() !== "")
+                        ? `/uploads/foto-playlist/${p.foto}`
+                        : '/uploads/foto-playlist/default.jpg';
+
+                    li.innerHTML = `
+                        <img src="${rutaFoto}" alt="${p.nombre}" class="img-playlist-modal">
+                        <span>${p.nombre}</span>
+                    `;
+
+        li.style.cursor = 'pointer';
                     li.onclick = () => {
                         fetch('/ajax/insertar_en_playlist.php', {
                             method: 'POST',
@@ -29,13 +39,38 @@ document.addEventListener("DOMContentLoaded", () => {
                         })
                         .then(res => res.text())
                         .then(response => {
-                            if (response === 'ok' || response === 'exists') {
-                                parent.querySelector('.corazon-blanco').style.display = 'none';
-                                parent.querySelector('.corazon-gradient').style.display = 'inline';
-                                modalPlaylists.style.display = 'none';
-                            } else {
-                                alert("❌ Error al añadir a la playlist.");
-                            }
+                           if (response === 'ok') {
+                            parent.querySelector('.corazon-blanco').style.display = 'none';
+                            parent.querySelector('.corazon-gradient').style.display = 'inline';
+
+                            // Mostrar mensaje de éxito dentro del modal
+                            const msg = document.createElement('p');
+                            msg.textContent = "🎉 Añadida correctamente";
+                            msg.style.color = 'lightgreen';
+                            msg.style.textAlign = 'center';
+                            msg.style.marginTop = '10px';
+
+                            lista.appendChild(msg);
+
+                            setTimeout(() => {
+                                msg.remove(); // Ocultar mensaje tras 2.5s
+                            }, 2500);
+
+                        } else if (response === 'exists') {
+                            const msg = document.createElement('p');
+                            msg.textContent = "⚠️ Ya estaba en la playlist";
+                            msg.style.color = 'gold';
+                            msg.style.textAlign = 'center';
+                            msg.style.marginTop = '10px';
+
+                            lista.appendChild(msg);
+
+                            setTimeout(() => {
+                                msg.remove();
+                            }, 2500);
+                        } else {
+                            alert("❌ Error al añadir a la playlist.");
+                        }
                         });
                     };
                     lista.appendChild(li);
