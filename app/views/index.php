@@ -72,48 +72,12 @@
                 </form>
             </div>
         </div>
-
-    </div>
-    <div class="reproductor-centro">
-    <div class="controles">
-        <button id="btn-prev">⏮️</button>
-        <button id="btn-play">▶️</button>
-        <button id="btn-next">⏭️</button>
-    </div>
-    <input type="range" id="barra-progreso" value="0" step="0.01">
-</div>
-    <div class="reproductor-derecha">
-        <input type="range" id="volumen" min="0" max="1" step="0.01" value="1">
-    </div>
-    <audio id="audio-player" src=""></audio>
-</div>
+    
+    
+    
 
 
-<!-- Modal para seleccionar playlist -->
-<div id="modal-playlists" class="modal" style="display:none;">
-    <div class="modal-content">
-        <span class="cerrar-modal" style="float:right;cursor:pointer;">&times;</span>
-        <h3>Elige una playlist</h3>
-        <ul id="lista-playlists"></ul>
-    </div>
-</div>
 
-
-<div id="modal-nueva-playlist" class="modal" style="display: none;">
-  <div class="modal-content">
-    <span class="cerrar-modal" id="cerrar-nueva-playlist">&times;</span>
-    <h3>Crear nueva playlist</h3>
-
-
-<form action="/ajax/crear_playlist.php" method="POST" enctype="multipart/form-data">
-        <input type="text" name="nombre_playlist" placeholder="Nombre de la playlist" required>
-        <input type="file" name="foto" accept="image/*">
-        <button type="submit" name="subir_playlist">Crear Playlist</button>
-    </form>
-
-
-  </div>
-</div>
 
 <?php
 if (session_status() === PHP_SESSION_NONE) {
@@ -136,6 +100,7 @@ if (isset($_SESSION['email'])) {
     window.usuarioGratis = <?= $isGratis ? 'true' : 'false' ?>;
 </script>
 
+<?php include ("layouts/footer.php"); ?>
 <script src="js/header.js"></script>
 <script src="js/home.js"></script>
 <script src="js/playlist-modal.js"></script>
