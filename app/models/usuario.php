@@ -70,5 +70,12 @@
 
         return 'normal';
     }
+
+    public function getPlanByEmail($email) {
+        $stmt = $this->db->prepare("SELECT plan FROM usuario WHERE email = ?");
+        $stmt->execute([$email]);
+        return $stmt->fetchColumn();
+    }
+
     }
 ?>

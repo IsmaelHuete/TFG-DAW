@@ -31,7 +31,11 @@
 
     // Obtener el email del usuario de la sesión
         $email = $_SESSION['email'];
-        $tipo = $_SESSION['tipo'] ?? 'normal';
+
+    //Obtener el tipo y el plan del usuario
+    $tipo = $_SESSION['tipo'] ?? 'normal';
+    $plan = $usuarioModel->getPlanByEmail($email);
+
 
     // Obtener el nombre del usuario
         $nombre_usuario = $usuarioModel->getNombreByEmail($email);
@@ -115,14 +119,10 @@
                     <div class="item-info">
                         <span class="etiqueta">Plan actual:</span>
                         <span class="dato insignia-premium">
-                            <?php if ($_SESSION['tipo'] === "premium"): ?>
-                                Premium
-                            <?php else: ?>
-                                Gratuito
-                            <?php endif; ?>
+                            <?= ucfirst($plan) ?>
                         </span>
-
                     </div>
+
                 </div>
                 <div class="foto-perfil">
                     <form action="" method="POST" enctype="multipart/form-data">

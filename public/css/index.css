@@ -590,6 +590,9 @@ svg.corazon-blanco,
 svg.corazon-gradient {
     overflow: visible !important;
 }
+.oculto {
+  display: none !important;
+}
 
 .reproductor-derecha {
     display: flex;

@@ -72,14 +72,76 @@
                 </form>
             </div>
         </div>
-        <?php 
-            include ("layouts/footer.php");
-        ?>
-        <script src="js/header.js"></script>
-        <script src="js/home.js"></script>
-        <script src="js/playlist-modal.js"></script>
-        <script src="js/reproductor.js"></script>
-    </body>
+
+    </div>
+    <div class="reproductor-centro">
+    <div class="controles">
+        <button id="btn-prev">⏮️</button>
+        <button id="btn-play">▶️</button>
+        <button id="btn-next">⏭️</button>
+    </div>
+    <input type="range" id="barra-progreso" value="0" step="0.01">
+</div>
+    <div class="reproductor-derecha">
+        <input type="range" id="volumen" min="0" max="1" step="0.01" value="1">
+    </div>
+    <audio id="audio-player" src=""></audio>
+</div>
+
+
+<!-- Modal para seleccionar playlist -->
+<div id="modal-playlists" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="cerrar-modal" style="float:right;cursor:pointer;">&times;</span>
+        <h3>Elige una playlist</h3>
+        <ul id="lista-playlists"></ul>
+    </div>
+</div>
+
+
+<div id="modal-nueva-playlist" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="cerrar-modal" id="cerrar-nueva-playlist">&times;</span>
+    <h3>Crear nueva playlist</h3>
+
+
+<form action="/ajax/crear_playlist.php" method="POST" enctype="multipart/form-data">
+        <input type="text" name="nombre_playlist" placeholder="Nombre de la playlist" required>
+        <input type="file" name="foto" accept="image/*">
+        <button type="submit" name="subir_playlist">Crear Playlist</button>
+    </form>
+
+
+  </div>
+</div>
+
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$isGratis = false;
+
+if (isset($_SESSION['email'])) {
+    require_once __DIR__ . '/../../config/Conexion_BBDD.php';
+
+
+    $stmt = $pdo->prepare("SELECT plan FROM usuario WHERE email = ?");
+    $stmt->execute([$_SESSION['email']]);
+    $tipo = $stmt->fetchColumn();
+
+    $isGratis = ($tipo === 'gratuito');
+}
+?>
+<script>
+    window.usuarioGratis = <?= $isGratis ? 'true' : 'false' ?>;
+</script>
+
+<script src="js/header.js"></script>
+<script src="js/home.js"></script>
+<script src="js/playlist-modal.js"></script>
+<script src="js/reproductor.js"></script>
+</body>
+
 </html>
 
 
@@ -141,7 +203,7 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                                         <svg class="corazon-blanco" width="20px" height="20px" viewBox="-2.08 -2.08 20.16 20.16" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer;">
                                             <path d="M1.24264 8.24264L8 15L14.7574 8.24264C15.553 7.44699 16 6.36786 16 5.24264V5.05234C16 2.8143 14.1857 1 11.9477 1C10.7166 1 9.55233 1.55959 8.78331 2.52086L8 3.5L7.21669 2.52086C6.44767 1.55959 5.28338 1 4.05234 1C1.8143 1 0 2.8143 0 5.05234V5.24264C0 6.36786 0.44699 7.44699 1.24264 8.24264Z" fill="#ffffff"></path>
                                         </svg>
-                                        <svg class="corazon-gradient" width="20px" height="20px" viewBox="-2.08 -2.08 20.16 20.16" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                                        <svg class="corazon-gradient oculto" width="20px" height="20px" viewBox="-2.08 -2.08 20.16 20.16" xmlns="http://www.w3.org/2000/svg" >
                                             <defs>
                                                 <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
                                                     <stop offset="0%" style="stop-color:#481B9A; stop-opacity:1" />
@@ -312,10 +374,13 @@ function marcarCorazones() {
                     if (ids.includes(parseInt(id))) {
                         div.querySelector('.corazon-blanco')?.classList.add('oculto');
                         div.querySelector('.corazon-gradient')?.classList.remove('oculto');
+                        div.querySelector('.corazon-gradient').style.display = 'block';
                     } else {
                         div.querySelector('.corazon-blanco')?.classList.remove('oculto');
                         div.querySelector('.corazon-gradient')?.classList.add('oculto');
+                        div.querySelector('.corazon-gradient').style.display = 'none';
                     }
+
                 });
             }, 50); // espera 50ms tras pintar el HTML
         });

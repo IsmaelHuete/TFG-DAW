@@ -137,12 +137,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     for (let i = 0; i < basePlaylist.length; i++) {
                         playlist.push(basePlaylist[i]);
 
-                        if ((i + 1) % 3 === 0 && i !== basePlaylist.length - 1) {
+                        
+                        if (window.usuarioGratis && (i + 1) % 3 === 0 && i !== basePlaylist.length - 1) {
                             playlist.push({
                                 id: `anuncio-${anuncioCount++}`,
                                 titulo: "Anuncio",
                                 artista: "",
-                                cover: "../img/image-brand.png",
+                                cover: "/img/image-brand.png",
                                 id_album: null,
                                 src: "/uploads/canciones/anuncio.mp3",
                                 esAnuncio: true
@@ -154,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     cargarCancion(playlist[indiceActual]);
                     reproducir();
                 }
+
 
                 
             } else {

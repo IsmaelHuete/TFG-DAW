@@ -40,8 +40,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         .then(res => res.text())
                         .then(response => {
                            if (response === 'ok') {
-                            parent.querySelector('.corazon-blanco').style.display = 'none';
-                            parent.querySelector('.corazon-gradient').style.display = 'inline';
+                            parent.querySelector('.corazon-blanco')?.classList.add('oculto');
+                            const gradiente = parent.querySelector('.corazon-gradient');
+                            gradiente?.classList.remove('oculto');
+                            gradiente?.style.removeProperty('display');
+
+
+
 
                             // Mostrar mensaje de éxito dentro del modal
                             const msg = document.createElement('p');
