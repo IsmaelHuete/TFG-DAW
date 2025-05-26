@@ -1,43 +1,96 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-  session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once '../config/Conexion_BBDD.php';
+require_once '../app/models/usuario.php';
+
+$usuarioModel = new Usuario($pdo);
+$ruta_foto = '/img/image-brand.png';
+
+if (isset($_SESSION['email'])) {
+    $foto = $usuarioModel->obtenerFotoPerfil($_SESSION['email']);
+    if ($foto) {
+        $ruta_foto = '/uploads/perfiles/' . $foto;
+    }
 }
 ?>
 <nav>
   <div class="nav">
     <div class="nav-section">
-      <img src="/img/image-brand.png">  
-        <div class="menu">
-            <ul>
-                <li><a href="/myMusic">My Music</a></li>
-                <li><a href="/index">Reproductor</a></li>
-                <li><a href="/premium">Premiun</a></li>
-                <li>
-                  <?php
-                      if(isset($_SESSION['email'])){
-                        echo '<a href="perfil"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" class="size-6" width="40" height="40">
-                                                  <defs>
-                                                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                                      <stop offset="20%" stop-color="#481B9A" />
-                                                      <stop offset="100%" stop-color="#FF4EC4" />
-                                                    </linearGradient>
-                                                  </defs>
-                                                  <path stroke="url(#grad)" fill="none" stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                </svg></a>
-                                             
-                            ';
-                      }else{
-                        echo "<button><a href='/login'>Sign in</a></button>";
-                        echo "<button><a href='/register'>Register</a></button>";
-                      }
-                  ?>
-                </li>
-            </ul>
-        </div>
+      <a href="/"><img src="/img/image-brand.png" alt="Logo"></a>
+
+      <!-- Botón hamburguesa -->
+      <button id="menu-toggle-btn" class="menu-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Menú desktop -->
+      <div class="menu menu-desktop">
+        <ul>
+          <li><a href="/myMusic">My Music</a></li>
+          <li><a href="/index">Reproductor</a></li>
+          <li><a href="/premium">Premium</a></li>
+          <li>
+            <?php if (isset($_SESSION['email'])): ?>
+              <a href="/perfil">
+                <img src="<?= htmlspecialchars($ruta_foto) ?>" alt="Perfil" class="foto-icono-perfil">
+              </a>
+            <?php else: ?>
+              <button><a href="/login">Sign in</a></button>
+              <button><a href="/register">Register</a></button>
+            <?php endif; ?>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </nav>
-<!-- <div class="bottom-fade">
-  <img src="/img/degradado1.png">
+
+<!-- Menú móvil lateral -->
+<div id="menu-mobile" class="menu-mobile">
+  <a href="/"><img src="/img/image-brand.png" alt="Logo"></a>
+  <ul>
+    <li><a href="/myMusic">My Music</a></li>
+    <li><a href="/index">Reproductor</a></li>
+    <li><a href="/premium">Premium</a></li>
+    <li>
+        <?php if (isset($_SESSION['email'])): ?>
+          <a href="/perfil">
+            <img src="<?= htmlspecialchars($ruta_foto) ?>" alt="Perfil" class="foto-icono-perfil">
+          </a>
+        <?php else: ?>
+          <button><a href="/login">Sign in</a></button>
+          <button><a href="/register">Register</a></button>
+        <?php endif; ?>
+      </li>
+  </ul>
 </div>
- -->
+
+<!-- Overlay para cerrar -->
+<div id="overlay"></div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.getElementById("menu-toggle-btn");
+  const overlay = document.getElementById("overlay");
+  const links = document.querySelectorAll(".menu-mobile a");
+
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("menu-open");
+  });
+
+  overlay.addEventListener("click", () => {
+    document.body.classList.remove("menu-open");
+  });
+
+  // Cierra el menú al hacer clic en un enlace
+  links.forEach(link => {
+    link.addEventListener("click", () => {
+      document.body.classList.remove("menu-open");
+    });
+  });
+});
+</script>

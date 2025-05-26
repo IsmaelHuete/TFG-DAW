@@ -16,7 +16,10 @@
     ?>
     <main>
         <div class="container">
-            <input type="text" id="buscador" placeholder="Buscar canción, artista o álbum..." autocomplete="off">
+            <div class="buscador-con-boton">
+                <input type="text" id="buscador" placeholder="Buscar canción, artista o álbum..." autocomplete="off">
+                <button id="btn-nueva-playlist" class="boton-mas" title="Crear nueva playlist">+</button>
+            </div>            
             <div class="reproductor">
                 <div id="resultados"></div>
                 <div id="contenido-principal"></div>
@@ -61,6 +64,22 @@
     </div>
 </div>
 
+
+<div id="modal-nueva-playlist" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="cerrar-modal" id="cerrar-nueva-playlist">&times;</span>
+    <h3>Crear nueva playlist</h3>
+
+
+<form action="/ajax/crear_playlist.php" method="POST" enctype="multipart/form-data">
+        <input type="text" name="nombre_playlist" placeholder="Nombre de la playlist" required>
+        <input type="file" name="foto" accept="image/*">
+        <button type="submit" name="subir_playlist">Crear Playlist</button>
+    </form>
+
+
+  </div>
+</div>
 
 <script src="js/header.js"></script>
 <script src="js/home.js"></script>
@@ -145,7 +164,16 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                                             data-title="${c.nombre_c}"
                                             data-artist="${c.artista || 'Desconocido'}"
                                             data-cover="${c.foto_album}">
-                                            <svg ...>▶</svg>
+                                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px">
+                                                <defs>
+                                                    <linearGradient id="grad-play" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                    <stop offset="0%" style="stop-color:#481B9A; stop-opacity:1" />
+                                                    <stop offset="100%" style="stop-color:#FF4EC4; stop-opacity:1" />
+                                                    </linearGradient>
+                                                </defs>
+                                                <path fill="url(#grad-play)" fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M5.46484 3.92349C4.79896 3.5739 4 4.05683 4 4.80888V19.1911C4 19.9432 4.79896 20.4261 5.46483 20.0765L19.1622 12.8854C19.8758 12.5108 19.8758 11.4892 19.1622 11.1146L5.46484 3.92349ZM2 4.80888C2 2.55271 4.3969 1.10395 6.39451 2.15269L20.0919 9.34382C22.2326 10.4677 22.2325 13.5324 20.0919 14.6562L6.3945 21.8473C4.39689 22.8961 2 21.4473 2 19.1911V4.80888Z"/>
+                                            </svg>
                                         </div>
                                     </div>
                                     <div class="cancion" style="flex-grow: 1;">
@@ -282,21 +310,7 @@ function marcarCorazones() {
             }, 50); // espera 50ms tras pintar el HTML
         });
 }
-document.addEventListener('click', function (e) {
-    const overlay = e.target.closest('.hover-overlay');
-    if (!overlay) return;
 
-    // Quitar anteriores
-    document.querySelectorAll('.container-cancion').forEach(div => {
-        div.classList.remove('cancion-activa');
-    });
-
-    // Añadir al clicado
-    const cancionDiv = overlay.closest('.container-cancion');
-    if (cancionDiv) {
-        cancionDiv.classList.add('cancion-activa');
-    }
-});
 </script>
 
 

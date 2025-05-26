@@ -132,7 +132,8 @@
                     </form>
                     <?php
                         $foto = $usuarioModel->obtenerFotoPerfil($email);
-                        $ruta_foto = $foto ? $foto : '/img/image-brand.png';
+                        $ruta_foto = $foto ? '/uploads/perfiles/' . $foto : '/img/image-brand.png';
+
                         /* echo $mensaje ?? ''; // Mostrar mensaje de subida */
                     ?>
                     <img src="<?= htmlspecialchars($ruta_foto) ?>" alt="Foto de perfil del usuario" >

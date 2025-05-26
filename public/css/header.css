@@ -23,6 +23,18 @@ nav{
     justify-content: space-between;
     align-items: center;
 }
+.foto-icono-perfil {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.foto-icono-perfil:hover {
+    transform: scale(1.05);
+}
+
 
 nav.scroll .nav{
     background-color: rgba(0, 0, 0, 0.8); 
@@ -111,7 +123,7 @@ nav.scroll .nav{
     width: 100%;
     background-size: contain;
 } */
-.nav-section img{
+.nav-section >a >img{
     width: 70px;
     height: 50px; 
     object-fit: contain;

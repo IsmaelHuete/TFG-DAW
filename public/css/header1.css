@@ -15,6 +15,18 @@ nav{
     position: fixed;
     top: 0;
 }
+.foto-icono-perfil {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.foto-icono-perfil:hover {
+    transform: scale(1.05);
+}
+
 .nav-section{
     width: 100%;
     max-width: 1370px;
@@ -111,7 +123,7 @@ nav.scroll .nav{
     width: 100%;
     background-size: contain;
 } */
-.nav-section img{
+.nav-section >a>img{
     width: 70px;
     height: 50px; 
     object-fit: contain;
@@ -170,3 +182,95 @@ ul li a{
     text-decoration: none;
     color: white;
 } 
+
+/* Botón hamburguesa */
+.menu-icon {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+.menu-icon span {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+  transition: 0.3s ease;
+}
+
+/* Foto de perfil */
+.foto-icono-perfil {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.foto-icono-perfil:hover {
+  transform: scale(1.05);
+}
+
+/* Menú lateral móvil */
+.menu-mobile {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 250px;
+  height: 100vh;
+  background-color: #111;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.3s ease-in-out;
+  z-index: 1002;
+  gap: 20px;
+}
+.menu-mobile> a> img {
+    height: 60px;
+    width: 60px;
+}
+.menu-mobile ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.menu-mobile li {
+  margin-bottom: 20px;
+}
+.menu-mobile a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+/* Overlay */
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+/* Mostrar cuando abierto */
+body.menu-open .menu-mobile {
+  left: 0;
+}
+body.menu-open #overlay {
+  display: block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .menu-icon {
+    display: flex;
+  }
+  .menu-desktop {
+    display: none;
+  }
+}

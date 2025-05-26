@@ -111,4 +111,26 @@ function activarResaltadoCancion() {
 
 activarEventosAudio();
 activarResaltadoCancion();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btnAbrir = document.getElementById('btn-nueva-playlist');
+  const modal = document.getElementById('modal-nueva-playlist');
+  const cerrar = document.getElementById('cerrar-nueva-playlist');
+
+  btnAbrir.addEventListener('click', () => {
+    modal.style.display = 'flex';
+  });
+
+  cerrar.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+    }
+  });
+});
+
+
 </script>

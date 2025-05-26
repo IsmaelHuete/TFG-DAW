@@ -28,6 +28,7 @@ main{
   padding: 30px;
   border-radius: 20px;
   gap: 40px;
+  align-items: center;
 }
 
 .plan{
@@ -38,6 +39,7 @@ main{
     text-align: center;
     gap: 30px;
     position: relative;
+    align-self: center;
 }
 .plan div{
     display: flex;
@@ -197,13 +199,16 @@ main{
 .pago-option p{
     margin: 20px 0px  20px 0px;
 }
-hr{
+.checkout-hr{
+    height: 500px;
     border: none;
     box-shadow: 0 0 0 0.5px gray;
 }
+
 .pago-option hr{
-    width:100px !important
-    
+    width:100px !important;
+    border: none;
+    box-shadow: 0 0 0 0.5px gray;
 }
 
 .checkout-content {
@@ -242,7 +247,7 @@ hr{
   }
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 1040px) {
   .checkout-content {
     gap: 60px;
   }
@@ -251,7 +256,9 @@ hr{
   .input-wrapper input {
     font-size: 1.1rem;
   }
-
+  .checkout-hr{
+    display: none;
+  }
   .btn-confirmar,
   .btn-paypal {
     font-size: 1.1rem;

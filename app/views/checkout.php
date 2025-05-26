@@ -52,7 +52,7 @@ $beneficios = $detalles[$plan]['descripcion'];
                         </ul>
                     </div>
                 </div>
-                <hr>
+                <hr class="checkout-hr">
             <!-- Columna derecha: Formulario de pago -->
                 <div class="checkout-form-box">
                     <form action="/pagar.php" method="POST">

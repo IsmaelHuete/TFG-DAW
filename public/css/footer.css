@@ -16,7 +16,7 @@ footer{
     align-items: flex-start;
     background-color: rgb(5, 5, 5);
     color: white;
-    padding: 2% 0;
+    padding: 0px;
     flex-wrap: wrap;
     gap: 20px;
 }
@@ -110,11 +110,10 @@ footer{
     width: 30px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1040px) {
   .footer-section {
     flex-direction: column;
     align-items: center;
-    padding: 5% 2%;
     text-align: center;
   }
 
@@ -128,23 +127,46 @@ footer{
     margin-bottom: 20px;
   }
 
-  .bottom-footer {
+   .bottom-footer {
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 15px;
     padding: 20px 0;
+    width: 100%;
+    max-width: 100%;
+    border-top: 1px solid rgb(65, 65, 65);
   }
 
   .bottom-footer ul {
-    justify-content: center;
+    flex: unset;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
+    padding: 0;
+    margin: 0;
+  }
+
+  .bottom-footer ul li {
+    margin: 0 5px;
+  }
+
+  .bottom-footer ul li a,
+  .bottom-footer ul li p {
+    font-size: 13px;
+    color: #aaa;
   }
 
   .bottom-footer .contactos {
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .bottom-footer .contactos img {
+    height: 28px;
+    width: 28px;
   }
 
   .footer-section .brand {
