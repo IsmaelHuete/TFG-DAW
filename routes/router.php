@@ -38,6 +38,8 @@
                 return 'public/ajax/test-platlist.php';
             case '/test2':
                 return 'public/ajax/canciones_en_playlist.php';
+            case '/estadisticas_artista':
+                return 'app/views/estadisticas_artista.php';
             default:
                 header("Location: /404");
                 exit();

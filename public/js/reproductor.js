@@ -14,12 +14,41 @@ document.addEventListener("DOMContentLoaded", () => {
     let indiceActual = 0;
 
     function cargarCancion(cancion) {
-        audio.src = `/uploads/stream.php?file=${cancion.id}.mp3`;
+
+        audio.src = cancion.src
+            ? cancion.src
+            : `/uploads/stream.php?file=${cancion.id}.mp3`;
+
         titulo.textContent = cancion.titulo || "Sin título";
         artista.textContent = cancion.artista || "Desconocido";
-        portada.src = cancion.cover || `/uploads/foto-album/${cancion.id_album}.jpg`;
+        if (cancion.cover && cancion.cover.trim() !== '') {
+            portada.src = cancion.cover;
+        } else if (cancion.id_album) {
+            portada.src = `/uploads/foto-album/${cancion.id_album}.jpg`;
+        } else {
+            portada.src = '/img/default-cover.jpg'; // o cualquier imagen por defecto
+        }
+
+
         reproductor.style.display = "flex";
+
+        if (cancion.esAnuncio) {
+            nextBtn.disabled = true;
+            nextBtn.style.opacity = 0.5;
+            nextBtn.style.cursor = 'not-allowed';
+        } else {
+            nextBtn.disabled = false;
+            nextBtn.style.opacity = 1;
+            nextBtn.style.cursor = 'pointer';
+        }
+
+        prevBtn.disabled = cancion.esAnuncio;
+        prevBtn.style.opacity = cancion.esAnuncio ? 0.5 : 1;
+        prevBtn.style.cursor = cancion.esAnuncio ? 'not-allowed' : 'pointer';
     }
+
+    
+
 
     function reproducir() {
         audio.play();
@@ -86,9 +115,54 @@ document.addEventListener("DOMContentLoaded", () => {
         const img = overlay.dataset.cover;
 
         if (src && title && artist && img) {
-            cargarCancion({ src, titulo: title, artista: artist, cover: img });
-            reproducir();
+            const idSeleccionada = overlay.dataset.id;
+
+            // Asegúrate de tener window.albumActual disponible
+            if (window.albumActual && Array.isArray(window.albumActual)) {
+                const indiceInicio = window.albumActual.findIndex(c => c.id_cancion == idSeleccionada);
+                
+
+                if (indiceInicio !== -1) {
+                    const basePlaylist = window.albumActual.slice(indiceInicio).map(c => ({
+                        id: c.id_cancion,
+                        titulo: c.nombre_c,
+                        artista: c.artista,
+                        cover: c.foto_album,
+                        id_album: c.id_album
+                    }));
+
+                    playlist = [];
+                    let anuncioCount = 1;
+
+                    for (let i = 0; i < basePlaylist.length; i++) {
+                        playlist.push(basePlaylist[i]);
+
+                        if ((i + 1) % 3 === 0 && i !== basePlaylist.length - 1) {
+                            playlist.push({
+                                id: `anuncio-${anuncioCount++}`,
+                                titulo: "Anuncio",
+                                artista: "",
+                                cover: "../img/image-brand.png",
+                                id_album: null,
+                                src: "/uploads/canciones/anuncio.mp3",
+                                esAnuncio: true
+                            });
+                        }
+                    }
+
+                    indiceActual = 0;
+                    cargarCancion(playlist[indiceActual]);
+                    reproducir();
+                }
+
+                
+            } else {
+                // Si no hay albumActual, reproducir solo esa
+                cargarCancion({ id: idSeleccionada, titulo: title, artista: artist, cover: img });
+                reproducir();
+            }
         }
+
     });
 // Rotación de la imagen del álbum
 let rotation = 0;
@@ -117,6 +191,18 @@ audio.addEventListener('pause', () => {
 audio.addEventListener('ended', () => {
     spinning = false;
     cancelAnimationFrame(animationFrameId);
+    if (indiceActual < playlist.length - 1) {
+        indiceActual++;
+        cargarCancion(playlist[indiceActual]);
+        reproducir();
+    } else {
+        console.log("Fin de la playlist.");
+        // Opcional: repetir desde el principio
+        // indiceActual = 0;
+        // cargarCancion(playlist[indiceActual]);
+        // reproducir();
+    }
+
 });
 });
 
