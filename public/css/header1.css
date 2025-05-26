@@ -133,6 +133,7 @@ nav .menu ul{
     display: flex;
     list-style: none;
     align-items: center;
+    justify-content: center;
     padding: 0;
     margin: 0;
     flex-wrap: wrap;
@@ -273,4 +274,118 @@ body.menu-open #overlay {
   .menu-desktop {
     display: none;
   }
+}
+
+
+.menu-playlists {
+  position: relative;
+}
+
+.dropdown-playlists {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+  background: #111;
+  position: absolute;
+  top: 40px;
+  left: -35px;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.menu-playlists.open .dropdown-playlists {
+  max-height: 500px;
+  opacity: 1;
+}
+
+.playlist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.playlist-item:hover {
+  background-color: #222;
+  border-radius: 10px;
+}
+
+.playlist-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+
+#modal-playlists h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  text-align: center;
+  background: linear-gradient(90deg, #481B9A, #FF4EC4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#lista-playlists {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+
+}
+
+#lista-playlists::-webkit-scrollbar {
+  width: 5px;
+}
+#lista-playlists::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #481B9A, #FF4EC4);
+  border-radius: 10px;
+}
+
+.playlist-item-modal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 15px;
+  background-color: #222;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.playlist-item-modal:hover {
+  background-color: #333;
+}
+
+.playlist-item-modal img {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.playlist-item-modal span {
+  color: white;
+  font-size: 0.95rem;
+}
+
+#modal-playlists .cerrar-modal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 22px;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+#modal-playlists .cerrar-modal:hover {
+  color: white;
 }

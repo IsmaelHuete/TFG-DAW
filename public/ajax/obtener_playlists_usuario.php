@@ -19,7 +19,7 @@ try {
     $usuarioModel = new Usuario($pdo);
     $id_usuario = $usuarioModel->getIdByEmail($_SESSION['email']);
 
-    $stmt = $pdo->prepare("SELECT id_playlist, nombre FROM playlists WHERE id_usuario = ?");
+    $stmt = $pdo->prepare("SELECT id_playlist, nombre, foto FROM playlists WHERE id_usuario = ?");
     $stmt->execute([$id_usuario]);
     $playlists = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

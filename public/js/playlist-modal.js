@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
                             // Mostrar mensaje de éxito dentro del modal
                             const msg = document.createElement('p');
                             msg.textContent = "🎉 Añadida correctamente";

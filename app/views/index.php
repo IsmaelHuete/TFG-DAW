@@ -1,44 +1,78 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/comun.css">
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/header1.css">
-    <link rel="stylesheet" href="css/footer.css">
-</head>
-<body>
-    <?php 
-        include ("layouts/header1.php");
-    ?>
-    <main>
-        <div class="container">
-            <div class="buscador-con-boton">
-                <input type="text" id="buscador" placeholder="Buscar canción, artista o álbum..." autocomplete="off">
-                <button id="btn-nueva-playlist" class="boton-mas" title="Crear nueva playlist">+</button>
-            </div>            
-            <div class="reproductor">
-                <div id="resultados"></div>
-                <div id="contenido-principal"></div>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="css/comun.css">
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/header1.css">
+        <link rel="stylesheet" href="css/footer.css">
+    </head>
+    <body>
+        <?php 
+            include ("layouts/header-playlist.php");
+        ?>
+        <main>
+            <div class="container">
+                <div class="buscador-con-boton">
+                    <input type="text" id="buscador" placeholder="Buscar canción, artista o álbum..." autocomplete="off">
+                    <button id="btn-nueva-playlist" class="boton-mas" title="Crear nueva playlist">+</button>
+                </div>            
+                <div class="reproductor">
+                    <div id="resultados"></div>
+                    <div id="contenido-principal"></div>
+                </div>
+            </div>
+        </main>
+
+
+        <div id="reproductor-persistente" class="reproductor-persistente" style="display: none;">
+            <div class="reproductor-izquierda">
+                <img id="cover-img" src="/img/image-brand.png" alt="Portada" style="width:50px;height:50px;" />
+                <div>
+                    <div id="titulo-cancion">Sin canción</div>
+                    <div id="nombre-artista">Desconocido</div>
+                </div>
+            </div>
+            <div class="reproductor-centro">
+            <div class="controles">
+                <button id="btn-prev">⏮️</button>
+                <button id="btn-play">▶️</button>
+                <button id="btn-next">⏭️</button>
+            </div>
+            <input type="range" id="barra-progreso" value="0" step="0.01">
+        </div>
+            <div class="reproductor-derecha">
+                <input type="range" id="volumen" min="0" max="1" step="0.01" value="1">
+            </div>
+            <audio id="audio-player" src=""></audio>
+        </div>
+
+
+        <!-- Modal para seleccionar playlist -->
+        <div id="modal-playlists" class="modal" style="display:none;">
+            <div class="modal-content1">
+                <span class="cerrar-modal">&times;</span>
+                <h3>Elige una playlist</h3>
+                <div id="lista-playlists"></div>
             </div>
         </div>
-    </main>
-    
-<?php 
-        include ("layouts/footer.php");
-    ?>
-</div>
 
-<div id="reproductor-persistente" class="reproductor-persistente" style="display: none;">
-    <div class="reproductor-izquierda">
-        <img id="cover-img" src="/img/image-brand.png" alt="Portada" style="width:50px;height:50px;" />
-        <div>
-            <div id="titulo-cancion">Sin canción</div>
-            <div id="nombre-artista">Desconocido</div>
+        <!-- Modal para crear nueva playlist -->
+        <div id="modal-nueva-playlist" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="cerrar-modal" id="cerrar-nueva-playlist">&times;</span>
+                <h3>Crear nueva playlist</h3>
+                <form action="/ajax/crear_playlist.php" method="POST" enctype="multipart/form-data">
+                    <input type="text" name="nombre_playlist" placeholder="Nombre de la playlist" required>
+                    <input type="file" name="foto" accept="image/*" required>
+                    <button type="submit" name="subir_playlist">Crear Playlist</button>
+                </form>
+            </div>
         </div>
+
     </div>
     <div class="reproductor-centro">
     <div class="controles">
@@ -107,6 +141,7 @@ if (isset($_SESSION['email'])) {
 <script src="js/playlist-modal.js"></script>
 <script src="js/reproductor.js"></script>
 </body>
+
 </html>
 
 
@@ -350,65 +385,78 @@ function marcarCorazones() {
             }, 50); // espera 50ms tras pintar el HTML
         });
 }
+/* function abrirModalPlaylists(idCancion) {
+    const modal = document.getElementById("modal-playlists");
+    const lista = document.getElementById("lista-playlists");
+
+    lista.innerHTML = '<p style="color: gray;">Cargando playlists...</p>';
+    modal.style.display = "flex";
+
+    fetch("/ajax/obtener_playlists_usuario.php")
+        .then(res => res.json())
+        .then(data => {
+            lista.innerHTML = '';
+
+            if (!data.length) {
+                lista.innerHTML = '<p style="color: gray;">No tienes playlists.</p>';
+                return;
+            }
+
+           data.forEach(p => {
+             console.log(p);
+                const item = document.createElement("li");
+                item.className = "playlist-item-modal";
+                
+                const rutaFoto = (p.foto && p.foto.trim() !== "")
+                    ? `uploads/foto-playlist/${p.foto}`
+                    : 'uploads/foto-playlist/default.jpg';
+
+                item.innerHTML = `
+                    <img src="${rutaFoto}" alt="${p.nombre}">
+                  
+                `;
+
+                item.style.cursor = "pointer";
+
+                item.addEventListener("click", () => {
+                    fetch("/ajax/insertar_en_playlist.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: new URLSearchParams({
+                            id_cancion: idCancion,
+                            id_playlist: p.id_playlist
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.status === "ok") {
+                            alert("Canción añadida correctamente a la playlist.");
+                            modal.style.display = "none";
+                            marcarCorazones();
+                        } else if (res.status === "exists") {
+                            alert("Esta canción ya está en esa playlist.");
+                        } else if (res.status === "no-auth") {
+                            alert("Debes iniciar sesión.");
+                            window.location.href = "/login";
+                        } else {
+                            alert("Error al añadir la canción.");
+                        }
+                    });
+                });
+
+                lista.appendChild(item);
+            });
+
+        });
+
+    // Cerrar modal al pulsar la X
+    document.querySelector('#modal-playlists .cerrar-modal').onclick = () => {
+        modal.style.display = "none";
+    };
+} */
 
 </script>
 
 
-<!-- 
-<?php
-// --- Lógica de playlists al final de index.php ---
-require_once '../config/Conexion_BBDD.php';
-require_once '../app/models/usuario.php';
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (!isset($_SESSION['email'])) {
-    header("Location: /login");
-    exit;
-}
-
-$usuarioModel = new Usuario($pdo);
-$id_usuario = $usuarioModel->getIdByEmail($_SESSION['email']);
-
-// Crear nueva playlist si se envió el formulario
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre_playlist'])) {
-    $nombre_playlist = trim($_POST['nombre_playlist']);
-    if ($nombre_playlist !== '') {
-        $stmt = $pdo->prepare("INSERT INTO playlists (nombre, id_usuario) VALUES (?, ?)");
-        $stmt->execute([$nombre_playlist, $id_usuario]);
-    }
-}
-
-// Obtener playlists del usuario
-$stmt = $pdo->prepare("SELECT * FROM playlists WHERE id_usuario = ?");
-$stmt->execute([$id_usuario]);
-$playlists = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?> -->
-
-<!-- <div class="mis-playlists" style="margin-top: 30px;">
-    <h2>Mis playlists</h2>
-    <?php if (count($playlists) === 0): ?>
-        <p>¡Crea tu primera playlist!</p>
-            <?php endif; ?>
-
-     
-        
-        <form method="POST" enctype="multipart/form-data" style="margin-top: 15px;">
-            <input type="text" name="nombre_playlist" placeholder="Nombre de la playlist" required>
-            <input type="file" name="foto" accept="image/*">
-            <button type="submit">Crear playlist</button>
-        </form>
-    
-        <ul>
-            <?php foreach ($playlists as $playlist): ?>
-                <li>
-                    <a href="/playlist?id=<?= $playlist['id_playlist'] ?>">
-                        <?= htmlspecialchars($playlist['nombre']) ?>
-                    </a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    
-</div> -->
