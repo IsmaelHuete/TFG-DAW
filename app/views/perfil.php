@@ -173,7 +173,7 @@
                         </div>
                         <div class="acciones-artista">
                             <a href="/miMusica" class="boton-subir">Subir música</a>
-                            <a href="/estadisticas" class="boton-stat">Ver estadísticas</a>
+                            <a href="/estadisticas_artista?id=<?= urlencode($id_usuario) ?>" class="boton-stat">Ver estadísticas</a>
                         </div>
                     </div>
                 <?php endif; ?>

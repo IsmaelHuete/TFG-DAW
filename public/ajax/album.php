@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../config/Conexion_BBDD.php';
 
 $id_album = $_GET['id'] ?? null;
+$foto_album = "/uploads/foto-album/{$id_album}.jpg";
 
 if (!$id_album || !is_numeric($id_album)) {
     echo "Álbum no especificado.";
@@ -29,7 +30,12 @@ $stmt->execute([$id_album]);
 $canciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-$foto_album = "/uploads/foto-album/{$id_album}.jpg";
+foreach ($canciones as &$c) {
+    $c['id_album'] = $album['id_album'];
+    $c['foto_album'] = "/uploads/foto-album/{$album['id_album']}.jpg";
+    $c['artista'] = $album['nombre_artista'];
+}
+
 ?>
 
 <h2><?= htmlspecialchars($album['nombre_album']) ?></h2>
@@ -59,10 +65,13 @@ $foto_album = "/uploads/foto-album/{$id_album}.jpg";
 
         <div class="img-wrapper">
             <img src="<?= $foto_album ?>" alt="Carátula del álbum">
-            <div class="hover-overlay" data-src="<?= $ruta_mp3 ?>"
+            <div class="hover-overlay"
+                data-id="<?= $c['id_cancion'] ?>"
+                data-src="<?= $ruta_mp3 ?>"
                 data-title="<?= htmlspecialchars($c['nombre_c']) ?>"
                 data-artist="<?= htmlspecialchars($album['nombre_artista']) ?>"
                 data-cover="<?= $foto_album ?>">
+
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px">
                     <defs>
                         <linearGradient id="grad-play" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -133,4 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+</script>
+
+<script>
+    window.albumActual = <?= json_encode($canciones, JSON_UNESCAPED_UNICODE) ?>;
 </script>

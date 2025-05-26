@@ -161,6 +161,7 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                                         <img src="${c.foto_album}" alt="Carátula">
                                         <div class="hover-overlay"
                                             data-src="/uploads/canciones/${c.id_cancion}.mp3"
+                                            data-id="${c.id_cancion}"
                                             data-title="${c.nombre_c}"
                                             data-artist="${c.artista || 'Desconocido'}"
                                             data-cover="${c.foto_album}">
@@ -227,13 +228,28 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                     fetch('/ajax/album.php?id=' + id)
                         .then(res => res.text())
                         .then(html => {
-                            document.getElementById('contenido-principal').innerHTML = html;
+                            const contenedor = document.getElementById('contenido-principal');
+                            contenedor.innerHTML = html;
+
+                            // 🔁 Ejecutar manualmente los <script> insertados (como el de albumActual)
+                            contenedor.querySelectorAll('script').forEach(oldScript => {
+                                const nuevoScript = document.createElement('script');
+                                if (oldScript.src) {
+                                    nuevoScript.src = oldScript.src;
+                                } else {
+                                    nuevoScript.textContent = oldScript.textContent;
+                                }
+                                document.body.appendChild(nuevoScript);
+                                oldScript.remove(); // opcional
+                            });
+
                             activarEventosAudio();
                             activarResaltadoCancion();
                             marcarCorazones();
                         });
                 });
             });
+
 
             // EVENTO ARTISTA
             document.querySelectorAll('.card-artista').forEach(card => {

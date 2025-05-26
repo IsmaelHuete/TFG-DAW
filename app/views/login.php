@@ -17,7 +17,9 @@
         if ($usuario) {
             $_SESSION['email'] = $usuario['email'];
             $_SESSION['tipo'] = $usuarioModel->obtenerTipo($email);
-            $_SESSION['plan'] = $usuario['plan'];  
+            $_SESSION['plan'] = $usuario['plan']; 
+            $_SESSION['id_usuario'] = $usuario['id_usuario'];
+ 
 
             header("Location: /");
             exit;
