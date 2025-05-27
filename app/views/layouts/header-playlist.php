@@ -124,9 +124,39 @@ document.addEventListener("DOMContentLoaded", () => {
               <img src="/uploads/foto-playlist/${p.foto || 'default.jpg'}" alt="Playlist">
               <span>${p.nombre}</span>
             `;
+
+
+
             div.addEventListener('click', () => {
-              window.location.href = `/playlist?id=${p.id_playlist}`;
+              const playlistId = p.id_playlist;
+
+              fetch(`/ajax/playlist.php?id=${playlistId}`)
+                .then(res => res.text())
+                .then(html => {
+                  const contenedor = document.getElementById('contenido-principal');
+                  contenedor.innerHTML = html;
+
+                  // Ejecutar scripts dentro del HTML cargado (si los hay)
+                  contenedor.querySelectorAll('script').forEach(oldScript => {
+                    const nuevoScript = document.createElement('script');
+                    if (oldScript.src) {
+                      nuevoScript.src = oldScript.src;
+                    } else {
+                      nuevoScript.textContent = oldScript.textContent;
+                    }
+                    document.body.appendChild(nuevoScript);
+                    oldScript.remove();
+                  });
+
+                  activarEventosAudio();
+                  activarResaltadoCancion();
+                  marcarCorazones();
+                });
             });
+
+
+
+
             dropdown.appendChild(div);
           });
         })

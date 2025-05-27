@@ -4,7 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once __DIR__ . '/../../config/Conexion_BBDD.php';
-require_once __DIR__ . '/../../app/models/usuario.php';
+require_once __DIR__ . '/../../app/models/playlist.php';
+
 if (!isset($_SESSION['email'])) {
     http_response_code(401);
     echo "no-auth";
@@ -20,19 +21,25 @@ if (!$id_cancion || !$id_playlist) {
     exit;
 }
 
-// Verificar si ya existe la relación
-$stmt = $pdo->prepare("SELECT 1 FROM cancion_playlist WHERE id_cancion = ? AND id_playlist = ?");
-$stmt->execute([$id_cancion, $id_playlist]);
-$existe = $stmt->fetch();
+$playlistModel = new Playlist($pdo);
 
-if ($existe) {
+// Verificar si ya existe
+$canciones = $playlistModel->getCanciones($id_playlist);
+$yaExiste = false;
+
+foreach ($canciones as $cancion) {
+    if ((int)$cancion['id_cancion'] === (int)$id_cancion) {
+        $yaExiste = true;
+        break;
+    }
+}
+
+if ($yaExiste) {
     echo "exists";
     exit;
 }
 
-// Insertar
-$stmt = $pdo->prepare("INSERT INTO cancion_playlist (id_cancion, id_playlist) VALUES (?, ?)");
-if ($stmt->execute([$id_cancion, $id_playlist])) {
+if ($playlistModel->addCancion($id_playlist, $id_cancion)) {
     echo "ok";
 } else {
     http_response_code(500);

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../config/Conexion_BBDD.php';
+require_once __DIR__ . '/../../app/modelo/album.php';
 
 $id_album = $_GET['id'] ?? null;
 $foto_album = "/uploads/foto-album/{$id_album}.jpg";
@@ -10,14 +11,8 @@ if (!$id_album || !is_numeric($id_album)) {
 }
 
 // Obtener info del álbum
-$stmt = $pdo->prepare("
-    SELECT albums.id_album, albums.nombre AS nombre_album, usuario.nombre AS nombre_artista
-    FROM albums
-    JOIN usuario ON albums.id_usuario = usuario.id_usuario
-    WHERE albums.id_album = ?
-");
-$stmt->execute([$id_album]);
-$album = $stmt->fetch(PDO::FETCH_ASSOC);
+$albumModel = new Album($pdo);
+$album = $albumModel->getAlbumCompleto($id_album); 
 
 if (!$album) {
     echo "Álbum no encontrado.";
@@ -25,9 +20,7 @@ if (!$album) {
 }
 
 // Obtener canciones
-$stmt = $pdo->prepare("SELECT id_cancion, nombre_c, reproducciones, duracion FROM canciones WHERE id_album = ?");
-$stmt->execute([$id_album]);
-$canciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$canciones = $albumModel->getCanciones($id_album);
 
 
 foreach ($canciones as &$c) {

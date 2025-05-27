@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../config/Conexion_BBDD.php';
+require_once __DIR__ . '/../../app/models/playlist.php';
 session_start();
 
 if (!isset($_SESSION['email']) || empty($_POST['nombre_playlist'])) {
@@ -28,7 +29,6 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
     if (in_array($extension, $permitidas)) {
         $nombre_foto = uniqid('playlist_') . '.' . $extension;
 
-        // ✅ Ruta correcta desde public/ajax hasta public/uploads/foto-playlist
         $carpeta = __DIR__ . '/../uploads/foto-playlist';
         $destino = $carpeta . '/' . $nombre_foto;
 
@@ -40,14 +40,9 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
     }
 }
 
-// Insertar en la base de datos
-if ($nombre_foto) {
-    $stmt = $pdo->prepare("INSERT INTO playlists (nombre, id_usuario, foto) VALUES (?, ?, ?)");
-    $stmt->execute([$nombre, $id_usuario, $nombre_foto]);
-} else {
-    $stmt = $pdo->prepare("INSERT INTO playlists (nombre, id_usuario) VALUES (?, ?)");
-    $stmt->execute([$nombre, $id_usuario]);
-}
+// Usar modelo Playlist
+$playlistModel = new Playlist($pdo);
+$playlistModel->crear($nombre, $id_usuario, $nombre_foto);
 
 header("Location: /index");
 exit;
