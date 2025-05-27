@@ -3,6 +3,7 @@ session_start();
 
 require_once __DIR__ . '/../../config/Conexion_BBDD.php';
 require_once __DIR__ . '/../../app/models/usuario.php';
+require_once __DIR__ . '/../../app/models/playlist.php';
 
 header('Content-Type: application/json');
 
@@ -13,15 +14,9 @@ if (!isset($_SESSION['email'])) {
 }
 
 $usuarioModel = new Usuario($pdo);
+$playlistModel = new Playlist($pdo);
 $id_usuario = $usuarioModel->getIdByEmail($_SESSION['email']);
 
-$stmt = $pdo->prepare("
-    SELECT DISTINCT id_cancion
-    FROM cancion_playlist cp
-    JOIN playlists p ON cp.id_playlist = p.id_playlist
-    WHERE p.id_usuario = ?
-");
-$stmt->execute([$id_usuario]);
-$canciones = $stmt->fetchAll(PDO::FETCH_COLUMN);
+$canciones = $playlistModel->getCancionesPorUsuario($id_usuario);
 
 echo json_encode($canciones);

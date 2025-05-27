@@ -48,17 +48,17 @@
             $stmt->execute([$id_usuario]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-        public function crearAlbum($nombre, $genero, $id_usuario) {
+       /*  public function crearAlbum($nombre, $genero, $id_usuario) {
             $stmt = $this->db->prepare("INSERT INTO albums (nombre, genero, id_usuario) VALUES (?, ?, ?) RETURNING id_album");
             $stmt->execute([$nombre, $genero, $id_usuario]);
             return $stmt->fetchColumn();
-        }
+        } */
 
-        public function getAlbumsByUsuario($id_usuario) {
+        /* public function getAlbumsByUsuario($id_usuario) {
             $stmt = $this->db->prepare("SELECT id_album, nombre FROM albums WHERE id_usuario = ?");
             $stmt->execute([$id_usuario]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
+        } */
 
         public function subirCancionConAlbum($nombre_c, $duracion, $id_usuario, $id_album) {
             $stmt = $this->db->prepare("INSERT INTO canciones (nombre_c, duracion, id_usuario, id_album, reproducciones, guardados) VALUES (?, ?, ?, ?, 0, 0) RETURNING id_cancion");

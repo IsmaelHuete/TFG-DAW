@@ -11,7 +11,6 @@ class Normal {
         $stmt = $this->db->prepare("INSERT INTO normal (id_usuario) VALUES (?)");
         $id_usuario = $this->db->lastInsertId();
         $stmt->execute([$id_usuario]);
-        
     }
 }
 ?>
