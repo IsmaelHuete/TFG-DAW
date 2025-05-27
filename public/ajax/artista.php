@@ -69,6 +69,7 @@ foreach ($canciones as &$c) {
         <div class="img-wrapper">
             <img src="<?= $foto_album ?>" alt="Carátula del álbum">
             <div class="hover-overlay"
+                data-id="<?= $c['id_cancion'] ?>"
                 data-src="<?= $ruta_mp3 ?>"
                 data-title="<?= htmlspecialchars($c['nombre_c']) ?>"
                 data-artist="<?= htmlspecialchars($artista['nombre']) ?>"
