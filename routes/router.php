@@ -40,6 +40,12 @@
                 return 'public/ajax/canciones_en_playlist.php';
             case '/estadisticas_artista':
                 return 'app/views/estadisticas_artista.php';
+            case '/premium_exito':
+                return 'app/views/premium_exito.php';
+            case '/premium_cancelado':
+                return 'app/views/premium_cancelado.php';
+            
+
             default:
                 header("Location: /404");
                 exit();

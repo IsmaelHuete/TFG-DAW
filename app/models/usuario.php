@@ -77,5 +77,10 @@
             return $stmt->fetchColumn();
         }
 
+        public function actualizarPlan($email, $nuevoPlan) {
+            $stmt = $this->db->prepare("UPDATE usuario SET plan = ? WHERE email = ?");
+            return $stmt->execute([$nuevoPlan, $email]);
+        }
+
     }
 ?>
