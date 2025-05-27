@@ -4,13 +4,14 @@ session_start();
 
 header('Content-Type: application/json');
 
+// Verificar que el usuario esté autenticado
 if (!isset($_SESSION['email'])) {
     http_response_code(401);
     echo json_encode(['error' => 'Usuario no autenticado']);
     exit;
 }
 
-// Obtener ID del usuario desde el email
+// Obtener el ID del usuario por su email
 $stmt = $pdo->prepare("SELECT id_usuario FROM usuario WHERE email = ?");
 $stmt->execute([$_SESSION['email']]);
 $id_usuario = $stmt->fetchColumn();
@@ -21,22 +22,21 @@ if (!$id_usuario) {
     exit;
 }
 
-// Obtener datos del body JSON
+// Obtener ID de canción del body
 $input = json_decode(file_get_contents('php://input'), true);
-$id_cancion = $input['id_cancion'] ?? null;
+$id_cancion = isset($input['id_cancion']) ? (int) $input['id_cancion'] : null;
 
-if (!$id_cancion) {
+if (!$id_cancion || $id_cancion <= 0) {
     http_response_code(400);
-    echo json_encode(['error' => 'ID de canción no recibido']);
+    echo json_encode(['error' => 'ID de canción no recibido o inválido']);
     exit;
 }
 
-// Insertar reproducción
+// Insertar reproducción en tabla escuchan
 $stmt = $pdo->prepare("
     INSERT INTO escuchan (id_usuario, id_cancion, fecha)
     VALUES (?, ?, NOW())
 ");
 $stmt->execute([$id_usuario, $id_cancion]);
-$stmt = $pdo->prepare("UPDATE canciones SET reproducciones = reproducciones + 1 WHERE id_cancion = ?");
-$stmt->execute([$id_cancion]);
+
 echo json_encode(['status' => 'ok']);

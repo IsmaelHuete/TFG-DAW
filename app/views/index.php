@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>Musicfy</title>
         <link rel="stylesheet" href="css/comun.css">
         <link rel="stylesheet" href="css/index.css">
         <link rel="stylesheet" href="css/header1.css">
@@ -79,33 +78,33 @@
 
 
 
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-$isGratis = false;
+        <?php
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $isGratis = false;
 
-if (isset($_SESSION['email'])) {
-    require_once __DIR__ . '/../../config/Conexion_BBDD.php';
+        if (isset($_SESSION['email'])) {
+            require_once __DIR__ . '/../../config/Conexion_BBDD.php';
 
 
-    $stmt = $pdo->prepare("SELECT plan FROM usuario WHERE email = ?");
-    $stmt->execute([$_SESSION['email']]);
-    $tipo = $stmt->fetchColumn();
+            $stmt = $pdo->prepare("SELECT plan FROM usuario WHERE email = ?");
+            $stmt->execute([$_SESSION['email']]);
+            $tipo = $stmt->fetchColumn();
 
-    $isGratis = ($tipo === 'gratuito');
-}
-?>
-<script>
-    window.usuarioGratis = <?= $isGratis ? 'true' : 'false' ?>;
-</script>
+            $isGratis = ($tipo === 'gratuito');
+        }
+        ?>
+        <script>
+            window.usuarioGratis = <?= $isGratis ? 'true' : 'false' ?>;
+        </script>
 
-<?php include ("layouts/footer.php"); ?>
-<script src="js/header.js"></script>
-<script src="js/home.js"></script>
-<script src="js/playlist-modal.js"></script>
-<script src="js/reproductor.js"></script>
-</body>
+        <?php include ("layouts/footer.php"); ?>
+        <script src="js/header.js"></script>
+        <script src="js/home.js"></script>
+        <script src="js/playlist-modal.js"></script>
+        <script src="js/reproductor.js"></script>
+    </body>
 
 </html>
 
@@ -304,27 +303,33 @@ document.addEventListener('play', function (e) {
 
 // Seguimiento de reproducción
 function activarEventosAudio() {
-    document.querySelectorAll('audio').forEach(audio => {
-        let reproducido = false;
+    const audio = document.getElementById("audio-player");
+    if (!audio) return;
 
-        audio.addEventListener('timeupdate', () => {
-            if (reproducido) return;
+    // Elimina listeners previos
+    audio.removeEventListener('_custom_timeupdate', audio._custom_timeupdate_handler);
+    audio._custom_timeupdate_handler = function () {
+        if (window.reproducido) return;
 
-            const segundos = audio.currentTime;
-            const porcentaje = segundos / audio.duration;
+        const segundos = audio.currentTime;
+        const porcentaje = segundos / audio.duration;
 
-            if (segundos >= 10 || porcentaje >= 0.3) {
-                reproducido = true;
+        if (segundos >= 10 || porcentaje >= 0.3) {
+            window.reproducido = true;
 
-                const idCancion = audio.dataset.id;
-                fetch('/repro.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id_cancion: idCancion })
-                });
-            }
-        });
-    });
+            const idCancion = audio.dataset.id;
+            if (!idCancion) return;
+
+            fetch('/repro.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_cancion: idCancion })
+            });
+        }
+    };
+    audio.addEventListener('timeupdate', audio._custom_timeupdate_handler);
+    // Marca el handler para poder eliminarlo después
+    audio.addEventListener('_custom_timeupdate', audio._custom_timeupdate_handler);
 }
 
 // Corazones activos si ya están en playlist
@@ -350,78 +355,30 @@ function marcarCorazones() {
             }, 50); // espera 50ms tras pintar el HTML
         });
 }
-/* function abrirModalPlaylists(idCancion) {
-    const modal = document.getElementById("modal-playlists");
-    const lista = document.getElementById("lista-playlists");
 
-    lista.innerHTML = '<p style="color: gray;">Cargando playlists...</p>';
-    modal.style.display = "flex";
 
-    fetch("/ajax/obtener_playlists_usuario.php")
-        .then(res => res.json())
-        .then(data => {
-            lista.innerHTML = '';
+function activarResaltadoCancion() {
+    // Quita el resaltado anterior
+    document.querySelectorAll('.hover-overlay.activa').forEach(el => {
+        el.classList.remove('activa');
+    });
 
-            if (!data.length) {
-                lista.innerHTML = '<p style="color: gray;">No tienes playlists.</p>';
-                return;
-            }
+    // Busca el overlay de la canción actual y resáltalo
+    const audio = document.getElementById("audio-player");
+    if (!audio || !audio.dataset.id) return;
+    const idActual = String(audio.dataset.id);
 
-           data.forEach(p => {
-             console.log(p);
-                const item = document.createElement("li");
-                item.className = "playlist-item-modal";
-                
-                const rutaFoto = (p.foto && p.foto.trim() !== "")
-                    ? `uploads/foto-playlist/${p.foto}`
-                    : 'uploads/foto-playlist/default.jpg';
-
-                item.innerHTML = `
-                    <img src="${rutaFoto}" alt="${p.nombre}">
-                  
-                `;
-
-                item.style.cursor = "pointer";
-
-                item.addEventListener("click", () => {
-                    fetch("/ajax/insertar_en_playlist.php", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: new URLSearchParams({
-                            id_cancion: idCancion,
-                            id_playlist: p.id_playlist
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(res => {
-                        if (res.status === "ok") {
-                            alert("Canción añadida correctamente a la playlist.");
-                            modal.style.display = "none";
-                            marcarCorazones();
-                        } else if (res.status === "exists") {
-                            alert("Esta canción ya está en esa playlist.");
-                        } else if (res.status === "no-auth") {
-                            alert("Debes iniciar sesión.");
-                            window.location.href = "/login";
-                        } else {
-                            alert("Error al añadir la canción.");
-                        }
-                    });
-                });
-
-                lista.appendChild(item);
-            });
-
-        });
-
-    // Cerrar modal al pulsar la X
-    document.querySelector('#modal-playlists .cerrar-modal').onclick = () => {
-        modal.style.display = "none";
-    };
-} */
-
+    // Busca todos los overlays y compara como string
+    document.querySelectorAll('.hover-overlay').forEach(el => {
+        if (String(el.dataset.id) === idActual) {
+            el.classList.add('activa');
+            encontrado = true;
+        }
+    });
+    if (!encontrado) {
+        console.log('No se encontró overlay para id', idActual);
+    }
+}
 </script>
 
 

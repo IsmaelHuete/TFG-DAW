@@ -10,11 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const portada = document.getElementById("cover-img");
     const reproductor = document.getElementById("reproductor-persistente");
 
-    let playlist = []; // Se puede cargar dinámicamente
+    let playlist = window.albumActual || window.artistaActual || []; // Se puede cargar dinámicamente
     let indiceActual = 0;
 
     function cargarCancion(cancion) {
-
+        audio.dataset.id = cancion.id;
         audio.src = cancion.src
             ? cancion.src
             : `/uploads/stream.php?file=${cancion.id}.mp3`;
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         reproductor.style.display = "flex";
-
+        window.reproducido = false;
         if (cancion.esAnuncio) {
             nextBtn.disabled = true;
             nextBtn.style.opacity = 0.5;
@@ -45,6 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
         prevBtn.disabled = cancion.esAnuncio;
         prevBtn.style.opacity = cancion.esAnuncio ? 0.5 : 1;
         prevBtn.style.cursor = cancion.esAnuncio ? 'not-allowed' : 'pointer';
+        if (typeof activarEventosAudio === "function") {
+            activarEventosAudio();
+        }
+        if (typeof activarResaltadoCancion === "function") {
+            activarResaltadoCancion();
+        }
     }
 
     
@@ -106,63 +112,74 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Clic en .hover-overlay para reproducir
     document.body.addEventListener("click", function (e) {
-        const overlay = e.target.closest(".hover-overlay");
+         const overlay = e.target.closest(".hover-overlay");
         if (!overlay) return;
 
         const src = overlay.dataset.src;
         const title = overlay.dataset.title;
         const artist = overlay.dataset.artist;
         const img = overlay.dataset.cover;
+        const idSeleccionada = overlay.dataset.id;
 
         if (src && title && artist && img) {
             const idSeleccionada = overlay.dataset.id;
 
             // Asegúrate de tener window.albumActual disponible
-            if (window.albumActual && Array.isArray(window.albumActual)) {
-                const indiceInicio = window.albumActual.findIndex(c => c.id_cancion == idSeleccionada);
-                
+            // Decide qué playlist usar: álbum o artista
+        let baseArray = null;
+        if (window.albumActual && Array.isArray(window.albumActual)) {
+            baseArray = window.albumActual;
+        } else if (window.artistaActual && Array.isArray(window.artistaActual)) {
+            baseArray = window.artistaActual;
+        }
 
-                if (indiceInicio !== -1) {
-                    const basePlaylist = window.albumActual.slice(indiceInicio).map(c => ({
-                        id: c.id_cancion,
-                        titulo: c.nombre_c,
-                        artista: c.artista,
-                        cover: c.foto_album,
-                        id_album: c.id_album
-                    }));
+        if (baseArray) {
+            const indiceInicio = baseArray.findIndex(c => c.id_cancion == idSeleccionada);
 
-                    playlist = [];
-                    let anuncioCount = 1;
+            if (indiceInicio !== -1) {
+                const basePlaylist = baseArray.slice(indiceInicio).map(c => ({
+                    id: c.id_cancion,
+                    titulo: c.nombre_c,
+                    artista: c.artista,
+                    cover: c.foto_album,
+                    id_album: c.id_album
+                }));
 
-                    for (let i = 0; i < basePlaylist.length; i++) {
-                        playlist.push(basePlaylist[i]);
+                playlist = [];
+                let anuncioCount = 1;
 
-                        
-                        if (window.usuarioGratis && (i + 1) % 3 === 0 && i !== basePlaylist.length - 1) {
-                            playlist.push({
-                                id: `anuncio-${anuncioCount++}`,
-                                titulo: "Anuncio",
-                                artista: "",
-                                cover: "/img/image-brand.png",
-                                id_album: null,
-                                src: "/uploads/canciones/anuncio.mp3",
-                                esAnuncio: true
-                            });
-                        }
+                for (let i = 0; i < basePlaylist.length; i++) {
+                    playlist.push(basePlaylist[i]);
+
+                    if (window.usuarioGratis && (i + 1) % 3 === 0 && i !== basePlaylist.length - 1) {
+                        playlist.push({
+                            id: `anuncio-${anuncioCount++}`,
+                            titulo: "Anuncio",
+                            artista: "",
+                            cover: "/img/image-brand.png",
+                            id_album: null,
+                            src: "/uploads/canciones/anuncio.mp3",
+                            esAnuncio: true
+                        });
                     }
-
-                    indiceActual = 0;
-                    cargarCancion(playlist[indiceActual]);
-                    reproducir();
                 }
 
-
-                
-            } else {
-                // Si no hay albumActual, reproducir solo esa
-                cargarCancion({ id: idSeleccionada, titulo: title, artista: artist, cover: img });
+                indiceActual = 0;
+                cargarCancion(playlist[indiceActual]);
                 reproducir();
             }
+        } else {
+            // Si no hay albumActual ni artistaActual, reproducir solo esa
+            cargarCancion({
+                id: idSeleccionada,
+                titulo: title,
+                artista: artist,
+                cover: img,
+                id_album: null, // por si acaso se usa para la portada
+                src: `/uploads/stream.php?file=${idSeleccionada}.mp3`
+            });
+            reproducir();
+        }
         }
 
     });
@@ -209,29 +226,3 @@ audio.addEventListener('ended', () => {
 });
 
 
-document.addEventListener("DOMContentLoaded", () => {
-    const audio = document.getElementById("audio-player");
-    const titulo = document.getElementById("titulo-cancion");
-    const artista = document.getElementById("nombre-artista");
-    const cover = document.getElementById("cover-img");
-
-    document.body.addEventListener("click", function (e) {
-        const overlay = e.target.closest(".hover-overlay");
-        if (!overlay) return;
-
-        const src = overlay.dataset.src;
-        const title = overlay.dataset.title;
-        const artist = overlay.dataset.artist;
-        const img = overlay.dataset.cover;
-
-        if (src && title && artist && img) {
-            audio.src = src;
-            audio.play();
-
-            titulo.textContent = title;
-            artista.textContent = artist;
-            cover.src = img;
-        }
-    });
-});
-    

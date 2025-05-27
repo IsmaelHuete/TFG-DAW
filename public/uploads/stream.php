@@ -1,10 +1,24 @@
 <?php
-$file = __DIR__ . '/canciones/' . basename($_GET['file']);
+require_once __DIR__ . '/../../config/Conexion_BBDD.php';
+
+$nombreArchivo = basename($_GET['file']);
+$id_cancion = (int) pathinfo($nombreArchivo, PATHINFO_FILENAME);
+$file = __DIR__ . '/canciones/' . $nombreArchivo;
 
 if (!file_exists($file)) {
     http_response_code(404);
     exit;
 }
+
+// Registrar reproducción diaria
+$fechaHoy = date('Y-m-d');
+$insert = $pdo->prepare("
+    INSERT INTO reproducciones_diarias (id_cancion, fecha, cantidad)
+    VALUES (?, ?, 1)
+    ON CONFLICT (id_cancion, fecha)
+    DO UPDATE SET cantidad = reproducciones_diarias.cantidad + 1
+");
+$insert->execute([$id_cancion, $fechaHoy]);
 
 $size = filesize($file);
 $start = 0;

@@ -104,7 +104,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const id = div.dataset.id;
                 if (ids.includes(parseInt(id))) {
                     div.querySelector('.corazon-blanco')?.classList.add('oculto');
-                    div.querySelector('.corazon-gradient')?.classList.remove('oculto');
+                    const gradiente = div.querySelector('.corazon-gradient');
+                    gradiente?.classList.remove('oculto');
+                    gradiente?.style.removeProperty('display');
+                } else {
+                    div.querySelector('.corazon-blanco')?.classList.remove('oculto');
+                    const gradiente = div.querySelector('.corazon-gradient');
+                    gradiente?.classList.add('oculto');
+                    gradiente?.style.display = 'none';
                 }
             });
         })

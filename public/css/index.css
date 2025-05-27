@@ -292,19 +292,27 @@ h3{
     transition: transform 0.3s ease, filter 0.3s ease;
     display: block;
 }
-
 .hover-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* oscurecido */
+    background: rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     transition: opacity 0.3s ease;
+    pointer-events: none; /* evita que tape el click si no hay hover */
+    z-index: 1;
+}
+
+.img-wrapper:hover .hover-overlay,
+.hover-overlay.activa {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
 }
 
 .img-wrapper:hover img {
@@ -312,9 +320,7 @@ h3{
     filter: brightness(0.5);
 }
 
-.img-wrapper:hover .hover-overlay {
-    opacity: 1;
-}
+
 
 .play-icon {
     width: 32px;

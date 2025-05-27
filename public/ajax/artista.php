@@ -34,6 +34,13 @@ $stmt = $pdo->prepare("
 $stmt->execute([$id]);
 $canciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Añadir campos necesarios para el reproductor
+foreach ($canciones as &$c) {
+    $c['ruta_mp3'] = "/uploads/stream.php?file={$c['id_cancion']}.mp3";
+    $c['artista'] = $artista['nombre'];
+    $c['foto_album'] = "/uploads/foto-album/{$c['id_album']}.jpg";
+    // Asegúrate de que id_album esté presente (ya lo está en tu consulta)
+}
 ?>
 
 <h2><?= htmlspecialchars($artista['nombre']) ?></h2>
@@ -111,4 +118,9 @@ function activarResaltadoCancion() {
 
 activarEventosAudio();
 activarResaltadoCancion();
+</script>
+
+<script>
+    window.artistaActual = <?= json_encode($canciones, JSON_UNESCAPED_UNICODE) ?>;
+    window.albumActual = undefined; // Opcional: así evitas conflictos si cambias de vista
 </script>

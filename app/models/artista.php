@@ -28,10 +28,10 @@
 
         public function getTotalReproducciones($id_usuario) {
             $stmt = $this->db->prepare("
-                SELECT COALESCE(SUM(c.reproducciones), 0)
-                FROM canciones c
-                JOIN albums a ON c.id_album = a.id_album
-                WHERE a.id_usuario = ?
+                SELECT COALESCE(SUM(rd.cantidad), 0)
+                FROM reproducciones_diarias rd
+                JOIN canciones c ON rd.id_cancion = c.id_cancion
+                WHERE c.id_usuario = ?
             ");
             $stmt->execute([$id_usuario]);
             return $stmt->fetchColumn();

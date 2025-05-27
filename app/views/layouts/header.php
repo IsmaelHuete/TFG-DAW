@@ -23,8 +23,7 @@
       <a href="/"><img src="/img/image-brand.png"></a>   
       <div class="menu">
         <ul>
-          <li><a href="/myMusic">My Music</a></li>
-          <li><a href="/index">Reproductor</a></li>
+          <li><a href="/index">Musicfy</a></li>
           <li><a href="/premium">Premium</a></li>
           <li>
             <?php if (isset($_SESSION['email'])): ?>

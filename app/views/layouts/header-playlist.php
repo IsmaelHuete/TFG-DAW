@@ -37,7 +37,7 @@ if (isset($_SESSION['email'])) {
               <!-- Se cargan dinámicamente -->
             </div>
           </li>
-          <li><a href="/index">Reproductor</a></li>
+          <li><a href="/index">Musicfy</a></li>
           <li><a href="/premium">Premium</a></li>
           <li>
             <?php if (isset($_SESSION['email'])): ?>
@@ -59,8 +59,7 @@ if (isset($_SESSION['email'])) {
 <div id="menu-mobile" class="menu-mobile">
   <a href="/"><img src="/img/image-brand.png" alt="Logo"></a>
   <ul>
-    <li><a href="/myMusic">My Music</a></li>
-    <li><a href="/index">Reproductor</a></li>
+    <li><a href="/index">Musicfy</a></li>
     <li><a href="/premium">Premium</a></li>
     <li>
         <?php if (isset($_SESSION['email'])): ?>

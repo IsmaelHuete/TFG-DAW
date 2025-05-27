@@ -27,11 +27,6 @@
                 <input type="radio" name="slide" id="c1" checked>
                 <label for="c1" class="card">
                     <div class="row">
-                        <div class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                            </svg>
-                        </div>
                         <div class="description">
                             <h4>Quevedo</h4>
                             <p>25.563.510</p>
@@ -41,11 +36,6 @@
                 <input type="radio" name="slide" id="c2" >
                 <label for="c2" class="card">
                     <div class="row">
-                        <div class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                            </svg>
-                        </div>
                         <div class="description">
                             <h4>Anuel</h4>
                             <p>34.282.946</p>
@@ -55,11 +45,6 @@
                 <input type="radio" name="slide" id="c3" >
                 <label for="c3" class="card">
                     <div class="row">
-                        <div class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                            </svg>
-                        </div>
                         <div class="description">
                             <h4>Arcangel</h4>
                             <p>24.776.694</p>
@@ -69,10 +54,6 @@
                 <input type="radio" name="slide" id="c4" >
                 <label for="c4" class="card">
                     <div class="row">
-                        <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                            </svg>
-                        </div>
                         <div class="description">
                             <h4>Bad Bunny</h4>
                             <p>83.710.525</p>
@@ -134,117 +115,7 @@
 
 
 
-    <!-- <main>
-        <section class="section-1">
-            <h1>ASIDE</h1>
-        </section>
-
-        <section class="section-2">
-            <div class="artist-populares">
-                <div class="header-sections">
-                    <h2>Artistas populares</h2>
-                    <span>Ver mas</span>
-                </div>
-                <div class="artistas">
-                    <div class="artista">
-                        <img src="img/AnueDobleA.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    <div class="artista">
-                        <img src="img/ConejoMalo.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    <div class="artista">
-                        <img src="img/AngelCaido.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    <div class="artista">
-                        <img src="img/AnueDobleA.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    <div class="artista">
-                        <img src="img/AngelCaido.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    
-                   
-                </div>
-            </div>
-            <div class="albums-populares">
-                <div class="header-sections">
-                    <h2>Albums y singels populares</h2>
-                    <span>Ver mas</span>
-                </div>
-                <div class="albums">
-                    <div class="album">
-                        <img src="img/AnueDobleA.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    <div class="album">
-                        <img src="img/ConejoMalo.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    <div class="album">
-                        <img src="img/AngelCaido.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    <div class="album">
-                        <img src="img/AnueDobleA.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    <div class="album">
-                        <img src="img/AngelCaido.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                </div>
-            </div>
-            <div class="novedades-populares">
-                <div class="header-sections">
-                    <h2>Novedad</h2>
-                    <span>Ver mas</span>
-                </div>
-                <div class="novedades">
-                    <div class="novedad">
-                        <img src="img/AnueDobleA.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    <div class="novedad">
-                        <img src="img/ConejoMalo.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    <div class="novedad">
-                        <img src="img/AngelCaido.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    <div class="novedad">
-                        <img src="img/AnueDobleA.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    <div class="novedad">
-                        <img src="img/AngelCaido.jpg">
-                        <p>Anuel Doble AA</p>
-                        <p>Artist</p>
-                    </div>
-                    
-                </div>
-            </div>
-        </section>
-
-    </main>  -->
+    
 
     <div class="banners">
         <div class="container-banner">
@@ -270,7 +141,6 @@
                     <h2>📈 Lo más escuchado esta semana</h2>
                     <span>Reggaetón, Pop, Electrónica...</span>
                 </div>
-                <button>Ver charts</button>
             </div>
 
             <div class="section-banner">
@@ -278,7 +148,7 @@
                     <h2>💬 Testimonio destacado</h2>
                     <span>“Musicfy cambió cómo descubro música.”</span>
                 </div>
-                <button>Leer más</button>
+
             </div>
 
         </div>
