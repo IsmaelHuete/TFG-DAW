@@ -379,6 +379,19 @@ function activarResaltadoCancion() {
         console.log('No se encontró overlay para id', idActual);
     }
 }
+const volumen = document.getElementById("volumen");
+
+function actualizarBarraVolumen() {
+    const valor = volumen.value;
+    const porcentaje = valor * 100; // de 0 a 100
+    volumen.style.backgroundImage = `linear-gradient(to right, #3A157F 0%, #DB3DAC ${porcentaje}%, #ddd ${porcentaje}%, #ddd 100%)`;
+}
+
+// Actualizar al iniciar
+actualizarBarraVolumen();
+
+// Actualizar al cambiar el valor
+volumen.addEventListener('input', actualizarBarraVolumen);
 </script>
 
 
