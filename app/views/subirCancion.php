@@ -25,7 +25,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $archivo_img = $_FILES['portada'] ?? null;
 
         if ($nombre !== '' && $archivo_mp3 && $archivo_img) {
-            // ... (lo que ya tenías para una sola canción)
+            $mp3_ok = $archivo_mp3['type'] === 'audio/mpeg';
+        $img_ext = strtolower(pathinfo($archivo_img['name'], PATHINFO_EXTENSION));
+        $img_ok = in_array($img_ext, ['jpg', 'jpeg', 'png']);
+
+        if ($mp3_ok && $img_ok) {
+            // Crear álbum con nombre igual a canción
+            $stmt = $pdo->prepare("INSERT INTO albums (nombre, id_usuario) VALUES (?, ?)");
+            $stmt->execute([$nombre, $id_usuario]);
+            $id_album = $pdo->lastInsertId();
+
+            // Guardar imagen de portada del álbum
+            $nombre_img = $id_album . '.' . $img_ext;
+            move_uploaded_file($archivo_img['tmp_name'], "uploads/foto-album/" . $nombre_img);
+
+            // Guardar canción en la base de datos con id_usuario
+            $stmt = $pdo->prepare("INSERT INTO canciones (nombre_c, id_album, id_usuario) VALUES (?, ?, ?)");
+            $stmt->execute([$nombre, $id_album, $id_usuario]);
+            $id_cancion = $pdo->lastInsertId();
+
+            // Guardar archivo MP3
+            move_uploaded_file($archivo_mp3['tmp_name'], "uploads/canciones/" . $id_cancion . ".mp3");
+
+            $mensaje = "✅ Canción subida correctamente.";
         } else {
             $mensaje = "❌ Todos los campos son obligatorios.";
         }
@@ -69,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mensaje = "❌ Todos los campos del álbum son obligatorios.";
         }
     }
+}
 }
 
 ?>

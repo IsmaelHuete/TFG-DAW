@@ -1,32 +1,45 @@
 <?php
-    session_start();
-    require_once '../config/Conexion_BBDD.php';
-    require_once '../app/models/usuario.php';
-    require_once '../app/models/normal.php';
-    require_once '../app/models/artista.php';
+session_start();
+require_once '../config/Conexion_BBDD.php';
+require_once '../app/models/usuario.php';
+require_once '../app/models/normal.php';
+require_once '../app/models/artista.php';
 
-    $usuarioModel = new Usuario($pdo);
-    $normalModel = new Normal($pdo);
-    $artistaModel = new Artista($pdo);
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $nombre = $_POST['nombre'];
-        $email = $_POST['email'];
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $f_nacimiento = $_POST['f_nacimiento'] ?? null;        
-        $tipo = $_POST['tipo'];
- 
+$usuarioModel = new Usuario($pdo);
+$normalModel = new Normal($pdo);
+$artistaModel = new Artista($pdo);
+
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nombre = $_POST['nombre'];
+    $email = $_POST['email'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $f_nacimiento = $_POST['f_nacimiento'] ?? null;
+    $tipo = $_POST['tipo'];
+
+    // Verificar si ya existe el correo
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM usuario WHERE email = ?");
+    $stmt->execute([$email]);
+    $existe = $stmt->fetchColumn();
+
+    if ($existe) {
+        $error = "❌ Ya existe una cuenta con ese correo.";
+    } else {
         $usuarioModel->registrar($email, $nombre, $f_nacimiento, $password);
         if ($tipo === 'normal') {
             $normalModel->registrar();
         } elseif ($tipo === 'artista') {
             $artistaModel->registrar();
-        } 
-        $_SESSION['email']=$email;
-        $_SESSION['tipo']=$tipo;
+        }
+        $_SESSION['email'] = $email;
+        $_SESSION['tipo'] = $tipo;
         header("Location: /");
         exit;
     }
+}
 ?>
+
 
 <!DOCTYpE html>
 <html lang="en">
@@ -59,7 +72,9 @@
                 <button type="submit" name="registrarse">Registrarse</button>
             </form>
             <p>¿Ya tienes cuenta? <a href="login">Inicia sesion</a></p>
-            
+            <?php if (!empty($error)): ?>
+                <p style="color: red; margin-top: 10px;"><?= htmlspecialchars($error) ?></p>
+            <?php endif; ?>
         </div>
     </main>
     <div class="difuminado"></div>
@@ -69,4 +84,4 @@
     <script src="js/header.js"></script>
     <script src="js/home.js"></script>
 </body>
-</html>
+</html> 

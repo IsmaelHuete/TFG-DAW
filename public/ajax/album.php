@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../config/Conexion_BBDD.php';
-require_once __DIR__ . '/../../app/modelo/album.php';
+require_once __DIR__ . '/../../app/models/album.php';
 
 $id_album = $_GET['id'] ?? null;
 $foto_album = "/uploads/foto-album/{$id_album}.jpg";
