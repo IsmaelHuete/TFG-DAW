@@ -183,6 +183,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
     });
+
+    
 // Rotación de la imagen del álbum
 let rotation = 0;
 let spinning = false;

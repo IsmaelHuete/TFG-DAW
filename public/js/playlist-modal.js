@@ -111,26 +111,33 @@ document.addEventListener("DOMContentLoaded", () => {
                     div.querySelector('.corazon-blanco')?.classList.remove('oculto');
                     const gradiente = div.querySelector('.corazon-gradient');
                     gradiente?.classList.add('oculto');
-                    gradiente?.style.display = 'none';
                 }
             });
         })
         .catch(err => console.error("Error al cargar canciones añadidas:", err));
-
+    
     // ----------------------------
     // NUEVO: Modal para crear playlist
     // ----------------------------
-    const btnAbrirNuevaPlaylist = document.getElementById('btn-nueva-playlist');
-    const modalNuevaPlaylist = document.getElementById('modal-nueva-playlist');
-    const cerrarNuevaPlaylist = document.getElementById('cerrar-nueva-playlist');
+    
+        const btnAbrirNuevaPlaylist = document.getElementById('btn-nueva-playlist');
+        const modalNuevaPlaylist = document.getElementById('modal-nueva-playlist');
+        const cerrarNuevaPlaylist = document.getElementById('cerrar-nueva-playlist');
 
-    if (btnAbrirNuevaPlaylist && modalNuevaPlaylist && cerrarNuevaPlaylist) {
-        btnAbrirNuevaPlaylist.addEventListener('click', () => {
-            modalNuevaPlaylist.style.display = 'flex';
-        });
+        if (btnAbrirNuevaPlaylist && modalNuevaPlaylist && cerrarNuevaPlaylist) {
+            btnAbrirNuevaPlaylist.addEventListener('click', () => {
+                modalNuevaPlaylist.style.display = 'flex';
+            });
 
-        cerrarNuevaPlaylist.addEventListener('click', () => {
-            modalNuevaPlaylist.style.display = 'none';
-        });
-    }
+            cerrarNuevaPlaylist.addEventListener('click', () => {
+                modalNuevaPlaylist.style.display = 'none';
+            });
+
+            // Cerrar modal al hacer click fuera del contenido
+            window.addEventListener('click', (e) => {
+                if (e.target === modalNuevaPlaylist) {
+                    modalNuevaPlaylist.style.display = 'none';
+                }
+            });
+        }
 });
