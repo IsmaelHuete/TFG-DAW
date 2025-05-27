@@ -1,6 +1,7 @@
 <?php
 require_once '../config/Conexion_BBDD.php';
-require_once '../vendor/autoload.php'; 
+require_once '../app/models/usuario.php';
+
 session_start();
 
 if (!isset($_SESSION['email']) || $_SESSION['tipo'] !== 'artista') {
@@ -9,73 +10,67 @@ if (!isset($_SESSION['email']) || $_SESSION['tipo'] !== 'artista') {
 }
 
 $email = $_SESSION['email'];
+$usuarioModel = new Usuario($pdo);
+$id_usuario = $usuarioModel->getIdByEmail($email);
+
 $mensaje = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nombre_c = $_POST['nombre'] ?? '';
-    $archivo = $_FILES['archivo'] ?? null;
+    $tipoSubida = $_POST['tipo_subida'] ?? '';
 
-    if (!$archivo || $archivo['error'] !== UPLOAD_ERR_OK) {
-        $mensaje = "Error al subir el archivo.";
-    } elseif (pathinfo($archivo['name'], PATHINFO_EXTENSION) !== 'mp3') {
-        $mensaje = "Solo se permiten archivos .mp3.";
-    } elseif ($archivo['size'] > 10 * 1024 * 1024) {
-        $mensaje = "El archivo es demasiado grande.";
-    } else {
-        $stmt = $pdo->prepare("SELECT id_usuario FROM usuario WHERE email = ?");
-        $stmt->execute([$email]);
-        $id_usuario = $stmt->fetchColumn();
+    if ($tipoSubida === 'cancion') {
+        // Subida individual
+        $nombre = trim($_POST['nombre'] ?? '');
+        $archivo_mp3 = $_FILES['audio'] ?? null;
+        $archivo_img = $_FILES['portada'] ?? null;
 
-        if (!$id_usuario) {
-            $mensaje = "No se encontró el artista.";
+        if ($nombre !== '' && $archivo_mp3 && $archivo_img) {
+            // ... (lo que ya tenías para una sola canción)
         } else {
-            // Crear ruta temporal para analizar duración
-            $ruta_temporal = $archivo['tmp_name'];
-            $getID3 = new getID3;
-            $info = $getID3->analyze($ruta_temporal);
+            $mensaje = "❌ Todos los campos son obligatorios.";
+        }
 
-            // Calcular duración
-            if (isset($info['playtime_seconds'])) {
-                $duracion_segundos = (int)$info['playtime_seconds'];
-                $duracion_formateada = gmdate("H:i:s", $duracion_segundos);
-            } else {
-                $mensaje = "No se pudo obtener la duración del archivo.";
-                $duracion_formateada = null;
+    } elseif ($tipoSubida === 'album') {
+        // Subida de álbum
+        $nombre_album = trim($_POST['nombre_album'] ?? '');
+        $portada_album = $_FILES['portada_album'] ?? null;
+        $canciones_mp3 = $_FILES['canciones_mp3'] ?? null;
+
+        if ($nombre_album !== '' && $portada_album && $canciones_mp3 && count($canciones_mp3['name']) > 0) {
+            // Crear álbum
+            $stmt = $pdo->prepare("INSERT INTO albums (nombre, id_usuario) VALUES (?, ?)");
+            $stmt->execute([$nombre_album, $id_usuario]);
+            $id_album = $pdo->lastInsertId();
+
+            // Guardar imagen portada
+            $ext_portada = strtolower(pathinfo($portada_album['name'], PATHINFO_EXTENSION));
+            $nombre_img = $id_album . '.' . $ext_portada;
+            move_uploaded_file($portada_album['tmp_name'], "uploads/foto-album/" . $nombre_img);
+
+            // Guardar cada canción
+            for ($i = 0; $i < count($canciones_mp3['name']); $i++) {
+                $nombreArchivo = $canciones_mp3['name'][$i];
+                $tmp = $canciones_mp3['tmp_name'][$i];
+                $ext = strtolower(pathinfo($nombreArchivo, PATHINFO_EXTENSION));
+
+                if ($ext !== 'mp3') continue;
+
+                $nombreCancion = pathinfo($nombreArchivo, PATHINFO_FILENAME);
+
+                $stmt = $pdo->prepare("INSERT INTO canciones (nombre_c, id_album, id_usuario) VALUES (?, ?, ?)");
+                $stmt->execute([$nombreCancion, $id_album, $id_usuario]);
+                $id_cancion = $pdo->lastInsertId();
+
+                move_uploaded_file($tmp, "uploads/canciones/" . $id_cancion . ".mp3");
             }
 
-            if ($duracion_formateada) {
-                // Insertar canción con duración
-                $stmt = $pdo->prepare("INSERT INTO canciones (nombre_c, duracion, id_usuario) VALUES (?, ?, ?) RETURNING id_cancion");
-                $stmt->execute([$nombre_c, $duracion_formateada, $id_usuario]);
-                $id_cancion = $stmt->fetchColumn();
-
-                // Guardar archivo
-                $nombre_archivo = $id_cancion . ".mp3";
-                $ruta_final = "uploads/canciones/" . $nombre_archivo;
-
-                if (!move_uploaded_file($archivo['tmp_name'], $ruta_final)) {
-                    $mensaje = "Error al guardar el archivo.";
-                } else {
-                    $mensaje = "✅ Canción subida con éxito.";
-                }
-            }
+            $mensaje = "✅ Álbum subido correctamente.";
+        } else {
+            $mensaje = "❌ Todos los campos del álbum son obligatorios.";
         }
     }
 }
 
-$stmt = $pdo->prepare("SELECT id_usuario FROM usuario WHERE email = ?");
-$stmt->execute([$email]);
-$id_usuario = $stmt->fetchColumn();
-
-if (!$id_usuario) {
-    echo "Usuario no encontrado.";
-    exit;
-}
-
-// Obtener canciones del artista
-$stmt = $pdo->prepare("SELECT id_cancion, nombre_c, duracion FROM canciones WHERE id_usuario = ?");
-$stmt->execute([$id_usuario]);
-$canciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -83,42 +78,103 @@ $canciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>Subir canción</title>
+    <link rel="stylesheet" href="css/comun.css">
+    <link rel="stylesheet" href="css/perfil.css">
+    <link rel="stylesheet" href="css/header1.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/subirCancion.css">
 </head>
 <body>
-    <h2>Subir nueva canción</h2>
+<?php include("layouts/header1.php"); ?>
 
-    <?php if ($mensaje): ?>
-        <p><strong><?php echo htmlspecialchars($mensaje); ?></strong></p>
+<main class="container">
+    <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+
+        <!-- Formulario para subir una sola canción -->
+        <div style="flex: 1 1 45%; border: 2px solid #8839ef; padding: 20px; border-radius: 10px; background: #1a1a1a;">
+            <h2 style="color: #e94baf;">Subir una canción suelta</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="tipo_subida" value="cancion">
+
+                <label>🎵 Nombre de la canción:</label><br>
+                <input type="text" name="nombre" required><br><br>
+
+                <label>📁 Archivo MP3:</label><br>
+                <input type="file" name="audio" accept=".mp3" required><br><br>
+
+                <label>🖼️ Imagen de portada:</label><br>
+                <input type="file" name="portada" accept="image/*" required><br><br>
+
+                <button type="submit">Subir canción</button>
+            </form>
+        </div>
+
+        <!-- Formulario para subir álbum completo -->
+        <div style="border: 2px dashed #888; padding: 20px; margin-top: 40px;">
+            <h3>Subir Álbum completo</h3>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="tipo_subida" value="album">
+
+                <label>Nombre del álbum:</label>
+                <input type="text" name="nombre_album" required>
+
+                <label>Imagen de portada del álbum:</label>
+                <input type="file" name="portada_album" accept="image/*" required>
+
+                <label>Selecciona canciones (.mp3):</label>
+                <input type="file" name="audios[]" accept=".mp3" multiple required>
+
+                <div id="nombres-canciones-container"></div>
+
+                <button type="submit">Subir álbum</button>
+            </form>
+        </div>
+
+        <script>
+            document.querySelector('input[name="audios[]"]').addEventListener('change', function () {
+                const container = document.getElementById('nombres-canciones-container');
+                container.innerHTML = '';
+
+                Array.from(this.files).forEach((file, i) => {
+                    const label = document.createElement('label');
+                    label.textContent = `Nombre para: ${file.name}`;
+
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.name = 'nombres_canciones[]';
+                    input.required = true;
+
+                    container.appendChild(label);
+                    container.appendChild(input);
+                });
+            });
+        </script>
+
+
+    </div>
+
+    <!-- Mensaje de confirmación -->
+    <?php if (!empty($mensaje)) : ?>
+        <p style="margin-top: 20px; background: #222; padding: 10px; color: lightgreen; border-left: 5px solid #00c853;">
+            <?= $mensaje ?>
+        </p>
     <?php endif; ?>
 
-    <form action="" method="POST" enctype="multipart/form-data">
-        <label>Nombre de la canción:</label>
-        <input type="text" name="nombre" required><br><br>
+</main>
 
-        <label>Archivo MP3:</label>
-        <input type="file" name="archivo" accept=".mp3" required><br><br>
+<?php include("layouts/footer.php"); ?>
 
-        <input type="submit" value="Subir canción">
-    </form>
+<script>
+function agregarCancion() {
+    const div = document.createElement('div');
+    div.classList.add('bloque-cancion');
+    div.innerHTML = `
+        <input type="text" name="titulos[]" placeholder="Nombre de la canción" required>
+        <input type="file" name="audios[]" accept=".mp3" required>
+    `;
+    document.getElementById('contenedor-canciones').appendChild(div);
+}
+</script>
 
-    <div class="lista-canciones">
-        <h3>Tus canciones subidas</h3>
-        <?php if (count($canciones) === 0): ?>
-            <p>No has subido ninguna canción todavía.</p>
-        <?php else: ?>
-            <ul>
-            <?php foreach ($canciones as $cancion): ?>
-                <li style="margin-bottom: 20px;">
-                    <strong><?php echo htmlspecialchars($cancion['nombre_c']); ?></strong> (<?php echo $cancion['duracion']; ?>)<br>
-                    <audio controls>
-                        <source src="uploads/canciones/<?php echo $cancion['id_cancion']; ?>.mp3" type="audio/mpeg">
-                        Tu navegador no soporta el reproductor de audio.
-                    </audio>
-                </li>
-            <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
-    </div>
 </body>
 </html>
-
