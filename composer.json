@@ -6,6 +6,7 @@
         }
     },
     "require": {
-        "james-heinrich/getid3": "^1.9"
+        "james-heinrich/getid3": "^1.9",
+        "stripe/stripe-php": "^17.2"
     }
 }
