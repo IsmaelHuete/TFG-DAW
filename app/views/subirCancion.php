@@ -110,94 +110,92 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <?php include("layouts/header1.php"); ?>
 
-<main class="container">
-    <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+    <main>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+            <!-- Formulario para subir una sola canción -->
+            <div class="cancion" >
+                <h2 style="color: #e94baf;">Subir una canción suelta</h2>
+                <form method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="tipo_subida" value="cancion">
 
-        <!-- Formulario para subir una sola canción -->
-        <div style="flex: 1 1 45%; border: 2px solid #8839ef; padding: 20px; border-radius: 10px; background: #1a1a1a;">
-            <h2 style="color: #e94baf;">Subir una canción suelta</h2>
-            <form method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="tipo_subida" value="cancion">
+                    <label>🎵 Nombre de la canción:</label>
+                    <input type="text" name="nombre" required>
 
-                <label>🎵 Nombre de la canción:</label><br>
-                <input type="text" name="nombre" required><br><br>
+                    <label>📁 Archivo MP3:</label>
+                    <input type="file" name="audio" accept=".mp3" required>
 
-                <label>📁 Archivo MP3:</label><br>
-                <input type="file" name="audio" accept=".mp3" required><br><br>
+                    <label>🖼️ Imagen de portada:</label>
+                    <input type="file" name="portada" accept="image/*" required>
+                    <div ></div>
+                    <button type="submit">Subir canción</button>
+                </form>
+            </div>
 
-                <label>🖼️ Imagen de portada:</label><br>
-                <input type="file" name="portada" accept="image/*" required><br><br>
+            <!-- Formulario para subir álbum completo -->
+            <div class="album">
+                <h2 style="color: #e94baf;">Subir una canción suelta</h2>
+                <form method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="tipo_subida" value="album">
 
-                <button type="submit">Subir canción</button>
-            </form>
-        </div>
+                    <label>🎵 Nombre album:</label>
+                    <input type="text" name="nombre_album" required>
+                    <label>📁 Archivo MP3:</label>
+                    <input type="file" name="audios[]" accept=".mp3" multiple required>
+                    <label>🖼️ Imagen de portada:</label>
+                    <input type="file" name="portada_album" accept="image/*" required>
 
-        <!-- Formulario para subir álbum completo -->
-        <div style="border: 2px dashed #888; padding: 20px; margin-top: 40px;">
-            <h3>Subir Álbum completo</h3>
-            <form method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="tipo_subida" value="album">
+                    
 
-                <label>Nombre del álbum:</label>
-                <input type="text" name="nombre_album" required>
+                    <div id="nombres-canciones-container"></div>
 
-                <label>Imagen de portada del álbum:</label>
-                <input type="file" name="portada_album" accept="image/*" required>
+                    <button type="submit">Subir álbum</button>
+                </form>
+            </div>
 
-                <label>Selecciona canciones (.mp3):</label>
-                <input type="file" name="audios[]" accept=".mp3" multiple required>
+            <script>
+                document.querySelector('input[name="audios[]"]').addEventListener('change', function () {
+                    const container = document.getElementById('nombres-canciones-container');
+                    container.innerHTML = '';
 
-                <div id="nombres-canciones-container"></div>
+                    Array.from(this.files).forEach((file, i) => {
+                        const label = document.createElement('label');
+                        label.textContent = `Nombre para: ${file.name}`;
 
-                <button type="submit">Subir álbum</button>
-            </form>
-        </div>
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = 'nombres_canciones[]';
+                        input.required = true;
 
-        <script>
-            document.querySelector('input[name="audios[]"]').addEventListener('change', function () {
-                const container = document.getElementById('nombres-canciones-container');
-                container.innerHTML = '';
-
-                Array.from(this.files).forEach((file, i) => {
-                    const label = document.createElement('label');
-                    label.textContent = `Nombre para: ${file.name}`;
-
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.name = 'nombres_canciones[]';
-                    input.required = true;
-
-                    container.appendChild(label);
-                    container.appendChild(input);
+                        container.appendChild(label);
+                        container.appendChild(input);
+                    });
                 });
-            });
-        </script>
+            </script>
+        </div>
 
+        <!-- Mensaje de confirmación -->
+        <?php if (!empty($mensaje)) : ?>
+            <p style="margin-top: 20px; background: #222; padding: 10px; color: lightgreen; border-left: 5px solid #00c853;">
+                <?= $mensaje ?>
+            </p>
+        <?php endif; ?>
 
-    </div>
+    </main>
 
-    <!-- Mensaje de confirmación -->
-    <?php if (!empty($mensaje)) : ?>
-        <p style="margin-top: 20px; background: #222; padding: 10px; color: lightgreen; border-left: 5px solid #00c853;">
-            <?= $mensaje ?>
-        </p>
-    <?php endif; ?>
+    <?php include("layouts/footer.php"); ?>
 
-</main>
-
-<?php include("layouts/footer.php"); ?>
-
-<script>
-function agregarCancion() {
-    const div = document.createElement('div');
-    div.classList.add('bloque-cancion');
-    div.innerHTML = `
-        <input type="text" name="titulos[]" placeholder="Nombre de la canción" required>
-        <input type="file" name="audios[]" accept=".mp3" required>
-    `;
-    document.getElementById('contenedor-canciones').appendChild(div);
-}
-</script>
+    <script>
+    function agregarCancion() {
+        const div = document.createElement('div');
+        div.classList.add('bloque-cancion');
+        div.innerHTML = `
+            <input type="text" name="titulos[]" placeholder="Nombre de la canción" required>
+            <input type="file" name="audios[]" accept=".mp3" required>
+        `;
+        document.getElementById('contenedor-canciones').appendChild(div);
+    }
+    </script>
+    <script src="js/header.js"></script>
 
 </body>
 </html>

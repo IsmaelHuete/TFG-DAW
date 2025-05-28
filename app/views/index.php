@@ -163,20 +163,6 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                     data.canciones.forEach(c => {
                         html += `
                                 <div class="container-cancion" style="display: flex;">
-                                    <div class="add-playlist" data-id="${c.id_cancion}">
-                                        <svg class="corazon-blanco" width="20px" height="20px" viewBox="-2.08 -2.08 20.16 20.16" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer;">
-                                            <path d="M1.24264 8.24264L8 15L14.7574 8.24264C15.553 7.44699 16 6.36786 16 5.24264V5.05234C16 2.8143 14.1857 1 11.9477 1C10.7166 1 9.55233 1.55959 8.78331 2.52086L8 3.5L7.21669 2.52086C6.44767 1.55959 5.28338 1 4.05234 1C1.8143 1 0 2.8143 0 5.05234V5.24264C0 6.36786 0.44699 7.44699 1.24264 8.24264Z" fill="#ffffff"></path>
-                                        </svg>
-                                        <svg class="corazon-gradient oculto" width="20px" height="20px" viewBox="-2.08 -2.08 20.16 20.16" xmlns="http://www.w3.org/2000/svg" >
-                                            <defs>
-                                                <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                                    <stop offset="0%" style="stop-color:#481B9A; stop-opacity:1" />
-                                                    <stop offset="100%" style="stop-color:#FF4EC4; stop-opacity:1" />
-                                                </linearGradient>
-                                            </defs>
-                                            <path d="M1.24264 8.24264L8 15L14.7574 8.24264C15.553 7.44699 16 6.36786 16 5.24264V5.05234C16 2.8143 14.1857 1 11.9477 1C10.7166 1 9.55233 1.55959 8.78331 2.52086L8 3.5L7.21669 2.52086C6.44767 1.55959 5.28338 1 4.05234 1C1.8143 1 0 2.8143 0 5.05234V5.24264C0 6.36786 0.44699 7.44699 1.24264 8.24264Z" fill="url(#grad)" />
-                                        </svg>
-                                    </div>
                                     <div class="img-wrapper">
                                         <img src="${c.foto_album}" alt="Carátula">
                                         <div class="hover-overlay"
@@ -184,7 +170,8 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                                             data-id="${c.id_cancion}"
                                             data-title="${c.nombre_c}"
                                             data-artist="${c.artista || 'Desconocido'}"
-                                            data-cover="${c.foto_album}">
+                                            data-cover="${c.foto_album}"
+                                            data-suelta="1">
                                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px">
                                                 <defs>
                                                     <linearGradient id="grad-play" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -201,11 +188,6 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                                         <div class="info-cancion">
                                             <strong>${c.nombre_c}</strong>
                                             <span>${c.artista || 'Desconocido'}</span>
-                                        </div>
-                                        <div class="stat-cancion">
-                                            <span>${c.reproducciones ?? 0}</span>
-                                            <svg fill="#ffffff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 47 47" xml:space="preserve" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M24.104,41.577c-0.025,0-0.053-0.001-0.078-0.001c-1.093-0.035-2.025-0.802-2.271-1.867l-5.46-23.659l-3.199,8.316 c-0.357,0.93-1.252,1.544-2.249,1.544H2.41c-1.331,0-2.41-1.079-2.41-2.41c0-1.331,1.079-2.41,2.41-2.41h6.78l5.433-14.122 c0.38-0.989,1.351-1.612,2.418-1.54c1.057,0.074,1.941,0.831,2.18,1.863l5.186,22.474l4.618-15.394 c0.276-0.923,1.078-1.592,2.035-1.702c0.953-0.107,1.889,0.36,2.365,1.198l4.127,7.222h7.037c1.331,0,2.41,1.079,2.41,2.41 c0,1.331-1.079,2.41-2.41,2.41h-8.436c-0.865,0-1.666-0.463-2.094-1.214l-2.033-3.559l-5.616,18.722 C26.104,40.88,25.164,41.577,24.104,41.577z"></path> </g> </g> </g></svg>
-                                            <span>${c.duracion ?? '00:00'}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -238,7 +220,39 @@ document.getElementById('buscador').addEventListener('keyup', function () {
 
 
             document.getElementById('resultados').innerHTML = html;
-            
+            window.albumActual = undefined;
+            window.artistaActual = undefined;
+
+            // Evento para canciones sueltas (solo cuando NO hay playlist global)
+            document.querySelectorAll('.hover-overlay').forEach(el => {
+                el.addEventListener('click', function (e) {
+                    // Si es una canción suelta (por ejemplo, por data-suelta o porque no hay playlist global)
+                    const id = this.dataset.id;
+                    fetch('/ajax/cancion.php?id=' + id)
+                        .then(res => res.text())
+                        .then(html => {
+                            const contenedor = document.getElementById('contenido-principal');
+                            contenedor.innerHTML = html;
+
+                            // Ejecutar scripts embebidos (para definir window.cancionActual)
+                            contenedor.querySelectorAll('script').forEach(oldScript => {
+                                const nuevoScript = document.createElement('script');
+                                if (oldScript.src) {
+                                    nuevoScript.src = oldScript.src;
+                                } else {
+                                    nuevoScript.textContent = oldScript.textContent;
+                                }
+                                document.body.appendChild(nuevoScript);
+                                oldScript.remove();
+                            });
+
+                            if (typeof activarEventosAudio === "function") activarEventosAudio();
+                            if (typeof activarResaltadoCancion === "function") activarResaltadoCancion();
+                        });
+                    e.stopPropagation();
+                });
+            });
+
 
             // EVENTO ÁLBUM
             document.querySelectorAll('.card-album').forEach(card => {
@@ -279,7 +293,21 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                     fetch('/ajax/artista.php?id=' + id)
                         .then(res => res.text())
                         .then(html => {
-                            document.getElementById('contenido-principal').innerHTML = html;
+                            const contenedor = document.getElementById('contenido-principal');
+                            contenedor.innerHTML = html;
+
+                            // Ejecutar scripts embebidos
+                            contenedor.querySelectorAll('script').forEach(oldScript => {
+                                const nuevoScript = document.createElement('script');
+                                if (oldScript.src) {
+                                    nuevoScript.src = oldScript.src;
+                                } else {
+                                    nuevoScript.textContent = oldScript.textContent;
+                                }
+                                document.body.appendChild(nuevoScript);
+                                oldScript.remove();
+                            });
+
                             activarEventosAudio();
                             activarResaltadoCancion();
                             marcarCorazones();

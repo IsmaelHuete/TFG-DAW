@@ -92,14 +92,16 @@ nav.scroll .nav{
     flex-direction: column;
     margin: 20px 0 20px 0;
 }
-.subheader .info-subheader button{
+.subheader .info-subheader a{
     background: linear-gradient(to right, #481B9A, #FF4EC4);
     border: none;
     outline: none;
     padding: 15px 20px 15px 20px;
     border-radius: 20px;
+    font-size: 0.8rem;
     color: white;
     cursor: pointer;
+    text-decoration: none;
 }
 
 
@@ -141,6 +143,9 @@ nav .menu ul{
 nav li{
     padding: 0px 10px 0px 10px;
 }
+nav ul li a:hover{
+    color: #ffffff;
+}
 nav ul li:nth-child(4){
     display: flex;
     color:  white;
@@ -175,10 +180,10 @@ ul li button:nth-child(1){
 ul li button:nth-child(1) a{
     color: black;
 }
-ul li button:nth-child(2){
+.subheader a{
     background: linear-gradient(to right, #481B9A, #FF4EC4);
 }
 ul li a{
     text-decoration: none;
-    color: white;
+    color: #bbbbbb;
 } 

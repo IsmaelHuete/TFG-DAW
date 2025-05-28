@@ -12,11 +12,10 @@
         <div class="div2">
             <h2>Explora</h2>
             <ul>
-                <li><a href="#music">Escuchar música</a></li>
-                <li><a href="#index">Reproductor</a></li>
-                <li><a href="#artists">Artistas</a></li>
-                <li><a href="#albums">Álbumes</a></li>
-                <li><a href="#blog">Blog</a></li>
+                <li><a href="index">Escuchar música</a></li>
+                <li><a href="index">Reproductor</a></li>
+                <li><a href="index">Artistas</a></li>
+                <li><a href="index">Álbumes</a></li>
             </ul>
         </div>
 
@@ -25,18 +24,15 @@
             <ul>
                 <li><a href="#faq">Preguntas frecuentes</a></li>
                 <li><a href="#support">Soporte técnico</a></li>
-                <li><a href="#careers">Trabaja con nosotros</a></li>
             </ul>
         </div>
 
         <div class="div4">
             <h2>Legal</h2>
             <ul>
-                <li><a href="#terms">Términos de servicio</a></li>
-                <li><a href="#privacy">Política de privacidad</a></li>
-                <li><a href="#cookies">Política de cookies</a></li>
+                <li><a href="terms">Términos de servicio</a></li>
+                <li><a href="privacy">Política de privacidad</a></li>
                 <li><a href="#legal">Aviso legal</a></li>
-                <li><a href="#sitemap">Mapa del sitio</a></li>
             </ul>
         </div>
 

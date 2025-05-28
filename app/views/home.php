@@ -76,7 +76,7 @@
 
 
 
-    <div class="section1" data-animation="show">
+    <div  id="seccion1" class="section1" data-animation="show">
         <h1 class="animacion-lenta">Discover new music</h1>
         <h3 class="animacion-lenta">Tus canciones favoritas, artistas y albums</h3>
         <div class="options show">

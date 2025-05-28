@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Clic en .hover-overlay para reproducir
     document.body.addEventListener("click", function (e) {
-         const overlay = e.target.closest(".hover-overlay");
+        const overlay = e.target.closest(".hover-overlay");
         if (!overlay) return;
 
         const src = overlay.dataset.src;
@@ -121,21 +121,36 @@ document.addEventListener("DOMContentLoaded", () => {
         const img = overlay.dataset.cover;
         const idSeleccionada = overlay.dataset.id;
 
-        if (src && title && artist && img) {
-            const idSeleccionada = overlay.dataset.id;
+        // NUEVO: Detecta si es canción suelta por data-suelta
+        if (overlay.dataset.suelta === "1") {
+            window.albumActual = undefined;
+            window.artistaActual = undefined;
+            playlist = [{
+                id: idSeleccionada,
+                titulo: title,
+                artista: artist,
+                cover: img,
+                id_album: null,
+                src: src
+            }];
+            indiceActual = 0;
+            cargarCancion(playlist[0]);
+            reproducir();
+            return;
+        }
 
-            // Asegúrate de tener window.albumActual disponible
-            // Decide qué playlist usar: álbum o artista
+        // Lógica normal de playlist
         let baseArray = null;
         if (window.albumActual && Array.isArray(window.albumActual)) {
             baseArray = window.albumActual;
         } else if (window.artistaActual && Array.isArray(window.artistaActual)) {
             baseArray = window.artistaActual;
+        } else if (window.cancionActual && Array.isArray(window.cancionActual)) {
+            baseArray = window.cancionActual;
         }
 
         if (baseArray) {
             const indiceInicio = baseArray.findIndex(c => c.id_cancion == idSeleccionada);
-
             if (indiceInicio !== -1) {
                 const basePlaylist = baseArray.slice(indiceInicio).map(c => ({
                     id: c.id_cancion,
@@ -169,19 +184,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 reproducir();
             }
         } else {
-            // Si no hay albumActual ni artistaActual, reproducir solo esa
+            // Fallback por si acaso
             cargarCancion({
                 id: idSeleccionada,
                 titulo: title,
                 artista: artist,
                 cover: img,
-                id_album: null, // por si acaso se usa para la portada
+                id_album: null,
                 src: `/uploads/stream.php?file=${idSeleccionada}.mp3`
             });
             reproducir();
         }
-        }
-
     });
 
     

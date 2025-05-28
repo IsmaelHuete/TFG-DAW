@@ -2,6 +2,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -12,4 +13,7 @@ body {
 }
 main {
     flex: 1;
+}
+html {
+  scroll-behavior: smooth;
 }

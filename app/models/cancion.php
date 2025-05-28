@@ -5,7 +5,11 @@ class Cancion {
     public function __construct($pdo) {
         $this->db = $pdo;
     }
-
+    public function getPorId($id_cancion) {
+        $stmt = $this->db->prepare("SELECT * FROM canciones WHERE id_cancion = ?");
+        $stmt->execute([$id_cancion]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     public function getPorAlbum($id_album) {
         $stmt = $this->db->prepare("SELECT * FROM canciones WHERE id_album = ?");
         $stmt->execute([$id_album]);
