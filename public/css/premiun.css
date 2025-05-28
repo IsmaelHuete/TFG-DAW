@@ -115,3 +115,15 @@ form a{
     width: 350px;
   }
 }
+
+.boton-premium[disabled] {
+    background-color: grey;
+    color: white;
+    cursor: not-allowed;
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+}

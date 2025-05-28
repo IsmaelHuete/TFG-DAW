@@ -19,6 +19,7 @@ if (!$c) {
 // Añadir campos necesarios para el reproductor
 $c['ruta_mp3'] = "/uploads/stream.php?file={$c['id_cancion']}.mp3";
 $c['foto_album'] = $c['id_album'] ? "/uploads/foto-album/{$c['id_album']}.jpg" : "/uploads/foto-album/default.jpg";
+$c['artista'] = $c['id_usuario'] ? $cancionModel->getArtistaPorId($c['id_usuario']) : 'Desconocido';
 ?>
 
 <div class="container-cancion" style="display: flex;">
