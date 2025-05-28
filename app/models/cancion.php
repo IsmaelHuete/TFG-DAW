@@ -10,6 +10,11 @@ class Cancion {
         $stmt->execute([$id_cancion]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function getArtistaPorId($id_usuario) {
+        $stmt = $this->db->prepare("SELECT nombre FROM usuario WHERE id_usuario = ?");
+        $stmt->execute([$id_usuario]);
+        return $stmt->fetchColumn();
+    }
     public function getPorAlbum($id_album) {
         $stmt = $this->db->prepare("SELECT * FROM canciones WHERE id_album = ?");
         $stmt->execute([$id_album]);

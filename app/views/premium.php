@@ -1,3 +1,18 @@
+<?php
+session_start();
+require_once __DIR__ . '/../../config/Conexion_BBDD.php';
+require_once __DIR__ . '../../models/usuario.php';
+
+
+$email = $_SESSION['email'] ?? null;
+$tipo_plan = null;
+
+if ($email) {
+    $usuarioModel = new Usuario($pdo);
+    $tipo_plan = $usuarioModel->getPlanByEmail($email);
+}
+?>
+
 <!DOCTYpE html>
 <html lang="en">
 <head>
@@ -27,7 +42,11 @@
                     <li>&#10003;  1 dispositivo</li>
                 </ul>
                 <form>
-                    <a href="/checkout?plan=mensual">Mensual</a>
+                    <?php if ($tipo_plan === 'premium'): ?>
+                        <button type="button" disabled class="boton-premium">¡Ya eres premium!</button>
+                    <?php else: ?>
+                        <a href="/checkout?plan=mensual" class="boton-premium">Mensual</a>
+                    <?php endif; ?>
                 </form>
             </div>
             <div class="premiun">
@@ -40,7 +59,11 @@
                     <li>&#10003;  5 dispositivo</li>
                 </ul>
                 <form>
-                    <a href="/checkout?plan=anual">Anual</a>
+                    <?php if ($tipo_plan === 'premium' ): ?>
+                        <button type="button" disabled class="boton-premium">¡Ya eres premium!</button>
+                    <?php else: ?>
+                        <a href="/checkout?plan=anual" class="boton-premium">Anual</a>
+                    <?php endif; ?>
                 </form>
             </div>
         </div>

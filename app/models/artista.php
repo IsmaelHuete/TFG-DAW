@@ -14,6 +14,12 @@
             return $stmt->execute([$id_usuario]);
         }
 
+        public function getArtistaById($id_usuario) {
+            $stmt = $this->db->prepare("SELECT * FROM artista WHERE id_usuario = ?");
+            $stmt->execute([$id_usuario]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
         public function getNumeroCanciones($id_usuario) {
             $stmt = $this->db->prepare("SELECT COUNT(*) FROM canciones WHERE id_usuario = ?");
             $stmt->execute([$id_usuario]);
