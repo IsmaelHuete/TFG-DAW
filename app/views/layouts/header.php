@@ -47,7 +47,7 @@
       <img src="/img/img-subheader-removebg-preview.png"> 
       <div class="info-subheader">
         <h1>Escucha sin límites</h1>
-        <a href="#seccion1">EMPIEZA A ESCUCHAR</a>
+        <a href="/index">EMPIEZA A ESCUCHAR</a>
       </div>
     </div>
   </div>

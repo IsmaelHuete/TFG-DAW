@@ -12,6 +12,16 @@ class Playlist {
         return $stmt->fetchColumn();
     }
 
+    public function eliminar($id_playlist) {
+        // Primero eliminamos las canciones asociadas
+        $stmt = $this->db->prepare("DELETE FROM cancion_playlist WHERE id_playlist = ?");
+        $stmt->execute([$id_playlist]);
+
+        // Luego eliminamos la playlist
+        $stmt = $this->db->prepare("DELETE FROM playlists WHERE id_playlist = ?");
+        return $stmt->execute([$id_playlist]);
+    }
+
     public function addCancion($id_playlist, $id_cancion) {
         $stmt = $this->db->prepare("INSERT INTO cancion_playlist (id_playlist, id_cancion) VALUES (?, ?)");
         return $stmt->execute([$id_playlist, $id_cancion]);
