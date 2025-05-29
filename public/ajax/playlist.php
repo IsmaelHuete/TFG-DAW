@@ -68,10 +68,25 @@ foreach ($canciones as &$c) {
         <div class="stat-cancion">
             <span><?= $c['reproducciones'] ?? 0 ?></span>
             <span><?= $c['duracion'] ?? '00:00' ?></span>
+            <form class="form-eliminar-cancion" data-id-playlist="<?= $id_playlist ?>" data-id-cancion="<?= $c['id_cancion'] ?>">
+                <button type="button" class="btn-eliminar" title="Eliminar de la playlist">🗑️</button>
+            </form>
+
         </div>
     </div>
 </div>
 <?php endforeach; ?>
+
+<div id="modal-confirmacion" class="modal1 oculto">
+    <div class="modal-contenido">
+        <p>¿Quieres eliminar esta canción de la playlist?</p>
+        <div class="botones">
+            <button id="btn-cancelar" class="btn">Cancelar</button>
+            <button id="btn-confirmar" class="btn btn-rojo">Eliminar</button>
+        </div>
+    </div>
+</div>
+
 
 <script>
     window.playlistActual = <?= json_encode($canciones, JSON_UNESCAPED_UNICODE) ?>;
@@ -79,4 +94,60 @@ foreach ($canciones as &$c) {
     window.artistaActual = undefined;
     activarEventosAudio();
     activarResaltadoCancion();
+
+    const modal = document.getElementById('modal-confirmacion');
+    const btnCancelar = document.getElementById('btn-cancelar');
+    const btnConfirmar = document.getElementById('btn-confirmar');
+
+    let formPendiente = null;
+
+    document.body.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-eliminar');
+        if (!btn) return;
+
+        formPendiente = btn.closest('.form-eliminar-cancion');
+        if (!formPendiente) return;
+
+        modal.classList.remove('oculto');
+    });
+
+    btnCancelar.addEventListener('click', () => {
+        modal.classList.add('oculto');
+        formPendiente = null;
+    });
+
+    btnConfirmar.addEventListener('click', () => {
+        if (!formPendiente) return;
+
+        const idCancion = formPendiente.dataset.idCancion;
+        const idPlaylist = formPendiente.dataset.idPlaylist;
+
+        fetch('ajax/eliminar_cancion_playlist.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `id_cancion=${idCancion}&id_playlist=${idPlaylist}`
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("Error HTTP: " + res.status);
+            return res.text();
+        })
+        .then(response => {
+            if (response.trim() === 'ok') {
+                formPendiente.closest('.container-cancion')?.remove();
+            } else {
+                alert('❌ Error inesperado al eliminar la canción.');
+            }
+        })
+        .catch(err => {
+            console.error("Error en la petición:", err);
+            alert('❌ Error de red real: ' + err.message);
+        })
+        .finally(() => {
+            modal.classList.add('oculto');
+            formPendiente = null;
+        });
+    });
+
+
 </script>
+

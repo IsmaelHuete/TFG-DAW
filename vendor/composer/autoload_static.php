@@ -11,6 +11,10 @@ class ComposerStaticInit4bcb01d4b52c2f527adff6249fbdfdef
         array (
             'Stripe\\' => 7,
         ),
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
         'I' => 
         array (
             'Ismae\\TfgDawIsmaelHueteMarcosGuerroAlonsoEsteban\\' => 49,
@@ -21,6 +25,10 @@ class ComposerStaticInit4bcb01d4b52c2f527adff6249fbdfdef
         'Stripe\\' => 
         array (
             0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Ismae\\TfgDawIsmaelHueteMarcosGuerroAlonsoEsteban\\' => 
         array (

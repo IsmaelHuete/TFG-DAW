@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $_SESSION['email'] = $email;
         $_SESSION['tipo'] = $tipo;
+        $_SESSION['nombre'] = $nombre;
         header("Location: /");
         exit;
     }
