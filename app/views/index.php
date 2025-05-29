@@ -131,10 +131,7 @@ document.getElementById('buscador').addEventListener('keyup', function () {
         .then(response => response.json())
         .then(data => {
             let html = '';
- 
-
-
-// ARTISTAS
+        // ARTISTAS
             if (data.artistas.length > 0) {
                 html += '<h2>Artistas</h2><ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none;">';
                 data.artistas.forEach(a => {

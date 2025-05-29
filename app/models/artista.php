@@ -72,6 +72,24 @@
             return $stmt->fetchColumn();
         }
 
+        // Obtiene los datos básicos del artista
+        public function getById($id_usuario) {
+            $stmt = $this->db->prepare("SELECT nombre, foto_perfil FROM usuario WHERE id_usuario = ? AND id_usuario IN (SELECT id_usuario FROM artista)");
+            $stmt->execute([$id_usuario]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        // Obtiene todas las canciones del artista con info de álbum
+        public function getCanciones($id_usuario) {
+            $stmt = $this->db->prepare("
+                SELECT c.id_cancion, c.nombre_c, c.id_album, c.duracion, c.reproducciones, a.nombre AS nombre_album
+                FROM canciones c
+                JOIN albums a ON c.id_album = a.id_album
+                WHERE a.id_usuario = ?
+            ");
+            $stmt->execute([$id_usuario]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
     }
 
 ?>
