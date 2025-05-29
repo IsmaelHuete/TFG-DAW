@@ -19,6 +19,7 @@
             $_SESSION['tipo'] = $usuarioModel->obtenerTipo($email);
             $_SESSION['plan'] = $usuario['plan']; 
             $_SESSION['id_usuario'] = $usuario['id_usuario'];
+            $_SESSION['nombre'] = $usuarioModel->getNombreByEmail($email);
  
 
             header("Location: /");

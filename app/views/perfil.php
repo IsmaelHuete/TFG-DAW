@@ -142,19 +142,32 @@
  
             <div class="contenido-perfil">
                 <!-- Si el usuario no es artista, se le muestra la opción de hacerse premium -->
-                <?php if ($tipo !== 'artista'): ?>
-                <div class="seccion-perfil">
-                    <h2>Mejora tu cuenta</h2>
-                    <div class="tarjeta-mejora">
-                        <div class="info-mejora">
-                            <h3>Musicfy Premium</h3>
-                            <p>Escucha sin anuncios, descarga canciones y calidad HD.</p>
+                <?php if ($tipo !== 'artista' && strtolower($plan) !== 'premium'): ?>
+                    <div class="seccion-perfil">
+                        <h2>Mejora tu cuenta</h2>
+                        <div class="tarjeta-mejora">
+                            <div class="info-mejora">
+                                <h3>Musicfy Premium</h3>
+                                <p>Escucha sin anuncios, descarga canciones y calidad HD.</p>
+                            </div>
+                            <a href="/premium" class="boton-mejora">Hazte Premium</a>
                         </div>
-                        <a href="/premium" class="boton-mejora">Hazte Premium</a>
                     </div>
-                </div>
+                <!-- Si el usuario no es artista y ya es premium, se le muestra un mensaje de agradecimiento -->
+                <?php elseif ($tipo !== 'artista' && strtolower($plan) === 'premium'): ?>
+                    <div class="seccion-perfil">
+                        <h2>¡Gracias por ser Premium!</h2>
+                        <div class="tarjeta-mejora">
+                            <div class="info-mejora">
+                                <p>Disfruta de toda la música sin límites. 🎧</p>
+                            </div>
+                        </div>
+                    </div>
+                
+
+
                 <!-- Si el usuario es artista, se le muestra la zona de artista -->
-                <?php else: ?>
+                <?php elseif($tipo=='artista'): ?>
                     <div class="seccion-perfil">
                         <h2>Zona de Artista</h2>
                         <div class="estadisticas-artista">

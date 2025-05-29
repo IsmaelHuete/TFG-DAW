@@ -23,10 +23,11 @@ if (!$album) {
 $canciones = $albumModel->getCanciones($id_album);
 
 
-foreach ($canciones as &$c) {
+foreach ($canciones as $i => $c) {
     $c['id_album'] = $album['id_album'];
     $c['foto_album'] = "/uploads/foto-album/{$album['id_album']}.jpg";
     $c['artista'] = $album['nombre_artista'];
+    $canciones[$i] = $c;
 }
 
 ?>
