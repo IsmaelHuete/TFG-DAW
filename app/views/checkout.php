@@ -2,6 +2,10 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+if (!isset($_SESSION['email']) || $_SESSION['plan'] == 'premium') {
+    header('Location: /404'); 
+    exit;
+}
 $plan = $_GET['plan'] ?? 'mensual';
 $detalles = [
     'mensual' => ['precio' => 9.99, 'titulo' => 'Premium Mensual', 'descripcion' => ['Reproducción ilimitada', 'Sin anuncios', 'Calidad estándar', '1 dispositivo']],

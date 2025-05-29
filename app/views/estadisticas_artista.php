@@ -2,8 +2,8 @@
 require_once __DIR__ . '/../../config/Conexion_BBDD.php';
 session_start();
 // Validar sesión
-if (!isset($_SESSION['id_usuario'])) {
-    echo "Acceso no autorizado. Inicia sesión.";
+if (!isset($_SESSION['email']) || $_SESSION['tipo'] !== 'artista') {
+    header('Location: /404'); 
     exit;
 }
 
