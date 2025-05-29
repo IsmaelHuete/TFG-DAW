@@ -5,6 +5,11 @@
     require_once '../app/models/normal.php';
     require_once '../app/models/artista.php';
 
+    // Verificar si el usuario ya está logueado
+    if (isset($_SESSION['email'])) {
+        header("Location: /");
+        exit;
+    }
     $usuarioModel = new Usuario($pdo);
     $normalModel = new Normal($pdo);
     $artistaModel = new Artista($pdo);

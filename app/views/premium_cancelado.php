@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['email'])) {
+    header('Location: /login'); // o la ruta real de tu login
+    exit;
+}
 ?>
 
 <!DOCTYPE html>

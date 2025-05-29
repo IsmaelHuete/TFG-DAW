@@ -76,24 +76,7 @@
 
 
 
-    <div  id="seccion1" class="section1" data-animation="show">
-        <h1 class="animacion-lenta">Discover new music</h1>
-        <h3 class="animacion-lenta">Tus canciones favoritas, artistas y albums</h3>
-        <div class="options show">
-            <div class="option1" data-animation="show">
-                <img src="img/options/music-svgrepo-com.svg">
-                <h2>Browse</h2>
-            </div>
-            <div class="option2" data-animation="show">
-                <img src="img/options/search-magnifying-glass-svgrepo-com.svg">
-                <h2>Search</h2>
-            </div>
-            <div class="option3" data-animation="show">
-                <img src="img/options/heart-svgrepo-com.svg"> 
-                <h2>Favorite</h2>
-            </div>
-        </div>
-    </div> 
+    
 </main>
 
 
@@ -157,6 +140,5 @@
         include ("layouts/footer.php");
     ?> 
     <script src="js/header.js"></script>
-    <script src="js/home.js"></script>
 </body>
 </html>
