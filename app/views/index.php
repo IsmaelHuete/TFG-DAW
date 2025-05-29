@@ -132,7 +132,8 @@ document.getElementById('buscador').addEventListener('keyup', function () {
         .then(response => response.json())
         .then(data => {
             let html = '';
-            
+
+           
             // Ejemplo de respuesta que devuelve el backend:
             /*
             {

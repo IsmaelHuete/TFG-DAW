@@ -1,4 +1,7 @@
 <?php
+    //esta función recibe una URI y devuelve la ruta del archivo correspondiente
+    //si la URI no coincide con ninguna ruta definida, redirige a una página 404
+    //si la URI es /, redirige a la página de inicio por ej
     function getRoute($uri) {
         switch ($uri) {
             case '/':
