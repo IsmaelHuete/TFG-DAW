@@ -1,27 +1,34 @@
 <?php
+// Incluimos la conexión a la base de datos y los modelos necesarios
+
 require_once '../config/Conexion_BBDD.php';
 require_once '../app/models/usuario.php';
 require_once '../app/models/artista.php';
 
 session_start();
 
-
+// Solo permite el acceso a usuarios con sesión iniciada y tipo 'artista'
 if (!isset($_SESSION['email']) || $_SESSION['tipo'] !== 'artista') {
     header("Location: /404");
     exit;
 }
 
+// Obtenemos el id del usuario a partir del email de la sesión
 $email = $_SESSION['email'];
 $usuarioModel = new Usuario($pdo);
 $id_usuario = $usuarioModel->getIdByEmail($email);
 
+// Procesamos el formulario si se ha enviado por POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipo_subida = $_POST['tipo_subida'] ?? '';
+
+    // Subida de una sola canción (sencillo)
     if ($tipo_subida === 'cancion') {
         $nombre = trim($_POST['nombre'] ?? '');
         $archivo_mp3 = $_FILES['audio'] ?? null;
         $archivo_img = $_FILES['portada'] ?? null;
 
+        // Comprobamos que todos los campos estén presentes
         if ($nombre !== '' && $archivo_mp3 && $archivo_img) {
             $mp3_ok = $archivo_mp3['type'] === 'audio/mpeg';
             $img_ext = strtolower(pathinfo($archivo_img['name'], PATHINFO_EXTENSION));
@@ -51,26 +58,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
         }
+    // Subida de un álbum completo
     } elseif ($tipo_subida === 'album') {
-        subirAlbum($pdo, $id_usuario);
-    }
-    
-    function subirCancion($pdo, $id_usuario){
-        
-    }
-
-    function subirAlbum($pdo, $id_usuario){
         $nombre_album = trim($_POST['nombre_album'] ?? '');
         $portada_album = $_FILES['portada_album'] ?? null;
         $nombresCanciones = $_POST['nombres_canciones'] ?? [];
         $archivosCanciones = $_FILES['audios'] ?? null;
 
+        // Comprobamos que todos los campos estén presentes y hay al menos una canción
         if ($nombre_album && $portada_album && $archivosCanciones && count($archivosCanciones['name']) > 0) {
             try {
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 // 1. INSERTAR ÁLBUM
-                
+
                 $stmt = $pdo->prepare("INSERT INTO albums (nombre, id_usuario) VALUES (?, ?)");
                 $stmt->execute([$nombre_album, $id_usuario]);
                 $id_album = $pdo->lastInsertId();
@@ -102,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $id_cancion = $pdo->lastInsertId();
 
                     // Mover archivo
-                    $ruta_mp3 =  'uploads/canciones/' . $id_cancion . '.mp3';
+                    $ruta_mp3 = 'uploads/canciones/' . $id_cancion . '.mp3';
                     if (!move_uploaded_file($tmpFile, $ruta_mp3)) {
                         echo "<p>❌ No se pudo mover el archivo MP3 para '$nombreCancion'</p>";
                         continue;
@@ -118,7 +119,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<p>❌ Faltan campos del álbum o canciones.</p>";
         }
     }
+
+   
+
+    function subirAlbum($pdo, $id_usuario)
+    {
         
+    }
+
 }
 ?>
 
@@ -127,6 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Subir canción</title>
@@ -136,13 +145,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/subirCancion.css">
 </head>
+
 <body>
-<?php include("layouts/header1.php"); ?>
+    <?php include("layouts/header1.php"); ?>
 
     <main>
         <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
             <!-- Formulario para subir una sola canción -->
-            <div class="cancion" >
+            <div class="cancion">
                 <h2 style="color: #e94baf;">Subir un sencillo</h2>
                 <form method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="tipo_subida" value="cancion">
@@ -155,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <label>🖼️ Imagen de portada(Archivo JPG):</label>
                     <input type="file" name="portada" accept="image/*" required>
-                    <div ></div>
+                    <div></div>
                     <button type="submit">Subir canción</button>
                 </form>
             </div>
@@ -187,8 +197,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <!-- Mensaje de confirmación -->
-        <?php if (!empty($mensaje)) : ?>
-            <p style="margin-top: 20px; background: #222; padding: 10px; color: lightgreen; border-left: 5px solid #00c853;">
+        <?php if (!empty($mensaje)): ?>
+            <p
+                style="margin-top: 20px; background: #222; padding: 10px; color: lightgreen; border-left: 5px solid #00c853;">
                 <?= $mensaje ?>
             </p>
         <?php endif; ?>
@@ -198,6 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include("layouts/footer.php"); ?>
 
     <script>
+        // Permite añadir dinámicamente campos para canciones en el formulario de álbum
         function agregarCancion() {
             const contenedor = document.getElementById('contenedor-canciones');
 
@@ -224,4 +236,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="js/header.js"></script>
 
 </body>
+
 </html>

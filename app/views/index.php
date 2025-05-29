@@ -80,6 +80,7 @@ if (!isset($_SESSION['email'])) {
                 </form>
             </div>
         </div>
+        
     
     
     
@@ -131,10 +132,24 @@ document.getElementById('buscador').addEventListener('keyup', function () {
         .then(response => response.json())
         .then(data => {
             let html = '';
- 
+            
+            // Ejemplo de respuesta que devuelve el backend:
+            /*
+            {
+                "artistas": [
+                    { "id_usuario": 1, "nombre": "Shakira", "foto_perfil": "shakira.jpg" }
+                ],
+                "albums": [
+                    { "id_album": 2, "nombre": "El Dorado" }
+                ],
+                "canciones": [
+                    { "id_cancion": 5, "nombre_c": "Chantaje", "artista": "Shakira", "foto_album": "/uploads/foto-album/2.jpg" }
+                ]
+            }
+            */
 
 
-// ARTISTAS
+            // ARTISTAS
             if (data.artistas.length > 0) {
                 html += '<h2>Artistas</h2><ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none;">';
                 data.artistas.forEach(a => {
@@ -164,8 +179,7 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                 html += '</ul>';
             }
 
-            // Canciones
-            // CANCIONES como cards visuales
+            // CANCIONES
             if (data.canciones.length > 0) {
 
                     html += '<h2>Canciones</h2>';
@@ -204,46 +218,35 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                     });
                     html += '</ul>';
                 }
-            
 
-            // Playliost
-           /*  if (data.playlist.length > 0) {
-                html += '<h3>Mis playlists</h3><ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0;">';
-                data.playlist.forEach(a => {
-                    html += `
-                        <li class="card-album" style="width: 120px; cursor: pointer;" data-id="${a.id_album}">
-                            <img src="/uploads/foto-album/${a.id_album}.jpg" alt="${a.nombre}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
-                            <p style="text-align: center;">${a.nombre}</p>
-                        </li>
-                    `;
-                });
-                html += '</ul>';
-            } */
-
-
+            // Si no hay resultados, mostrar mensaje
             if (!html) html = '<p>No se encontraron resultados.</p>';
 
 
 
 
 
-
+            // Inserta el HTML generado con los resultados de búsqueda en el contenedor de resultados
             document.getElementById('resultados').innerHTML = html;
+
+            // Resetea los estados globales de álbum y artista actual (para evitar conflictos si el usuario hace otra búsqueda)
             window.albumActual = undefined;
             window.artistaActual = undefined;
 
-            // Evento para canciones sueltas (solo cuando NO hay playlist global)
+            // Añade eventos a cada overlay de canción (icono de play sobre la carátula)
+            // Permite que al hacer clic sobre una canción, se cargue su vista y reproductor dinámicamente
             document.querySelectorAll('.hover-overlay').forEach(el => {
                 el.addEventListener('click', function (e) {
-                    // Si es una canción suelta (por ejemplo, por data-suelta o porque no hay playlist global)
+                    
                     const id = this.dataset.id;
+                    // Hace una petición AJAX para obtener el HTML de la canción seleccionada
                     fetch('/ajax/cancion.php?id=' + id)
                         .then(res => res.text())
                         .then(html => {
                             const contenedor = document.getElementById('contenido-principal');
                             contenedor.innerHTML = html;
 
-                            // Ejecutar scripts embebidos (para definir window.cancionActual)
+                            // Ejecuta los scripts embebidos en el HTML recibido (necesario para que funcionen los controles del reproductor)
                             contenedor.querySelectorAll('script').forEach(oldScript => {
                                 const nuevoScript = document.createElement('script');
                                 if (oldScript.src) {
@@ -254,27 +257,31 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                                 document.body.appendChild(nuevoScript);
                                 oldScript.remove();
                             });
-
+                            
+                            // Activa los eventos del reproductor y resalta la canción actual
                             if (typeof activarEventosAudio === "function") activarEventosAudio();
                             if (typeof activarResaltadoCancion === "function") activarResaltadoCancion();
                         });
+                        
+                    // Evita que el evento se propague a otros elementos
                     e.stopPropagation();
                 });
             });
 
 
-            // EVENTO ÁLBUM
+            // Añade eventos a las cards de álbum para cargar la vista de álbum al hacer clic
             document.querySelectorAll('.card-album').forEach(card => {
                 card.addEventListener('click', function () {
                     const id = this.dataset.id;
 
+                    // Petición AJAX para obtener el HTML del álbum seleccionado
                     fetch('/ajax/album.php?id=' + id)
                         .then(res => res.text())
                         .then(html => {
                             const contenedor = document.getElementById('contenido-principal');
                             contenedor.innerHTML = html;
 
-                            // 🔁 Ejecutar manualmente los <script> insertados (como el de albumActual)
+                            // Ejecuta los scripts embebidos (para playlist, controles, etc.)
                             contenedor.querySelectorAll('script').forEach(oldScript => {
                                 const nuevoScript = document.createElement('script');
                                 if (oldScript.src) {
@@ -283,9 +290,10 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                                     nuevoScript.textContent = oldScript.textContent;
                                 }
                                 document.body.appendChild(nuevoScript);
-                                oldScript.remove(); // opcional
+                                oldScript.remove(); // Elimina el script antiguo
                             });
 
+                            // Activa reproductor, resaltado y corazones para el álbum
                             activarEventosAudio();
                             activarResaltadoCancion();
                             marcarCorazones();
@@ -294,18 +302,19 @@ document.getElementById('buscador').addEventListener('keyup', function () {
             });
 
 
-            // EVENTO ARTISTA
+            // Añade eventos a las cards de artista para cargar la vista de artista al hacer clic
             document.querySelectorAll('.card-artista').forEach(card => {
                 card.addEventListener('click', function () {
                     const id = this.dataset.id;
 
+                    // Petición AJAX para obtener el HTML del artista seleccionado
                     fetch('/ajax/artista.php?id=' + id)
                         .then(res => res.text())
                         .then(html => {
                             const contenedor = document.getElementById('contenido-principal');
                             contenedor.innerHTML = html;
 
-                            // Ejecutar scripts embebidos
+                            // Ejecuta los scripts embebidos (para playlist, controles, etc.)
                             contenedor.querySelectorAll('script').forEach(oldScript => {
                                 const nuevoScript = document.createElement('script');
                                 if (oldScript.src) {
@@ -317,6 +326,7 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                                 oldScript.remove();
                             });
 
+                            // Activa reproductor, resaltado y corazones para el artista
                             activarEventosAudio();
                             activarResaltadoCancion();
                             marcarCorazones();
@@ -328,7 +338,9 @@ document.getElementById('buscador').addEventListener('keyup', function () {
 
 // FUNCIONES
 
-// Solo una canción sonando a la vez
+// Solo permite que una canción suene a la vez en la aplicación.
+// Cuando se dispara el evento 'play' en cualquier elemento <audio>,
+// este listener pausa todos los demás audios excepto el que acaba de empezar a sonar.
 document.addEventListener('play', function (e) {
     const audios = document.querySelectorAll('audio');
     audios.forEach(audio => {
@@ -338,25 +350,31 @@ document.addEventListener('play', function (e) {
     });
 }, true);
 
+// -----------------------------
 // Seguimiento de reproducción
+// -----------------------------
+// Esta función se encarga de registrar una reproducción en el backend
+// cuando el usuario ha escuchado al menos 10 segundos o el 30% de la canción.
 function activarEventosAudio() {
     const audio = document.getElementById("audio-player");
     if (!audio) return;
 
-    // Elimina listeners previos
+    // Elimina listeners previos para evitar duplicados
     audio.removeEventListener('_custom_timeupdate', audio._custom_timeupdate_handler);
     audio._custom_timeupdate_handler = function () {
-        if (window.reproducido) return;
+        if (window.reproducido) return; // Evita registrar varias veces
 
         const segundos = audio.currentTime;
         const porcentaje = segundos / audio.duration;
 
+        // Si se han escuchado al menos 10 segundos o el 30% de la canción
         if (segundos >= 10 || porcentaje >= 0.3) {
             window.reproducido = true;
 
             const idCancion = audio.dataset.id;
             if (!idCancion) return;
 
+            // Envía la reproducción al backend para contabilizarla
             fetch('/repro.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -365,16 +383,20 @@ function activarEventosAudio() {
         }
     };
     audio.addEventListener('timeupdate', audio._custom_timeupdate_handler);
-    // Marca el handler para poder eliminarlo después
+    // Marca el handler para poder eliminarlo después si es necesario
     audio.addEventListener('_custom_timeupdate', audio._custom_timeupdate_handler);
 }
 
+// -----------------------------
 // Corazones activos si ya están en playlist
+// -----------------------------
+// Esta función consulta al backend qué canciones están en playlists del usuario
+// y actualiza los iconos de corazón en la interfaz según corresponda.
 function marcarCorazones() {
     fetch('/ajax/canciones_en_playlist.php')
         .then(res => res.json())
         .then(ids => {
-            // Espera a que el DOM esté listo
+            // Espera a que el DOM esté listo antes de actualizar los corazones
             setTimeout(() => {
                 document.querySelectorAll('.add-playlist').forEach(div => {
                     const id = div.dataset.id;
@@ -393,7 +415,9 @@ function marcarCorazones() {
         });
 }
 
-
+// -----------------------------
+// Resalta la canción que está sonando actualmente en la interfaz
+// -----------------------------
 function activarResaltadoCancion() {
     // Quita el resaltado anterior
     document.querySelectorAll('.hover-overlay.activa').forEach(el => {
@@ -416,8 +440,13 @@ function activarResaltadoCancion() {
         console.log('No se encontró overlay para id', idActual);
     }
 }
+
+// -----------------------------
+// Barra de volumen personalizada
+// -----------------------------
 const volumen = document.getElementById("volumen");
 
+// Actualiza el color de fondo de la barra de volumen según el valor actual
 function actualizarBarraVolumen() {
     const valor = volumen.value;
     const porcentaje = valor * 100; // de 0 a 100
