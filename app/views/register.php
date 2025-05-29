@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+// Permite añadir dinámicamente campos para canciones en el formulario de álbum
 require_once '../config/Conexion_BBDD.php';
 require_once '../app/models/usuario.php';
 require_once '../app/models/normal.php';
@@ -11,13 +13,16 @@ if (isset($_SESSION['email'])) {
     exit;
 }
 
+// Instancia los modelos para gestionar usuarios normales y artistas
 $usuarioModel = new Usuario($pdo);
 $normalModel = new Normal($pdo);
 $artistaModel = new Artista($pdo);
 
 $error = '';
 
+// Si el formulario se ha enviado por POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Recoge los datos del formulario
     $nombre = $_POST['nombre'];
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -30,14 +35,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $existe = $stmt->fetchColumn();
 
     if ($existe) {
+        // Si ya existe, muestra un mensaje de error
         $error = "❌ Ya existe una cuenta con ese correo.";
     } else {
+        // Si no existe, registra el usuario en la tabla usuario
         $usuarioModel->registrar($email, $nombre, $f_nacimiento, $password);
+
+        // Según el tipo, lo registra en la tabla correspondiente
         if ($tipo === 'normal') {
             $normalModel->registrar();
         } elseif ($tipo === 'artista') {
             $artistaModel->registrar();
         }
+
+        // Inicia sesión automáticamente tras el registro
         $_SESSION['email'] = $email;
         $_SESSION['tipo'] = $tipo;
         $_SESSION['nombre'] = $nombre;

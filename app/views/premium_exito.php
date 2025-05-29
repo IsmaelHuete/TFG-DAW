@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+// Importa las clases de PHPMailer para enviar correos
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -15,20 +17,24 @@ if (!isset($_SESSION['email'])) {
 $email = $_SESSION['email'];
 $usuarioModel = new Usuario($pdo);
 
+// Crea una nueva instancia de PHPMailer para enviar el correo de confirmación
 $mail = new PHPMailer(true);
 
 try {
+    // Configuración del servidor SMTP de Gmail
     $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com';        // Usa tu proveedor
+    $mail->Host       = 'smtp.gmail.com';        
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'tfgDaw2025@gmail.com';    // Tu correo
-    $mail->Password   = 'mvgv wzpg tomp fuwj';         // Tu contraseña o app password
+    $mail->Username   = 'tfgDaw2025@gmail.com';    
+    $mail->Password   = 'mvgv wzpg tomp fuwj';         
     $mail->SMTPSecure = 'tls';
     $mail->Port       = 587;
 
+    // Configuración del remitente y destinatario
     $mail->setFrom('tfgDaw2025@gmail.com', 'Musicfy');
     $mail->addAddress($email);  // Email del usuario
 
+    // Configuración del contenido del correo
     $mail->isHTML(true);
     $mail->Subject = '🎧 ¡Ya eres Premium en Musicfy!';
     $mail->Body    = '

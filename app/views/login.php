@@ -20,6 +20,7 @@
         $usuario = $usuarioModel->login($email, $password);
         
         if ($usuario) {
+            // Si las credenciales son correctas, guarda los datos en la sesión
             $_SESSION['email'] = $usuario['email'];
             $_SESSION['tipo'] = $usuarioModel->obtenerTipo($email);
             $_SESSION['plan'] = $usuario['plan']; 
@@ -30,6 +31,7 @@
             header("Location: /");
             exit;
         } else {
+            // Si las credenciales son incorrectas, muestra un mensaje de error
             $mensaje = "❌ Credenciales incorrectas.";
         }
     }

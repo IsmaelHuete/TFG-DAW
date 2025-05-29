@@ -40,7 +40,7 @@
     // Obtener el nombre del usuario
         $nombre_usuario = $usuarioModel->getNombreByEmail($email);
 
-    // Si el usuario es artista
+    // Si el usuario es artista, obtener estadísticas adicionales
         if ($tipo === 'artista') {
             $id_usuario = $usuarioModel->getIdByEmail($email);
             $num_canciones = $artistaModel->getNumeroCanciones($id_usuario);
@@ -48,6 +48,7 @@
             $total_reproducciones = $artistaModel->getTotalReproducciones($id_usuario);
         }
 
+        // Si se envió el formulario para subir foto de perfil
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['subir_foto'])) {
             $archivo = $_FILES['foto'] ?? null;
 
@@ -55,20 +56,24 @@
                 $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
                 $permitidas = ['jpg', 'jpeg', 'png', 'gif'];
 
+                // Validar extensión y tamaño de la imagen
                 if (!in_array($extension, $permitidas)) {
                     $mensaje = "❌ Formato no permitido.";
                 } elseif ($archivo['size'] > 5 * 1024 * 1024) {
                     
                     $mensaje = "❌ Imagen demasiado grande (máx 5MB).";
                 } else {
+                    // Generar nombre único y mover la imagen a la carpeta de perfiles
                     $nombre_archivo = uniqid('perfil_') . '.' . $extension;
                     $ruta_relativa = "uploads/perfiles/" . $nombre_archivo;
                     $ruta_destino = $ruta_relativa; 
-
+                    
+                    // Crear la carpeta si no existe
                     if (!is_dir("public/uploads/perfiles")) {
                     mkdir("public/uploads/perfiles", 0777, true);
                     }
 
+                    // Mover el archivo y actualizar la foto en la base de datos
                     if (move_uploaded_file($archivo['tmp_name'], $ruta_destino)) {
                     $usuarioModel->actualizarFotoPerfil($email, $nombre_archivo);
                     $mensaje = "✅ Foto subida correctamente.";

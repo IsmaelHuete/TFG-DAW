@@ -62,44 +62,7 @@
                 </label>
             </div> 
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-</main>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
+    </main>
     <div class="banners">
         <div class="container-banner">
 

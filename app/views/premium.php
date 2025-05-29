@@ -8,10 +8,11 @@ if (!isset($_SESSION['email'])) {
 require_once __DIR__ . '/../../config/Conexion_BBDD.php';
 require_once __DIR__ . '../../models/usuario.php';
 
-
+// Obtiene el email de la sesión y prepara la variable para el tipo de plan
 $email = $_SESSION['email'] ?? null;
 $tipo_plan = null;
 
+// Si hay email, obtiene el tipo de plan del usuario (normal o premium)
 if ($email) {
     $usuarioModel = new Usuario($pdo);
     $tipo_plan = $usuarioModel->getPlanByEmail($email);
@@ -64,8 +65,11 @@ if ($email) {
                     <li>&#10003;  5 dispositivo</li>
                 </ul>
                 <form>
+                    <!-- Si el usuario ya es premium, deshabilita el botón -->
                     <?php if ($tipo_plan === 'premium' ): ?>
                         <button type="button" disabled class="boton-premium">¡Ya eres premium!</button>
+                        
+                    <!-- Si no es premium, muestra el enlace para comprar el plan mensual -->
                     <?php else: ?>
                         <a href="/checkout?plan=anual" class="boton-premium">Anual</a>
                     <?php endif; ?>
