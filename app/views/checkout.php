@@ -32,7 +32,8 @@ $beneficios = $detalles[$plan]['descripcion'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Chekout</title>
+    <link rel="icon" type="image/png" href="img/image-brand.png">
     <link rel="stylesheet" href="css/comun.css">
     <link rel="stylesheet" href="css/header1.css">
     <link rel="stylesheet" href="css/footer.css">
@@ -40,10 +41,17 @@ $beneficios = $detalles[$plan]['descripcion'];
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <?php 
-        include ("layouts/header1.php");
-    ?>
-
+    <a href="/premium" class="volver-home" style="position: absolute; top: 30px; left: 30px; text-decoration: none; z-index: 10;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+            <defs>
+                <linearGradient id="flecha-gradient" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="20%" stop-color="#481B9A"/>
+                    <stop offset="100%" stop-color="#FF4EC4"/>
+                </linearGradient>
+            </defs>
+            <path d="M15 19l-7-7 7-7" stroke="url(#flecha-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
     <main>
         <div class="difuminado"></div>
         <section class="checkout-container">

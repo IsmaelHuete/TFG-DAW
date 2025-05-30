@@ -231,6 +231,7 @@ foreach ($historialPorCancion as $id => $valores) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stats</title>
+    <link rel="icon" type="image/png" href="img/image-brand.png">
     <link rel="stylesheet" href="css/comun.css">                            
     <link rel="stylesheet" href="css/header1.css">                                                                                  
     <link rel="stylesheet" href="css/footer.css">

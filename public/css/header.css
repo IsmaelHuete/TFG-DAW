@@ -13,7 +13,7 @@ nav{
     justify-content: center;
     min-height: 80px;
     position: fixed;
-    top: 27px;
+    top: 25px;
 }
 .nav-section{
     width: 100%;
@@ -191,3 +191,65 @@ ul li a{
     text-decoration: none;
     color: white;
 } 
+@media (max-width: 1370px) {
+  .nav-section,
+  .subheader,
+  .footer-section,
+  .container-banner {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+@media (max-width: 860px) {
+  .nav {
+    top: 30px; /* Baja el nav para dejar espacio a la oferta */
+  }
+  .nav-subheader {
+    margin-top: 140px; /* Baja el subheader para que no se solape */
+    height: auto;
+    min-height: 400px;
+  }
+  .subheader {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    min-height: unset;
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 0;
+  }
+  .subheader img {
+    width: 90vw;
+    max-width: 350px;
+    height: auto;
+    margin-bottom: 20px;
+    
+  }
+  .subheader .info-subheader, 
+  .subheader .info-subheader h1 {
+    width: 100%;
+    font-size: 1.6rem;
+
+    text-align: center;
+    align-items: center;
+    margin: 0 0 5px 0;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 481px) {
+  .nav {
+    top: 40px;
+  }
+}
+
+@media (max-width: 400px) {
+  .nav {
+    top: 50px;
+  }
+}

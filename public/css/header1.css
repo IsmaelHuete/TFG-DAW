@@ -389,3 +389,16 @@ body.menu-open #overlay {
 #modal-playlists .cerrar-modal:hover {
   color: white;
 }
+@media (max-width: 1370px) {
+  .nav-section,
+  .subheader,
+  .footer-section,
+  .container-banner {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}

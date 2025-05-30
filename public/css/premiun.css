@@ -104,18 +104,31 @@ form a{
   max-width: 350px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 821px) {
   .plan {
     flex-direction: row;
     justify-content: center;
     flex-wrap: nowrap;
   }
-
   .plan div {
     width: 350px;
   }
+  .plan img{
+    height: 130px;
+    width: 200px;
+    position: absolute;
+    top:-30px;
+    left: -70px;
+    rotate: -40deg;
+    opacity: 0.8;
+    }
 }
-
+@media (max-width: 481px) {
+  main >h1{
+    font-size: 2rem;
+    margin-top: 80px;
+}
+}
 .boton-premium[disabled] {
     background-color: grey;
     color: white;
