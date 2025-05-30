@@ -73,6 +73,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+    <a href="/" class="volver-home" style="position: absolute; top: 30px; left: 30px; text-decoration: none; z-index: 10;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+            <defs>
+                <linearGradient id="flecha-gradient" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="20%" stop-color="#481B9A"/>
+                    <stop offset="100%" stop-color="#FF4EC4"/>
+                </linearGradient>
+            </defs>
+            <path d="M15 19l-7-7 7-7" stroke="url(#flecha-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
     <main>
         <div class="registro">
             <img src="/img/image-brand.png">
