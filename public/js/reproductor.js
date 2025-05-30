@@ -58,12 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function reproducir() {
         audio.play();
-        playBtn.textContent = "⏸️";
+        playBtn.textContent = "⏸";
     }
 
     function pausar() {
         audio.pause();
-        playBtn.textContent = "▶️";
+        playBtn.textContent = "▶";
     }
 
     // Botón play/pausa

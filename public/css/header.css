@@ -180,10 +180,14 @@ ul li button:nth-child(1){
 ul li button:nth-child(1) a{
     color: black;
 }
+ul li button:nth-child(2){
+    color: black;
+     background: linear-gradient(to right, #481B9A, #FF4EC4);
+}
 .subheader a{
     background: linear-gradient(to right, #481B9A, #FF4EC4);
 }
 ul li a{
     text-decoration: none;
-    color: #bbbbbb;
+    color: white;
 } 

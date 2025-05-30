@@ -27,15 +27,45 @@ if (!isset($_SESSION['email'])) {
                 <div class="buscador-con-boton">
                     <input type="text" id="buscador" placeholder="Buscar canción, artista o álbum..." autocomplete="off">
                     <button id="btn-nueva-playlist" class="boton-mas" title="Crear nueva playlist">+</button>
-                </div>            
+                </div>
                 <div class="reproductor">
+                    <div id="bloque-default">
+                        <div id="contenido-default">
+                            <section id="playlists-destacadas">
+                                <h2>Playlists destacadas</h2>
+                                <div class="grid">
+                                    <div class="card card-playlist" data-id="1"><img src="uploads/foto-album/1.jpg"><div>Top Hits</div></div>
+                                    <div class="card card-playlist" data-id="12"><img src="uploads/foto-album/12.jpg"><div>Pop</div></div>
+                                    <div class="card card-playlist" data-id="5"><img src="uploads/foto-album/5.jpg"><div>RapCaviar</div></div>
+                                    <div class="card card-playlist" data-id="15"><img src="uploads/foto-album/15.jpg"><div>Flow Latino</div></div>
+                                </div>
+                            </section>
+                            <section id="tendencias">
+                                <h2>Tendencias</h2>
+                                <div class="grid">
+                                    <div class="card card-album" data-id="5"><img src="uploads/foto-album/5.jpg"><div>Timelezz</div></div>
+                                    <div class="card card-album" data-id="1"><img src="uploads/foto-album/1.jpg"><div>Dictadura</div></div>
+                                    <div class="card card-album" data-id="11"><img src="uploads/foto-album/11.jpg"><div>Un Verano Sin Ti</div></div>
+                                    <div class="card card-album" data-id="25"><img src="uploads/foto-album/25.jpg"><div>LLNM2</div></div>
+                                </div>
+                            </section>
+                            <section id="recomendaciones">
+                                <h2>Recomendaciones</h2>
+                                <div class="grid">
+                                    <div class="card card-artista" data-id="3"><img src="img/AnueDobleA.jpg"><div>Anuel AA</div></div>
+                                    <div class="card card-artista" data-id="2"><img src="img/ConejoMalo.jpg"><div>Bad Bunny</div></div>
+                                    <div class="card card-artista" data-id="4"><img src="img/myke.jpg"><div>Myke Towers</div></div>
+                                </div>
+                            </section>
+                        </div> 
+                    </div>
                     <div id="resultados"></div>
                     <div id="contenido-principal"></div>
                 </div>
+                
+                <div id="resultados-dinamicos"></div>
             </div>
         </main>
-
-
         <div id="reproductor-persistente" class="reproductor-persistente" style="display: none;">
             <div class="reproductor-izquierda">
                 <img id="cover-img" src="/img/image-brand.png" alt="Portada" style="width:50px;height:50px;" />
@@ -45,19 +75,18 @@ if (!isset($_SESSION['email'])) {
                 </div>
             </div>
             <div class="reproductor-centro">
-            <div class="controles">
-                <button id="btn-prev">⏮️</button>
-                <button id="btn-play">▶️</button>
-                <button id="btn-next">⏭️</button>
+                <div class="controles">
+                    <button id="btn-prev">⏮</button>
+                    <button id="btn-play"></button>
+                    <button id="btn-next">⏭</button>
+                </div>
             </div>
-            <input type="range" id="barra-progreso" value="0" step="0.01">
-        </div>
             <div class="reproductor-derecha">
                 <input type="range" id="volumen" min="0" max="1" step="0.01" value="1">
             </div>
             <audio id="audio-player" src=""></audio>
+            <input type="range" id="barra-progreso" value="0" step="0.01">
         </div>
-
 
         <!-- Modal para seleccionar playlist -->
         <div id="modal-playlists" class="modal" style="display:none;">
@@ -80,13 +109,6 @@ if (!isset($_SESSION['email'])) {
                 </form>
             </div>
         </div>
-        
-    
-    
-    
-
-
-
 
         <?php
         if (session_status() === PHP_SESSION_NONE) {
@@ -96,7 +118,6 @@ if (!isset($_SESSION['email'])) {
 
         if (isset($_SESSION['email'])) {
             require_once __DIR__ . '/../../config/Conexion_BBDD.php';
-
 
             $stmt = $pdo->prepare("SELECT plan FROM usuario WHERE email = ?");
             $stmt->execute([$_SESSION['email']]);
@@ -115,16 +136,42 @@ if (!isset($_SESSION['email'])) {
         <script src="js/playlist-modal.js"></script>
         <script src="js/reproductor.js"></script>
     </body>
-
 </html>
 
-
 <script>
+function ocultarContenidoDefault() {
+    document.getElementById('bloque-default').style.display = 'none';
+    document.getElementById('contenido-principal').style.display = 'block';
+}
+
+function ejecutarScriptsDinamicos(contenedor) {
+    contenedor.querySelectorAll('script').forEach(oldScript => {
+        const nuevoScript = document.createElement('script');
+        if (oldScript.src) {
+            nuevoScript.src = oldScript.src;
+        } else {
+            nuevoScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(nuevoScript);
+        oldScript.remove();
+    });
+}
+
+function mostrarResultados(html) {
+    document.getElementById('bloque-default').style.display = 'none';
+    document.getElementById('contenido-principal').style.display = 'block';
+    document.getElementById('resultados').innerHTML = html;
+}
+
+// Buscador
 document.getElementById('buscador').addEventListener('keyup', function () {
     const query = this.value.trim();
 
     if (query.length < 2) {
+        document.getElementById('bloque-default').style.display = 'block';
+        document.getElementById('contenido-principal').style.display = 'none';
         document.getElementById('resultados').innerHTML = '';
+        document.getElementById('resultados-dinamicos').innerHTML = '';
         return;
     }
 
@@ -133,121 +180,66 @@ document.getElementById('buscador').addEventListener('keyup', function () {
         .then(data => {
             let html = '';
 
-           
-            // Ejemplo de respuesta que devuelve el backend:
-            /*
-            {
-                "artistas": [
-                    { "id_usuario": 1, "nombre": "Shakira", "foto_perfil": "shakira.jpg" }
-                ],
-                "albums": [
-                    { "id_album": 2, "nombre": "El Dorado" }
-                ],
-                "canciones": [
-                    { "id_cancion": 5, "nombre_c": "Chantaje", "artista": "Shakira", "foto_album": "/uploads/foto-album/2.jpg" }
-                ]
-            }
-            */
-
-
-            // ARTISTAS
             if (data.artistas.length > 0) {
-                html += '<h2>Artistas</h2><ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none;">';
+                html += '<h2>Artistas</h2><ul style="display: flex; gap: 10px;">';
                 data.artistas.forEach(a => {
                     const rutaFoto = a.foto_perfil ? `/uploads/perfiles/${a.foto_perfil}` : '/uploads/perfiles/default.jpg';
-
-                    html += `
-                        <li class="card-artista" style="width: 120px; cursor: pointer;" data-id="${a.id_usuario}">
-                            <img src="${rutaFoto}" alt="${a.nombre}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
-                            <p style="text-align: center;">${a.nombre}</p>
-                        </li>
-                    `;
+                    html += `<li class="card-artista" data-id="${a.id_usuario}">
+                                <img src="${rutaFoto}" style="width: 100px; height: 100px; border-radius: 50%;">
+                                <p>${a.nombre}</p>
+                             </li>`;
                 });
                 html += '</ul>';
             }
 
-            // ÁLBUMES
             if (data.albums.length > 0) {
-                html += '<h2>Álbumes</h2><ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none;">';
+                html += '<h2>Álbumes</h2><ul style="display: flex; gap: 10px;">';
                 data.albums.forEach(a => {
-                    html += `
-                        <li class="card-album" style="width: 120px; cursor: pointer;" data-id="${a.id_album}">
-                            <img src="/uploads/foto-album/${a.id_album}.jpg" alt="${a.nombre}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
-                            <p style="text-align: center;">${a.nombre}</p>
-                        </li>
-                    `;
+                    html += `<li class="card-album" data-id="${a.id_album}">
+                                <img src="/uploads/foto-album/${a.id_album}.jpg" style="width: 100px; height: 100px;">
+                                <p>${a.nombre}</p>
+                             </li>`;
                 });
                 html += '</ul>';
             }
 
-            // CANCIONES
             if (data.canciones.length > 0) {
-
-                    html += '<h2>Canciones</h2>';
-                    data.canciones.forEach(c => {
-                        html += `
-                                <div class="container-cancion" style="display: flex;">
-                                    <div class="img-wrapper">
-                                        <img src="${c.foto_album}" alt="Carátula">
-                                        <div class="hover-overlay"
-                                            data-src="/uploads/canciones/${c.id_cancion}.mp3"
-                                            data-id="${c.id_cancion}"
-                                            data-title="${c.nombre_c}"
-                                            data-artist="${c.artista || 'Desconocido'}"
-                                            data-cover="${c.foto_album}"
-                                            data-suelta="1">
-                                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px">
-                                                <defs>
-                                                    <linearGradient id="grad-play" x1="0%" y1="0%" x2="100%" y2="0%">
-                                                    <stop offset="0%" style="stop-color:#481B9A; stop-opacity:1" />
-                                                    <stop offset="100%" style="stop-color:#FF4EC4; stop-opacity:1" />
-                                                    </linearGradient>
-                                                </defs>
-                                                <path fill="url(#grad-play)" fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M5.46484 3.92349C4.79896 3.5739 4 4.05683 4 4.80888V19.1911C4 19.9432 4.79896 20.4261 5.46483 20.0765L19.1622 12.8854C19.8758 12.5108 19.8758 11.4892 19.1622 11.1146L5.46484 3.92349ZM2 4.80888C2 2.55271 4.3969 1.10395 6.39451 2.15269L20.0919 9.34382C22.2326 10.4677 22.2325 13.5324 20.0919 14.6562L6.3945 21.8473C4.39689 22.8961 2 21.4473 2 19.1911V4.80888Z"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="cancion" style="flex-grow: 1;">
-                                        <div class="info-cancion">
-                                            <strong>${c.nombre_c}</strong>
-                                            <span>${c.artista || 'Desconocido'}</span>
-                                        </div>
-                                    </div>
+                html += '<h2>Canciones</h2>';
+                data.canciones.forEach(c => {
+                    html += `<div class="container-cancion">
+                                <div class="img-wrapper">
+                                    <img src="${c.foto_album}" alt="Carátula">
+                                    <div class="hover-overlay"
+                                        data-src="/uploads/canciones/${c.id_cancion}.mp3"
+                                        data-id="${c.id_cancion}"
+                                        data-title="${c.nombre_c}"
+                                        data-artist="${c.artista || 'Desconocido'}"
+                                        data-cover="${c.foto_album}"
+                                        data-suelta="1">▶</div>
                                 </div>
-                            `;
-                    });
-                    html += '</ul>';
-                }
+                                <div class="info-cancion">
+                                    <strong>${c.nombre_c}</strong>
+                                    <span>${c.artista || 'Desconocido'}</span>
+                                </div>
+                            </div>`;
+                });
+            }
 
-            // Si no hay resultados, mostrar mensaje
             if (!html) html = '<p>No se encontraron resultados.</p>';
+            mostrarResultados(html);
 
-
-
-
-
-            // Inserta el HTML generado con los resultados de búsqueda en el contenedor de resultados
             document.getElementById('resultados').innerHTML = html;
-
-            // Resetea los estados globales de álbum y artista actual (para evitar conflictos si el usuario hace otra búsqueda)
             window.albumActual = undefined;
             window.artistaActual = undefined;
 
-            // Añade eventos a cada overlay de canción (icono de play sobre la carátula)
-            // Permite que al hacer clic sobre una canción, se cargue su vista y reproductor dinámicamente
             document.querySelectorAll('.hover-overlay').forEach(el => {
                 el.addEventListener('click', function (e) {
-                    
                     const id = this.dataset.id;
-                    // Hace una petición AJAX para obtener el HTML de la canción seleccionada
                     fetch('/ajax/cancion.php?id=' + id)
                         .then(res => res.text())
                         .then(html => {
                             const contenedor = document.getElementById('contenido-principal');
                             contenedor.innerHTML = html;
-
-                            // Ejecuta los scripts embebidos en el HTML recibido (necesario para que funcionen los controles del reproductor)
                             contenedor.querySelectorAll('script').forEach(oldScript => {
                                 const nuevoScript = document.createElement('script');
                                 if (oldScript.src) {
@@ -258,43 +250,23 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                                 document.body.appendChild(nuevoScript);
                                 oldScript.remove();
                             });
-                            
-                            // Activa los eventos del reproductor y resalta la canción actual
                             if (typeof activarEventosAudio === "function") activarEventosAudio();
                             if (typeof activarResaltadoCancion === "function") activarResaltadoCancion();
                         });
-                        
-                    // Evita que el evento se propague a otros elementos
                     e.stopPropagation();
                 });
             });
 
-
-            // Añade eventos a las cards de álbum para cargar la vista de álbum al hacer clic
             document.querySelectorAll('.card-album').forEach(card => {
                 card.addEventListener('click', function () {
                     const id = this.dataset.id;
-
-                    // Petición AJAX para obtener el HTML del álbum seleccionado
                     fetch('/ajax/album.php?id=' + id)
                         .then(res => res.text())
                         .then(html => {
                             const contenedor = document.getElementById('contenido-principal');
                             contenedor.innerHTML = html;
-
-                            // Ejecuta los scripts embebidos (para playlist, controles, etc.)
-                            contenedor.querySelectorAll('script').forEach(oldScript => {
-                                const nuevoScript = document.createElement('script');
-                                if (oldScript.src) {
-                                    nuevoScript.src = oldScript.src;
-                                } else {
-                                    nuevoScript.textContent = oldScript.textContent;
-                                }
-                                document.body.appendChild(nuevoScript);
-                                oldScript.remove(); // Elimina el script antiguo
-                            });
-
-                            // Activa reproductor, resaltado y corazones para el álbum
+                            ocultarContenidoDefault();
+                            ejecutarScriptsDinamicos(contenedor);
                             activarEventosAudio();
                             activarResaltadoCancion();
                             marcarCorazones();
@@ -302,32 +274,16 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                 });
             });
 
-
-            // Añade eventos a las cards de artista para cargar la vista de artista al hacer clic
             document.querySelectorAll('.card-artista').forEach(card => {
                 card.addEventListener('click', function () {
                     const id = this.dataset.id;
-
-                    // Petición AJAX para obtener el HTML del artista seleccionado
                     fetch('/ajax/artista.php?id=' + id)
                         .then(res => res.text())
                         .then(html => {
                             const contenedor = document.getElementById('contenido-principal');
                             contenedor.innerHTML = html;
-
-                            // Ejecuta los scripts embebidos (para playlist, controles, etc.)
-                            contenedor.querySelectorAll('script').forEach(oldScript => {
-                                const nuevoScript = document.createElement('script');
-                                if (oldScript.src) {
-                                    nuevoScript.src = oldScript.src;
-                                } else {
-                                    nuevoScript.textContent = oldScript.textContent;
-                                }
-                                document.body.appendChild(nuevoScript);
-                                oldScript.remove();
-                            });
-
-                            // Activa reproductor, resaltado y corazones para el artista
+                            ocultarContenidoDefault();
+                            ejecutarScriptsDinamicos(contenedor);
                             activarEventosAudio();
                             activarResaltadoCancion();
                             marcarCorazones();
@@ -335,6 +291,63 @@ document.getElementById('buscador').addEventListener('keyup', function () {
                 });
             });
         });
+});
+
+// Delegación de eventos para toda la página (para destacados/recomendaciones)
+document.addEventListener('click', function(e) {
+    // ARTISTA
+    const cardArtista = e.target.closest('.card-artista');
+    if (cardArtista && !cardArtista.closest('#resultados')) {
+        const id = cardArtista.dataset.id;
+        fetch('/ajax/artista.php?id=' + id)
+            .then(res => res.text())
+            .then(html => {
+                const resultadosDinamicos = document.getElementById('resultados-dinamicos');
+                resultadosDinamicos.innerHTML = html;
+                resultadosDinamicos.scrollIntoView({ behavior: 'smooth' });
+                ejecutarScriptsDinamicos(resultadosDinamicos);
+                activarEventosAudio();
+                activarResaltadoCancion();
+                marcarCorazones();
+            });
+        return;
+    }
+
+    // ÁLBUM
+    const cardAlbum = e.target.closest('.card-album');
+    if (cardAlbum && !cardAlbum.closest('#resultados')) {
+        const id = cardAlbum.dataset.id;
+        fetch('/ajax/album.php?id=' + id)
+            .then(res => res.text())
+            .then(html => {
+                const resultadosDinamicos = document.getElementById('resultados-dinamicos');
+                resultadosDinamicos.innerHTML = html;
+                resultadosDinamicos.scrollIntoView({ behavior: 'smooth' });
+                ejecutarScriptsDinamicos(resultadosDinamicos);
+                activarEventosAudio();
+                activarResaltadoCancion();
+                marcarCorazones();
+            });
+        return;
+    }
+
+    // PLAYLIST
+    const cardPlaylist = e.target.closest('.card-playlist');
+    if (cardPlaylist && !cardPlaylist.closest('#resultados')) {
+        const id = cardPlaylist.dataset.id;
+        fetch('/ajax/playlist.php?id=' + id)
+            .then(res => res.text())
+            .then(html => {
+                const resultadosDinamicos = document.getElementById('resultados-dinamicos');
+                resultadosDinamicos.innerHTML = html;
+                resultadosDinamicos.scrollIntoView({ behavior: 'smooth' });
+                ejecutarScriptsDinamicos(resultadosDinamicos);
+                activarEventosAudio();
+                activarResaltadoCancion();
+                marcarCorazones();
+            });
+        return;
+    }
 });
 
 // FUNCIONES
@@ -459,6 +472,70 @@ actualizarBarraVolumen();
 
 // Actualizar al cambiar el valor
 volumen.addEventListener('input', actualizarBarraVolumen);
+
+// Delegación de eventos para toda la página
+document.addEventListener('click', function(e) {
+    // Delegación de eventos para toda la página
+document.addEventListener('click', function(e) {
+    // Ignorar si el clic se hizo dentro de #bloque-default
+        if (e.target.closest('#bloque-default')) return;
+
+        // ARTISTA
+        const cardArtista = e.target.closest('.card-artista');
+        if (cardArtista) {
+            const id = cardArtista.dataset.id;
+            fetch('/ajax/artista.php?id=' + id)
+                .then(res => res.text())
+                .then(html => {
+                    const contenedor = document.getElementById('contenido-principal');
+                    contenedor.innerHTML = html;
+                    ocultarContenidoDefault();
+                    ejecutarScriptsDinamicos(contenedor);
+                    activarEventosAudio();
+                    activarResaltadoCancion();
+                    marcarCorazones();
+                });
+            return;
+        }
+
+        // ÁLBUM
+        const cardAlbum = e.target.closest('.card-album');
+        if (cardAlbum) {
+            const id = cardAlbum.dataset.id;
+            fetch('/ajax/album.php?id=' + id)
+                .then(res => res.text())
+                .then(html => {
+                    const contenedor = document.getElementById('contenido-principal');
+                    contenedor.innerHTML = html;
+                    ocultarContenidoDefault();
+                    ejecutarScriptsDinamicos(contenedor);
+                    activarEventosAudio();
+                    activarResaltadoCancion();
+                    marcarCorazones();
+                });
+            return;
+        }
+
+        // PLAYLIST
+        const cardPlaylist = e.target.closest('.card-playlist');
+        if (cardPlaylist) {
+            const id = cardPlaylist.dataset.id;
+            fetch('/ajax/playlist.php?id=' + id)
+                .then(res => res.text())
+                .then(html => {
+                    const contenedor = document.getElementById('contenido-principal');
+                    contenedor.innerHTML = html;
+                    ocultarContenidoDefault();
+                    ejecutarScriptsDinamicos(contenedor);
+                    activarEventosAudio();
+                    activarResaltadoCancion();
+                    marcarCorazones();
+                });
+            return;
+        }
+    });
+
+});
 </script>
 
 
