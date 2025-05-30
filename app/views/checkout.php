@@ -70,7 +70,6 @@ $beneficios = $detalles[$plan]['descripcion'];
                         </ul>
                     </div>
                 </div>
-                <hr class="checkout-hr">
             <!-- Columna derecha: Formulario de pago -->
                 <div class="checkout-form-box">
                     <!-- Stripe.js: Carga la librería de Stripe para pagos  -->
@@ -101,13 +100,6 @@ $beneficios = $detalles[$plan]['descripcion'];
                     });
                     </script>
 
-                    <div class="pago-option">
-                        <hr><p>Or</p><hr>
-                    </div>
-                
-                    <!-- Tarjeta de crédito -->
-
-                    <h2>Pago con tarjeta</h2>
                         
                 </div>
             </div>

@@ -20,6 +20,8 @@ if (!$c) {
 $c['ruta_mp3'] = "/uploads/stream.php?file={$c['id_cancion']}.mp3";
 $c['foto_album'] = $c['id_album'] ? "/uploads/foto-album/{$c['id_album']}.jpg" : "/uploads/foto-album/default.jpg";
 $c['artista'] = $c['id_usuario'] ? $cancionModel->getArtistaPorId($c['id_usuario']) : 'Desconocido';
+// Obtener el nombre del álbum
+$c['nombre_album'] = $c['id_album'] ? $cancionModel->getNombreAlbumPorId($c['id_album']) : 'Desconocido';
 ?>
     <div class="fila-encabezados" style="display: flex; font-weight: bold; margin-bottom: 10px;">
         <div style="flex: 2; text-align: left; margin-left: 25px;">Canción</div>
@@ -57,7 +59,7 @@ $c['artista'] = $c['id_usuario'] ? $cancionModel->getArtistaPorId($c['id_usuario
                 <span><?= htmlspecialchars($c['artista'] ?? 'Desconocido') ?></span>
             </div>
             <div class="stat-cancion">
-                <span><?= $c['reproducciones'] ?? 0 ?></span>
+                <span><?= htmlspecialchars($c['nombre_album']) ?></span>
                 <span><?= $c['duracion'] ?? '00:00' ?></span>
             </div>
         </div>

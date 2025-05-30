@@ -37,7 +37,6 @@ main{
 .reproductor {
     display: flex;
     width: 100%;
-
     padding-right: 5px;
     gap: 10px;
 }
@@ -50,11 +49,19 @@ main{
     width: 100%;
     padding-right: 10px;
     flex: 2;
-    
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     scroll-behavior: smooth;
+}
+
+#resultados ul li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#resultados ul:nth-child(2) li img{
+    border-radius: 25px;
 }
 .container-cancion.cancion-activa {
     background: linear-gradient(90deg, #3a3a3a33, #80808033);
@@ -107,6 +114,15 @@ h3{
     border-radius: 20px;
 }
 
+
+#resultados-dinamicos {
+    gap: 20px;
+    padding: 0px 10px;
+    width: 48%;
+}
+#resultados-dinamicos> .fila-encabezado div:nth-child(2){
+    margin-left: 300px;
+}
 #contenido-principal{
     padding: 0px 10px;
     display: none;
@@ -315,7 +331,10 @@ h3{
 .container-cancion{
     display: flex;
     align-items: center;
-    padding: 0px  5px;
+    padding: 5px  5px;
+}
+.container-cancion:hover {
+    background: linear-gradient(90deg, #3a3a3a33, #80808033);
 }
 .img-wrapper {
     position: relative;
@@ -438,7 +457,6 @@ h3{
   transform: translateY(-35%);
   left: 50%;
   transform: translateX(-50%);
-    /* ✅ Centrado vertical */
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -459,8 +477,6 @@ h3{
   gap: 20px;
   box-shadow: 0 0 20px rgba(255, 78, 196, 0.3);
   font-family: 'Poppins', sans-serif;
-
-  /* ✅ Centrado absoluto */
   align-self: center;
 }
 
@@ -757,4 +773,187 @@ svg.corazon-gradient {
     flex-direction: column;
     gap: 20px;
     margin-bottom: 20px;
+}
+#contenido-default h2,
+#contenido-default h3 {
+    font-size: 1.1rem;
+}
+
+#contenido-default .grid .card div,
+#contenido-default .grid .card p,
+#contenido-default .grid .card span {
+    font-size: 0.95rem;
+}
+@media (max-width: 1370px) {
+    .container {
+        width: 90%;
+
+    }
+    #contenido-default #playlists-destacadas .grid .card img {
+        width: 280px !important;
+        height: 200px !important;
+    }
+    #contenido-default #recomendaciones .grid .card img,
+    #contenido-default #tendencias .grid .card img {
+        width: 160px !important;
+        height: 150px !important;
+    }
+}
+@media (max-width: 1320px) {
+    .container {
+        width: 90%;
+
+    }
+    #contenido-default #playlists-destacadas .grid .card img {
+        width: 250px !important;
+        height: 200px !important;
+    }
+    #contenido-default #recomendaciones .grid .card img,
+    #contenido-default #tendencias .grid .card img {
+        width: 160px !important;
+        height: 150px !important;
+    }
+}
+
+@media (max-width: 1180px) {
+    .buscador-con-boton {
+        margin-top: 25px;
+    }
+    .container {
+        width: 90%;
+    }
+    .reproductor {
+        display: flex;
+    }
+    #bloque-default {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+
+    }
+    #contenido-default #playlists-destacadas .grid .card img {
+        width: 220px !important;
+        height: 200px !important;
+    }
+    #contenido-default #recomendaciones .grid .card img,
+    #contenido-default #tendencias .grid .card img {
+        width: 160px !important;
+        height: 150px !important;
+    }
+    #contenido-default .grid .card-artista > div,
+    #contenido-default .grid .card-album > div {
+        font-size: 0.8rem;
+        max-width: 100px;
+    }
+
+    #resultados-dinamicos {
+        width: 90%;
+    }
+}
+@media (max-width: 1080px) {
+    
+    #contenido-default #playlists-destacadas .grid .card img {
+        width: 170px !important;
+        height: 180px !important;
+    }
+    #contenido-default #recomendaciones .grid .card img,
+    #contenido-default #tendencias .grid .card img {
+        width: 130px !important;
+        height: 130px !important;
+    }
+    #contenido-default .grid .card-artista > div,
+    #contenido-default .grid .card-album > div {
+        font-size: 0.8rem;
+        max-width: 100px;
+    }
+
+    #resultados-dinamicos {
+        width: 90%;
+    }
+}
+@media (max-width: 860px) {
+    .buscador-con-boton {
+        margin-top: 40px;
+    }
+
+   #bloque-default {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+
+    #contenido-default {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    #contenido-default section {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    #contenido-default #playlists-destacadas .grid .card img {
+        width: 160px !important;
+        height: 140px !important;
+    }
+    #contenido-default #recomendaciones .grid .card img,
+    #contenido-default #tendencias .grid .card img {
+        width: 120px !important;
+        height: 120px !important;
+    }
+
+}
+@media (max-width: 768px) {
+    .buscador-con-boton {
+        margin-top: 80px;
+        width: 80%;
+        align-self: center;
+    }
+}
+
+@media (max-width: 660px) {
+    #contenido-default .grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+    #contenido-default #playlists-destacadas .grid .card img{
+        width: 160px !important;
+        height: 150px !important;
+        display: block;
+    }
+    #contenido-default #recomendaciones .grid .card img,
+    #contenido-default #tendencias .grid .card img {
+        width: 120px !important;
+        height: 120px !important;
+        display: block;
+    }
+    .modal-content {
+        margin: 20px ;
+    }
+
+}
+
+@media (max-width: 480px) {
+    #contenido-default .grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    #contenido-default #playlists-destacadas .grid .card img{
+        width: 140px !important;
+        height: 130px !important;
+        display: block;
+    }
+    #contenido-default #recomendaciones .grid .card img,
+    #contenido-default #tendencias .grid .card img {
+        height: 130px !important;
+        width: 120px  !important ;
+    }
 }

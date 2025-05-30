@@ -37,5 +37,10 @@ class Cancion {
         $stmt->execute([$id_cancion]);
         return $stmt->fetchColumn();
     }
+    public function getNombreAlbumPorId($id_album) {
+        $stmt = $this->db->prepare("SELECT nombre FROM albums WHERE id_album = ?");
+        $stmt->execute([$id_album]);
+        return $stmt->fetchColumn() ?: 'Desconocido';
+    }
 }
 ?>

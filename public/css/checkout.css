@@ -22,13 +22,15 @@ main{
 
 .checkout-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  flex-direction: column;
   width: 100%;
   max-width: 900px;
   padding: 30px;
   border-radius: 20px;
   gap: 40px;
   align-items: center;
+
 }
 
 .plan{
@@ -103,61 +105,16 @@ main{
   margin-top: 20px;
   font-size: 1.2rem;
 }
-
-.checkout-form-box form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.checkout-form-box input {
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background-color: #333;
-  color: white;
-}
-.checkout-form-box h2 {
-  margin: 0px 0px 10px 0px;
-}
-.checkout-form-box input::placeholder {
-  color: #999;
-}
-.input-wrapper {
-  position: relative;
+.checkout-form-box{
+  height: 100%;
   width: 100%;
-}
-.input-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.input-wrapper input {
-  width: 91%;
-  border-radius: 10px;
-  border: none;
-  background-color: #333;
-  color: white;
-  font-size: 1rem;
-}
-
-.card-icons {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
   display: flex;
-  gap: 5px;
-}
-
-.card-icons img {
-  height: 22px;
-  width: auto;
-  pointer-events: none;
+  justify-content: center;
+  align-items: center;
 }
 
 .btn-confirmar {
-  margin-top: 10px;
+
   background: linear-gradient(to right, #481B9A, #FF4EC4);
   padding: 15px;
   border: none;
@@ -167,76 +124,15 @@ main{
   cursor: pointer;
   transition: background 0.3s ease;
 }
-.btn-paypal {
-  background: linear-gradient(to right, #5ec4ff, #2400f0);
-  border: none;
-  border-radius: 5px;
-  color: white;
-  height: 50px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  position: relative;
-  margin-bottom: 5px;
-}
-.btn-paypal svg{
-  height: 80px;
-  width: 80px;
-  position: absolute;
-  top: -13px;
-  left: 93px;
-}
-.btn-paypal:hover,
-.btn-confirmar:hover {
-  opacity: 0.7;
-}
-.pago-option{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2px;
-}
-.pago-option p{
-    margin: 20px 0px  20px 0px;
-}
-.checkout-hr{
-    height: 500px;
-    border: none;
-    box-shadow: 0 0 0 0.5px gray;
-}
 
-.pago-option hr{
-    width:100px !important;
-    border: none;
-    box-shadow: 0 0 0 0.5px gray;
-}
 
-.checkout-content {
-  flex-direction: column;
-}
 
 @media (min-width: 768px) {
   .checkout-content {
-    flex-direction: row;
+    flex-direction: column;
     align-items: flex-start;
   }
 
-  .checkout-plan-box,
-  .checkout-form-box {
-    width: 50%;
-  }
-}
-
-@media (min-width: 768px) {
-  .checkout-content {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .checkout-plan-box,
-  .checkout-form-box {
-    max-width: 50%;
-  }
 
   .checkout-plan-box {
     padding: 40px;
