@@ -45,9 +45,9 @@ if (!isset($_SESSION['email'])) {
                                 <h2>Tendencias</h2>
                                 <div class="grid">
                                     <div class="card card-album" data-id="5"><img src="uploads/foto-album/5.jpg"><div>Timelezz</div></div>
-                                    <div class="card card-album" data-id="1"><img src="uploads/foto-album/1.jpg"><div>Dictadura</div></div>
-                                    <div class="card card-album" data-id="11"><img src="uploads/foto-album/11.jpg"><div>Un Verano Sin Ti</div></div>
-                                    <div class="card card-album" data-id="25"><img src="uploads/foto-album/25.jpg"><div>LLNM2</div></div>
+                                    <div class="card card-album" data-id="1"><img src="uploads/foto-album/1.jpg"><div>Donde Quiero Estar</div></div>
+                                    <div class="card card-album" data-id="11"><img src="uploads/foto-album/11.jpg"><div>Yonaguni</div></div>
+                                    <div class="card card-album" data-id="25"><img src="uploads/foto-album/25.jpg"><div>Pareja del año</div></div>
                                 </div>
                             </section>
                             <section id="recomendaciones">
