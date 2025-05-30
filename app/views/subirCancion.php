@@ -4,8 +4,11 @@
 require_once '../config/Conexion_BBDD.php';
 require_once '../app/models/usuario.php';
 require_once '../app/models/artista.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 session_start();
+
+$getID3 = new getID3;
 
 // Solo permite el acceso a usuarios con sesión iniciada y tipo 'artista'
 if (!isset($_SESSION['email']) || $_SESSION['tipo'] !== 'artista') {
@@ -44,9 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $nombre_img = $id_album . '.' . $img_ext;
                 move_uploaded_file($archivo_img['tmp_name'], "uploads/foto-album/" . $nombre_img);
 
+                $info = $getID3->analyze($archivo_mp3['tmp_name']);
+                $duracion = isset($info['playtime_string']) ? $info['playtime_string'] : '00:00';
+
                 // Guardar canción en la base de datos con id_usuario
-                $stmt = $pdo->prepare("INSERT INTO canciones (nombre_c, id_album, id_usuario) VALUES (?, ?, ?)");
-                $stmt->execute([$nombre, $id_album, $id_usuario]);
+                $stmt = $pdo->prepare("INSERT INTO canciones (nombre_c, id_album, id_usuario, duracion) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$nombre, $id_album, $id_usuario, $duracion]);
                 $id_cancion = $pdo->lastInsertId();
 
                 // Guardar archivo MP3

@@ -27,7 +27,7 @@
         // =========================
         //buscar la cancion con el nombre que coincida con la consulta
         $stmt = $pdo->prepare("
-            SELECT c.id_cancion, c.nombre_c, c.id_album, c.reproducciones, c.duracion, 
+            SELECT c.id_cancion, c.nombre_c, c.id_album, c.duracion, 
                 a.nombre AS album, u.nombre AS artista
             FROM canciones c
             LEFT JOIN albums a ON c.id_album = a.id_album
@@ -55,7 +55,7 @@
         //     "id_cancion": 5,
         //     "nombre_c": "Waka Waka",
         //     "id_album": 2,
-        //     "reproducciones": 12345,
+
         //     "duracion": "03:22",
         //     "album": "Sale el Sol",
         //     "artista": "Shakira",

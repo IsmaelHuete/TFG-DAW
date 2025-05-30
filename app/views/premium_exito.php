@@ -81,12 +81,22 @@ $usuarioModel->actualizarPlan($email, 'premium');
     <meta charset="UTF-8">
     <title>Pago Exitoso</title>
     <link rel="stylesheet" href="css/comun.css">
+    <link rel="stylesheet" href="css/premium_exito.css">
+    <link rel="stylesheet" href="css/header1.css">
+    <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
+    <?php 
+        include ("layouts/header1.php");
+        
+    ?>
     <main style="padding: 40px; text-align:center;">
         <h1>✅ ¡Gracias por tu compra!</h1>
         <p>Tu cuenta ha sido actualizada a <strong>Premium</strong>.</p>
         <a href="/index">Volver al inicio</a>
     </main>
+    <?php 
+        include ("layouts/footer.php");
+    ?>
 </body>
 </html>

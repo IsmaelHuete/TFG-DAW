@@ -32,21 +32,23 @@ if (!isset($_SESSION['email'])) {
                     <div id="bloque-default">
                         <div id="contenido-default">
                             <section id="playlists-destacadas">
-                                <h2>Playlists destacadas</h2>
+                                <h2>Álbumes Destacados</h2>
                                 <div class="grid">
-                                    <div class="card card-playlist" data-id="1"><img src="uploads/foto-album/1.jpg"><div>Top Hits</div></div>
-                                    <div class="card card-playlist" data-id="12"><img src="uploads/foto-album/12.jpg"><div>Pop</div></div>
-                                    <div class="card card-playlist" data-id="5"><img src="uploads/foto-album/5.jpg"><div>RapCaviar</div></div>
-                                    <div class="card card-playlist" data-id="15"><img src="uploads/foto-album/15.jpg"><div>Flow Latino</div></div>
+                                    <div class="card card-album" data-id="2"><img src="uploads/foto-album/2.jpg"><div>Un Verano Sin Ti</div></div>
+                                    <div class="card card-album" data-id="4"><img src="uploads/foto-album/4.jpg"><div>Easy Money Baby</div></div>
+                                    <div class="card card-album" data-id="3"><img src="uploads/foto-album/3.jpg"><div>Emmanuel</div></div>
+                                    <div class="card card-album" data-id="5"><img src="uploads/foto-album/5.jpg"><div>Timelezz</div></div>
+
                                 </div>
                             </section>
                             <section id="tendencias">
                                 <h2>Tendencias</h2>
                                 <div class="grid">
-                                    <div class="card card-album" data-id="5"><img src="uploads/foto-album/5.jpg"><div>Timelezz</div></div>
                                     <div class="card card-album" data-id="1"><img src="uploads/foto-album/1.jpg"><div>Donde Quiero Estar</div></div>
                                     <div class="card card-album" data-id="11"><img src="uploads/foto-album/11.jpg"><div>Yonaguni</div></div>
                                     <div class="card card-album" data-id="25"><img src="uploads/foto-album/25.jpg"><div>Pareja del año</div></div>
+                                    <div class="card card-album" data-id="27"><img src="uploads/foto-album/27.jpg"><div>Fiel Remix</div></div>
+
                                 </div>
                             </section>
                             <section id="recomendaciones">
