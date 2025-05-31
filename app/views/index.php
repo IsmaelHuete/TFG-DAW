@@ -111,6 +111,15 @@ if (!isset($_SESSION['email'])) {
             </div>
         </div>
 
+
+        <div id="modalEliminarPlaylist" class="modal" style="display: none;">
+            <div class="modal-contenido">
+                <p>¿Estás seguro de que quieres eliminar la playlist <span id="nombre-playlist"></span>?</p>
+                <button id="confirmarEliminarPlaylist">Eliminar</button>
+                <button id="cancelarEliminarPlaylist">Cancelar</button>
+            </div>
+        </div>
+
         <?php
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
