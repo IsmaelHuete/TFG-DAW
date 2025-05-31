@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($nombre !== '' && $archivo_mp3 && $archivo_img) {
             $mp3_ok = $archivo_mp3['type'] === 'audio/mpeg';
             $img_ext = strtolower(pathinfo($archivo_img['name'], PATHINFO_EXTENSION));
-            $img_ok = in_array($img_ext, ['jpg', 'jpeg', 'png']);
+            $img_ok = in_array($img_ext, ['jpg']);
 
             if ($mp3_ok && $img_ok) {
                 // Crear álbum con nombre igual a canción
@@ -103,9 +103,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         continue;
                     }
 
+                    //Sacar duracion con getID3
+                    $info = $getID3->analyze($tmpFile);
+                    $duracion = isset($info['playtime_string']) ? $info['playtime_string'] : '00:00';
                     // Insertar canción
-                    $stmt = $pdo->prepare("INSERT INTO canciones (nombre_c, id_album, id_usuario) VALUES (?, ?, ?)");
-                    $stmt->execute([$nombreCancion, $id_album, $id_usuario]);
+                    $stmt = $pdo->prepare("INSERT INTO canciones (nombre_c, id_album, id_usuario, duracion) VALUES (?, ?, ?, ?)");
+                    $stmt->execute([$nombreCancion, $id_album, $id_usuario, $duracion]);
                     $id_cancion = $pdo->lastInsertId();
 
                     // Mover archivo

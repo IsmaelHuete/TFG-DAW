@@ -140,4 +140,43 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         }
+
+        /* document.querySelectorAll('.btn-eliminar-playlist').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); // 🚫 Detiene que el clic se propague al contenedor
+                const playlistId = btn.dataset.id;
+                const playlistNombre = btn.dataset.nombre;
+
+                document.getElementById('nombre-playlist').textContent = playlistNombre;
+                document.getElementById('modalEliminarPlaylist').style.display = 'block';
+                document.getElementById('confirmarEliminarPlaylist').dataset.id = playlistId;
+            });
+        });
+
+
+        // Cerrar modal
+        document.getElementById('cancelarEliminarPlaylist').addEventListener('click', () => {
+            document.getElementById('modalEliminarPlaylist').style.display = 'none';
+        });
+
+        // Confirmar eliminación
+        document.getElementById('confirmarEliminarPlaylist').addEventListener('click', () => {
+            const id = document.getElementById('confirmarEliminarPlaylist').dataset.id;
+
+            fetch('/ajax/eliminar_playlist.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_playlist: id })
+            })
+            .then(response => response.json())
+            .then(data => {
+            if (data.success) {
+                document.getElementById('modalEliminarPlaylist').style.display = 'none';
+                location.reload(); // o eliminar el div de la playlist del DOM
+            } else {
+                alert('Error al eliminar playlist');
+            }
+            });
+        }); */
+
 });

@@ -123,6 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
             div.innerHTML = `
               <img src="/uploads/foto-playlist/${p.foto || 'default.jpg'}" alt="Playlist">
               <span>${p.nombre}</span>
+              <button class="btn-eliminar-playlist" data-id="<?= $playlist['id_playlist'] ?>" data-nombre="<?= $playlist['nombre'] ?>">🗑</button>
+
             `;
 
 
@@ -134,11 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(res => res.text())
                 .then(html => {
                   const contenedor = document.getElementById('resultados-dinamicos');
-document.getElementById('contenido-principal').innerHTML = '';
-document.getElementById('contenido-principal').style.display = 'none';
-contenedor.style.display = 'block';
-contenedor.innerHTML = html;
-contenedor.scrollIntoView({ behavior: 'smooth' });
+                  document.getElementById('contenido-principal').innerHTML = '';
+                  document.getElementById('contenido-principal').style.display = 'none';
+                  contenedor.style.display = 'block';
+                  contenedor.innerHTML = html;
+                  contenedor.scrollIntoView({ behavior: 'smooth' });
 
 
                   // Ejecutar scripts dentro del HTML cargado (si los hay)
@@ -170,5 +172,43 @@ contenedor.scrollIntoView({ behavior: 'smooth' });
         });
     }
   });
+
+  document.querySelectorAll('.btn-eliminar-playlist').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); // 🚫 Detiene que el clic se propague al contenedor
+                const playlistId = btn.dataset.id;
+                const playlistNombre = btn.dataset.nombre;
+
+                document.getElementById('nombre-playlist').textContent = playlistNombre;
+                document.getElementById('modalEliminarPlaylist').style.display = 'block';
+                document.getElementById('confirmarEliminarPlaylist').dataset.id = playlistId;
+            });
+        });
+
+
+        // Cerrar modal
+        document.getElementById('cancelarEliminarPlaylist').addEventListener('click', () => {
+            document.getElementById('modalEliminarPlaylist').style.display = 'none';
+        });
+
+        // Confirmar eliminación
+        document.getElementById('confirmarEliminarPlaylist').addEventListener('click', () => {
+            const id = document.getElementById('confirmarEliminarPlaylist').dataset.id;
+
+            fetch('/ajax/eliminar_playlist.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_playlist: id })
+            })
+            .then(response => response.json())
+            .then(data => {
+            if (data.success) {
+                document.getElementById('modalEliminarPlaylist').style.display = 'none';
+                location.reload(); // o eliminar el div de la playlist del DOM
+            } else {
+                alert('Error al eliminar playlist');
+            }
+            });
+        });
 });
 </script>

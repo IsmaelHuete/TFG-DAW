@@ -23,7 +23,7 @@ if (!$playlist) {
 }
 
 $stmt = $pdo->prepare("
-    SELECT c.id_cancion, c.nombre_c, c.duracion, c.reproducciones, c.id_album, u.nombre AS artista
+    SELECT c.id_cancion, c.nombre_c, c.duracion, c.id_album, u.nombre AS artista
     FROM cancion_playlist cp
     JOIN canciones c ON cp.id_cancion = c.id_cancion
     JOIN usuario u ON c.id_usuario = u.id_usuario

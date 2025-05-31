@@ -52,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['email'] = $email;
         $_SESSION['tipo'] = $tipo;
         $_SESSION['nombre'] = $nombre;
+        $_SESSION['id_usuario'] = $pdo->lastInsertId(); // Asumiendo que el ID es autoincremental
         header("Location: /");
         exit;
     }
