@@ -145,6 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Subir canción</title>
+    <link rel="icon" type="image/png" href="img/image-brand.png">
     <link rel="stylesheet" href="css/comun.css">
     <link rel="stylesheet" href="css/perfil.css">
     <link rel="stylesheet" href="css/header1.css">

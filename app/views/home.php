@@ -1,12 +1,17 @@
 <?php
     session_start();
+    require_once __DIR__ . '/../models/artista.php';
+
+    $artistaModel = new Artista($pdo);
+    $topArtistas = $artistaModel->getTopArtistasConReproducciones(4);
 ?>
 <!DOCTYpE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home</title>
+    <link rel="icon" type="image/png" href="img/image-brand.png">
     <link rel="stylesheet" href="css/comun.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/header.css">
@@ -16,52 +21,27 @@
 </head>
 <body>
     <div class="oferta">
-        <p>🔥 Musicfy Premium te lleva más lejos. Escucha sin conexión, sin cortes y con calidad HD. Suscríbete y transforma tu forma de escuchar música.</p>
+        <p>Musicfy Premium te lleva más lejos. Escucha sin conexión, sin cortes y con calidad HD. Suscríbete y transforma tu forma de escuchar música.</p>
     </div>
     <?php 
         include ("layouts/header.php");
     ?>
     <main>
-        <div class="wrap">
-            <div class="container">
-                <input type="radio" name="slide" id="c1" checked>
-                <label for="c1" class="card">
+         <div class="wrap">
+        <div class="container">
+            <?php foreach ($topArtistas as $i => $artista): ?>
+                <input type="radio" name="slide" id="c<?= $i+1 ?>" <?= $i === 0 ? 'checked' : '' ?>>
+                <label for="c<?= $i+1 ?>" class="card">
                     <div class="row">
                         <div class="description">
-                            <h4>Quevedo</h4>
-                            <p>25.563.510</p>
+                            <h4><?= htmlspecialchars($artista['nombre_artista']) ?></h4>
+                            <p><?= number_format($artista['total_reproducciones'], 0, ',', '.') ?></p>
                         </div>
                     </div>
                 </label>
-                <input type="radio" name="slide" id="c2" >
-                <label for="c2" class="card">
-                    <div class="row">
-                        <div class="description">
-                            <h4>Anuel</h4>
-                            <p>34.282.946</p>
-                        </div>
-                    </div>
-                </label>
-                <input type="radio" name="slide" id="c3" >
-                <label for="c3" class="card">
-                    <div class="row">
-                        <div class="description">
-                            <h4>Arcangel</h4>
-                            <p>24.776.694</p>
-                        </div>
-                    </div>
-                </label>
-                <input type="radio" name="slide" id="c4" >
-                <label for="c4" class="card">
-                    <div class="row">
-                        <div class="description">
-                            <h4>Bad Bunny</h4>
-                            <p>83.710.525</p>
-                        </div>
-                    </div>
-                </label>
-            </div> 
+            <?php endforeach; ?>
         </div>
+    </div>
     </main>
     <div class="banners">
         <div class="container-banner">

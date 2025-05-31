@@ -133,8 +133,13 @@ document.addEventListener("DOMContentLoaded", () => {
               fetch(`/ajax/playlist.php?id=${playlistId}`)
                 .then(res => res.text())
                 .then(html => {
-                  const contenedor = document.getElementById('contenido-principal');
-                  contenedor.innerHTML = html;
+                  const contenedor = document.getElementById('resultados-dinamicos');
+document.getElementById('contenido-principal').innerHTML = '';
+document.getElementById('contenido-principal').style.display = 'none';
+contenedor.style.display = 'block';
+contenedor.innerHTML = html;
+contenedor.scrollIntoView({ behavior: 'smooth' });
+
 
                   // Ejecutar scripts dentro del HTML cargado (si los hay)
                   contenedor.querySelectorAll('script').forEach(oldScript => {

@@ -65,6 +65,25 @@
             $stmt->execute([$id_usuario]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } */
+        public function getTopArtistasConReproducciones($limite = 4) {
+            $stmt = $this->db->prepare("
+                SELECT 
+                    u.id_usuario,
+                    u.nombre AS nombre_artista,
+                    u.foto_perfil,
+                    COALESCE(SUM(rd.cantidad), 0) AS total_reproducciones
+                FROM usuario u
+                JOIN artista a ON u.id_usuario = a.id_usuario
+                LEFT JOIN canciones c ON c.id_usuario = u.id_usuario
+                LEFT JOIN reproducciones_diarias rd ON rd.id_cancion = c.id_cancion
+                GROUP BY u.id_usuario, u.nombre, u.foto_perfil
+                ORDER BY total_reproducciones DESC
+                LIMIT ?
+            ");
+            $stmt->bindValue(1, $limite, \PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
 
         public function subirCancionConAlbum($nombre_c, $duracion, $id_usuario, $id_album) {
             $stmt = $this->db->prepare("INSERT INTO canciones (nombre_c, duracion, id_usuario, id_album) VALUES (?, ?, ?, ?) RETURNING id_cancion");
