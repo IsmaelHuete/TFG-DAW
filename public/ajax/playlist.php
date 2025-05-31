@@ -86,7 +86,7 @@
             <span><?= htmlspecialchars($c['artista']) ?></span>
         </div>
         <div class="stat-cancion">
-            <span><?= $c['reproducciones'] ?? 0 ?></span>
+            <span><?= $playlist['nombre_playlist']?></span>
             <span><?= $c['duracion'] ?? '00:00' ?></span>
             <form class="form-eliminar-cancion" data-id-playlist="<?= $id_playlist ?>" data-id-cancion="<?= $c['id_cancion'] ?>">
                 <button type="button" class="btn-eliminar" title="Eliminar de la playlist"><svg width="18" height="18" viewBox="0 0 18 18" fill="none">

@@ -140,7 +140,22 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-
+    //para cerrar el modal de eliminar playlist
+    document.querySelectorAll('#modalEliminarPlaylist .cerrar-modal').forEach(x => {
+        x.addEventListener('click', function() {
+            document.getElementById('modalEliminarPlaylist').style.display = 'none';
+        });
+    });
+    // para cerrar el modal de confirmación de eliminar canción
+    document.body.addEventListener('click', function(e) {
+        if (
+            e.target.classList.contains('cerrar-modal') &&
+            e.target.closest('#modal-confirmacion')
+        ) {
+            document.getElementById('modal-confirmacion').classList.add('oculto');
+            window.formPendienteEliminar = null;
+        }
+    });
     // Delegación de eventos para borrar canciones de cualquier playlist
     document.body.addEventListener('click', function(e) {
         const btn = e.target.closest('.btn-eliminar');
