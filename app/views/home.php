@@ -59,7 +59,7 @@
                     <h2>🎧 Crea tu playlist personalizada</h2>
                     <span>En segundos, según tu mood</span>
                 </div>
-                <button>Empieza ahora</button>
+                <a href="index"><button>Empieza ahora</button></a>
             </div>
 
             <div class="section-banner">

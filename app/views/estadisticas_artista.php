@@ -115,15 +115,16 @@ Ejemplo de $canciones:
 // - Suma de reproducciones de todas las canciones del álbum
 $stmtAlbums = $pdo->prepare("
     SELECT 
-        a.id_album,                                 -- ID del álbum     
-        a.nombre AS nombre_album,                   -- Nombre del álbum 
-        a.genero,                                   -- Género del álbum    
-        COUNT(c.id_cancion) AS total_canciones,     -- Número de canciones en el álbum
-        COALESCE(SUM(c.reproducciones), 0) AS total_reproducciones  -- Suma de reproducciones de todas las canciones del álbum
+        a.id_album,
+        a.nombre AS nombre_album,
+        a.genero,
+        COUNT(DISTINCT c.id_cancion) AS total_canciones,
+        COALESCE(SUM(rd.cantidad), 0) AS total_reproducciones
     FROM albums a
     LEFT JOIN canciones c ON a.id_album = c.id_album
+    LEFT JOIN reproducciones_diarias rd ON c.id_cancion = rd.id_cancion
     WHERE a.id_usuario = ?
-    GROUP BY a.id_album
+    GROUP BY a.id_album, a.nombre, a.genero
 ");
 $stmtAlbums->execute([$id_artista]);
 $albums = $stmtAlbums->fetchAll();

@@ -86,7 +86,7 @@
         }
 
         public function subirCancionConAlbum($nombre_c, $duracion, $id_usuario, $id_album) {
-            $stmt = $this->db->prepare("INSERT INTO canciones (nombre_c, duracion, id_usuario, id_album, reproducciones, guardados) VALUES (?, ?, ?, ?, 0, 0) RETURNING id_cancion");
+            $stmt = $this->db->prepare("INSERT INTO canciones (nombre_c, duracion, id_usuario, id_album) VALUES (?, ?, ?, ?) RETURNING id_cancion");
             $stmt->execute([$nombre_c, $duracion, $id_usuario, $id_album]);
             return $stmt->fetchColumn();
         }
@@ -101,7 +101,7 @@
         // Obtiene todas las canciones del artista con info de álbum
         public function getCanciones($id_usuario) {
             $stmt = $this->db->prepare("
-                SELECT c.id_cancion, c.nombre_c, c.id_album, c.duracion, c.reproducciones, a.nombre AS nombre_album
+                SELECT c.id_cancion, c.nombre_c, c.id_album, c.duracion,  a.nombre AS nombre_album
                 FROM canciones c
                 JOIN albums a ON c.id_album = a.id_album
                 WHERE a.id_usuario = ?

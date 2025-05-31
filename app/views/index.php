@@ -48,6 +48,7 @@ if (!isset($_SESSION['email'])) {
                                     <div class="card card-album" data-id="11"><img src="uploads/foto-album/11.jpg"><div>Yonaguni</div></div>
                                     <div class="card card-album" data-id="25"><img src="uploads/foto-album/25.jpg"><div>Pareja del año</div></div>
                                     <div class="card card-album" data-id="27"><img src="uploads/foto-album/27.jpg"><div>Fiel Remix</div></div>
+
                                 </div>
                             </section>
                             <section id="recomendaciones">
