@@ -90,7 +90,7 @@ $usuarioModel->actualizarPlan($email, 'premium');
         include ("layouts/header1.php");
         
     ?>
-    <main style="padding: 40px; text-align:center;">
+    <main style=" text-align:center;">
         <h1>✅ ¡Gracias por tu compra!</h1>
         <p>Tu cuenta ha sido actualizada a <strong>Premium</strong>.</p>
         <a href="/index">Volver al inicio</a>

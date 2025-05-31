@@ -19,7 +19,7 @@ $normalModel = new Normal($pdo);
 $artistaModel = new Artista($pdo);
 
 $error = '';
-
+$maxFecha = date('Y-m-d', strtotime('-12 years'));
 // Si el formulario se ha enviado por POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recoge los datos del formulario
@@ -28,34 +28,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $f_nacimiento = $_POST['f_nacimiento'] ?? null;
     $tipo = $_POST['tipo'];
-
-    // Verificar si ya existe el correo
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM usuario WHERE email = ?");
-    $stmt->execute([$email]);
-    $existe = $stmt->fetchColumn();
-
-    if ($existe) {
-        // Si ya existe, muestra un mensaje de error
-        $error = "❌ Ya existe una cuenta con ese correo.";
-    } else {
-        // Si no existe, registra el usuario en la tabla usuario
-        $usuarioModel->registrar($email, $nombre, $f_nacimiento, $password);
-
-        // Según el tipo, lo registra en la tabla correspondiente
-        if ($tipo === 'normal') {
-            $normalModel->registrar();
-        } elseif ($tipo === 'artista') {
-            $artistaModel->registrar();
+    //VALIDACION PARA INSERTAR UN USUARIO EN LA BASE DE DATOS
+    // Validar edad mínima  osea compruebo si l fecha de nacimiento es 12 años atras a la fecha actual
+    if ($f_nacimiento) {
+        $fechaNacimiento = new DateTime($f_nacimiento);
+        $hoy = new DateTime();
+        $edad = $fechaNacimiento->diff($hoy)->y;
+        if ($edad < 12) {
+            $error = "❌ Debes tener al menos 12 años para registrarte.";
         }
-
-        // Inicia sesión automáticamente tras el registro
-        $_SESSION['email'] = $email;
-        $_SESSION['tipo'] = $tipo;
-        $_SESSION['nombre'] = $nombre;
-        $_SESSION['id_usuario'] = $pdo->lastInsertId(); // Asumiendo que el ID es autoincremental
-        header("Location: /");
-        exit;
     }
+    //Si error esta vacio significa que no hay error de edad osea que sigue con el flujo de registro
+    if (empty($error)) {
+        // Validar email solo gmail/hotmail .com/.es con una regex se puede apmpliar si queremos aceptar mas terminaciones
+        if (!preg_match('/^[a-zA-Z0-9._%+-]+@(gmail|hotmail)\.(com|es)$/', $email)) {
+            $error = "❌ Correo invalido";
+        }
+    }
+    //si error sigue vacio significa que no hay error de email ni la fecha osea que sigue con el flujo de registro
+    if (empty($error)) {
+        // Verificar si ya existe el correo para no insertar un usuario con el mismo correo
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM usuario WHERE email = ?");
+        $stmt->execute([$email]);
+        $existe = $stmt->fetchColumn();
+        // si ha pasado todas las comrpobaciones pero si existe el correo pues salta el mesjaje de error controlando el error
+        if ($existe) {
+            $error = "❌ Ya existe una cuenta con ese correo.";
+        } else {
+            // Si no existe, registra el usuario en la tabla usuario
+            $usuarioModel->registrar($email, $nombre, $f_nacimiento, $password);
+
+            // Según el tipo, lo registra en la tabla correspondiente
+            if ($tipo === 'normal') {
+                $normalModel->registrar();
+            } elseif ($tipo === 'artista') {
+                $artistaModel->registrar();
+            }
+
+            // Inicia sesión automáticamente tras el registro
+            $_SESSION['email'] = $email;
+            $_SESSION['tipo'] = $tipo;
+            $_SESSION['nombre'] = $nombre;
+            $_SESSION['id_usuario'] = $pdo->lastInsertId();
+            header("Location: /");
+            exit;
+        }
+    }
+
+    //CONCLUSION DEL REGISTRO :  Si hay un error de edad, no se valida el email ni se consulta la base de datos.
+                // Si hay un error de email, no se consulta la base de datos.
+                //Solo si todo es correcto, se registra el usuario.
 }
 ?>
 
@@ -94,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" name="nombre" placeholder="Nombre completo" required>
                 <input type="email" name="email" placeholder="Correo electrónico" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
-                <input type="date" name="f_nacimiento" placeholder="Fecha de nacimiento" required>
+                <input type="date" name="f_nacimiento" placeholder="Fecha de nacimiento" required max="<?= $maxFecha ?>">
                 <select name="tipo" required>
                     <option value="">Tipo de usuario</option>
                     <option value="normal">Normal</option>
@@ -115,4 +137,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="js/header.js"></script>
     <script src="js/home.js"></script>
 </body>
-</html> 
+</html>

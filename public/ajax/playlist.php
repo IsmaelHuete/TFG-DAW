@@ -1,42 +1,53 @@
 <?php
-require_once __DIR__ . '/../../config/Conexion_BBDD.php';
+    require_once __DIR__ . '/../../config/Conexion_BBDD.php';
 
-$id_playlist = $_GET['id'] ?? null;
+    $id_playlist = $_GET['id'] ?? null;
 
-if (!$id_playlist || !is_numeric($id_playlist)) {
-    echo "Playlist no válida.";
-    exit;
-}
+    if (!$id_playlist || !is_numeric($id_playlist)) {
+        echo "Playlist no válida.";
+        exit;
+    }
 
-$stmt = $pdo->prepare("
-    SELECT p.nombre AS nombre_playlist, p.foto, u.nombre AS creador
-    FROM playlists p
-    JOIN usuario u ON p.id_usuario = u.id_usuario
-    WHERE p.id_playlist = ?
-");
-$stmt->execute([$id_playlist]);
-$playlist = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare("
+        SELECT p.nombre AS nombre_playlist, p.foto, u.nombre AS creador
+        FROM playlists p
+        JOIN usuario u ON p.id_usuario = u.id_usuario
+        WHERE p.id_playlist = ?
+    ");
+    $stmt->execute([$id_playlist]);
+    $playlist = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$playlist) {
-    echo "Playlist no encontrada.";
-    exit;
-}
+    if (!$playlist) {
+        echo "Playlist no encontrada.";
+        exit;
+    }
 
-$stmt = $pdo->prepare("
-    SELECT c.id_cancion, c.nombre_c, c.duracion, c.id_album, u.nombre AS artista
-    FROM cancion_playlist cp
-    JOIN canciones c ON cp.id_cancion = c.id_cancion
-    JOIN usuario u ON c.id_usuario = u.id_usuario
-    WHERE cp.id_playlist = ?
-");
-$stmt->execute([$id_playlist]);
-$canciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare("
+        SELECT DISTINCT c.id_cancion, c.nombre_c, c.duracion, c.id_album, u.nombre AS artista
+        FROM cancion_playlist cp
+        JOIN canciones c ON cp.id_cancion = c.id_cancion
+        JOIN usuario u ON c.id_usuario = u.id_usuario
+        WHERE cp.id_playlist = ?
+    ");
+    $stmt->execute([$id_playlist]);
+    $canciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Añadir datos útiles para el reproductor
-foreach ($canciones as &$c) {
-    $c['ruta_mp3'] = "/uploads/stream.php?file={$c['id_cancion']}.mp3";
-    $c['foto_album'] = $c['id_album'] ? "/uploads/foto-album/{$c['id_album']}.jpg" : "/uploads/foto-album/default.jpg";
-}
+    // Eliminar duplicados por id_cancion
+    $ids = [];
+    $cancionesUnicas = [];
+    foreach ($canciones as $c) {
+        if (!in_array($c['id_cancion'], $ids)) {
+            $cancionesUnicas[] = $c;
+            $ids[] = $c['id_cancion'];
+        }
+    }
+    $canciones = array_values($cancionesUnicas);
+
+    // Añadir datos útiles para el reproductor
+    foreach ($canciones as &$c) {
+        $c['ruta_mp3'] = "/uploads/stream.php?file={$c['id_cancion']}.mp3";
+        $c['foto_album'] = $c['id_album'] ? "/uploads/foto-album/{$c['id_album']}.jpg" : "/uploads/foto-album/default.jpg";
+    }
 ?>
 
 <h2><?= htmlspecialchars($playlist['nombre_playlist']) ?> - <?= htmlspecialchars($playlist['creador']) ?></h2>
@@ -56,7 +67,16 @@ foreach ($canciones as &$c) {
             data-title="<?= htmlspecialchars($c['nombre_c']) ?>"
             data-artist="<?= htmlspecialchars($c['artista']) ?>"
             data-cover="<?= $c['foto_album'] ?>">
-            <svg viewBox="0 0 24 24" width="20px" height="20px"><path fill="#FF4EC4" d="M8 5v14l11-7z"/></svg>
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px">
+                <defs>
+                    <linearGradient id="grad-play" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#481B9A; stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#FF4EC4; stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path fill="url(#grad-play)" fill-rule="evenodd" clip-rule="evenodd"
+                    d="M5.46484 3.92349C4.79896 3.5739 4 4.05683 4 4.80888V19.1911C4 19.9432 4.79896 20.4261 5.46483 20.0765L19.1622 12.8854C19.8758 12.5108 19.8758 11.4892 19.1622 11.1146L5.46484 3.92349ZM2 4.80888C2 2.55271 4.3969 1.10395 6.39451 2.15269L20.0919 9.34382C22.2326 10.4677 22.2325 13.5324 20.0919 14.6562L6.3945 21.8473C4.39689 22.8961 2 21.4473 2 19.1911V4.80888Z"/>
+            </svg>
         </div>
     </div>
 
@@ -69,9 +89,17 @@ foreach ($canciones as &$c) {
             <span><?= $c['reproducciones'] ?? 0 ?></span>
             <span><?= $c['duracion'] ?? '00:00' ?></span>
             <form class="form-eliminar-cancion" data-id-playlist="<?= $id_playlist ?>" data-id-cancion="<?= $c['id_cancion'] ?>">
-                <button type="button" class="btn-eliminar" title="Eliminar de la playlist">🗑️</button>
+                <button type="button" class="btn-eliminar" title="Eliminar de la playlist"><svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <defs>
+                        <linearGradient id="degradado-x" x1="0" y1="0" x2="18" y2="18" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#481B9A"/>
+                        <stop offset="1" stop-color="#FF4EC4"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M4 4L14 14M14 4L4 14" stroke="url(#degradado-x)" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
             </form>
-
         </div>
     </div>
 </div>
@@ -79,27 +107,24 @@ foreach ($canciones as &$c) {
 
 <div id="modal-confirmacion" class="modal1 oculto">
     <div class="modal-contenido">
+        <span class="cerrar-modal">&times;</span>
         <p>¿Quieres eliminar esta canción de la playlist?</p>
         <div class="botones">
-            <button id="btn-cancelar" class="btn">Cancelar</button>
             <button id="btn-confirmar" class="btn btn-rojo">Eliminar</button>
+            <button id="btn-cancelar" class="btn">Cancelar</button>
         </div>
     </div>
 </div>
 
-
 <script>
-    window.playlistActual = <?= json_encode($canciones, JSON_UNESCAPED_UNICODE) ?>;
-    window.albumActual = undefined;
-    window.artistaActual = undefined;
     activarEventosAudio();
     activarResaltadoCancion();
 
-    const modal = document.getElementById('modal-confirmacion');
-    const btnCancelar = document.getElementById('btn-cancelar');
-    const btnConfirmar = document.getElementById('btn-confirmar');
-
-    let formPendiente = null;
+    // Usa var para evitar errores de redeclaración
+    var modal = document.getElementById('modal-confirmacion');
+    var btnCancelar = document.getElementById('btn-cancelar');
+    var btnConfirmar = document.getElementById('btn-confirmar');
+    var formPendiente = null;
 
     document.body.addEventListener('click', function(e) {
         const btn = e.target.closest('.btn-eliminar');
@@ -148,6 +173,8 @@ foreach ($canciones as &$c) {
         });
     });
 
-
+    // Variables globales para el reproductor
+    window.albumActual = undefined;
+    window.artistaActual = undefined;
+    window.playlistActual = <?= json_encode($canciones, JSON_UNESCAPED_UNICODE) ?>;
 </script>
-

@@ -103,28 +103,6 @@ nav.scroll .nav{
     cursor: pointer;
     text-decoration: none;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* .bottom-fade {
-    height: 300px;
-    width: 100%;
-}
-.bottom-fade img{
-    height: 300px;
-    width: 100%;
-    background-size: contain;
-} */
 .nav-section >a >img{
     width: 70px;
     height: 50px; 
@@ -207,10 +185,10 @@ ul li a{
 
 @media (max-width: 860px) {
   .nav {
-    top: 30px; /* Baja el nav para dejar espacio a la oferta */
+    top: 30px; 
   }
   .nav-subheader {
-    margin-top: 140px; /* Baja el subheader para que no se solape */
+    margin-top: 140px; 
     height: auto;
     min-height: 400px;
   }

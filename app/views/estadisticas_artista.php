@@ -241,7 +241,7 @@ foreach ($historialPorCancion as $id => $valores) {
 </head>
 <body>
     <?php 
-        include ("layouts/header-playlist.php");
+        include ("layouts/header1.php");
     ?>
     <main>
         <h1><?= htmlspecialchars($datos['nombre_artista']) ?> - Estadísticas</h1>

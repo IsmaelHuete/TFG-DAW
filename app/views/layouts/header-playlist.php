@@ -121,14 +121,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const div = document.createElement("div");
             div.className = "playlist-item";
             div.innerHTML = `
-              <img src="/uploads/foto-playlist/${p.foto || 'default.jpg'}" alt="Playlist">
-              <span>${p.nombre}</span>
-              <button class="btn-eliminar-playlist" data-id="<?= $playlist['id_playlist'] ?>" data-nombre="<?= $playlist['nombre'] ?>">🗑</button>
-
-            `;
-
-
-
+                <img src="/uploads/foto-playlist/${p.foto || 'default.jpg'}" alt="Playlist">
+                <span>${p.nombre}</span>
+                <button class="btn-eliminar-playlist" data-id="${p.id_playlist}" data-nombre="${p.nombre}">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <defs>
+                        <linearGradient id="degradado-x" x1="0" y1="0" x2="18" y2="18" gradientUnits="userSpaceOnUse">
+                          <stop stop-color="#481B9A"/>
+                          <stop offset="1" stop-color="#FF4EC4"/>
+                        </linearGradient>
+                      </defs>
+                      <path d="M4 4L14 14M14 4L4 14" stroke="url(#degradado-x)" stroke-width="2" stroke-linecap="round"/>
+                    </svg>                
+                </button>
+              `;
             div.addEventListener('click', () => {
               const playlistId = p.id_playlist;
 
@@ -173,42 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  document.querySelectorAll('.btn-eliminar-playlist').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation(); // 🚫 Detiene que el clic se propague al contenedor
-                const playlistId = btn.dataset.id;
-                const playlistNombre = btn.dataset.nombre;
-
-                document.getElementById('nombre-playlist').textContent = playlistNombre;
-                document.getElementById('modalEliminarPlaylist').style.display = 'block';
-                document.getElementById('confirmarEliminarPlaylist').dataset.id = playlistId;
-            });
-        });
-
-
-        // Cerrar modal
-        document.getElementById('cancelarEliminarPlaylist').addEventListener('click', () => {
-            document.getElementById('modalEliminarPlaylist').style.display = 'none';
-        });
-
-        // Confirmar eliminación
-        document.getElementById('confirmarEliminarPlaylist').addEventListener('click', () => {
-            const id = document.getElementById('confirmarEliminarPlaylist').dataset.id;
-
-            fetch('/ajax/eliminar_playlist.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_playlist: id })
-            })
-            .then(response => response.json())
-            .then(data => {
-            if (data.success) {
-                document.getElementById('modalEliminarPlaylist').style.display = 'none';
-                location.reload(); // o eliminar el div de la playlist del DOM
-            } else {
-                alert('Error al eliminar playlist');
-            }
-            });
-        });
+  
 });
 </script>
+<script src="/js/playlist-modal.js"></script>

@@ -10,14 +10,16 @@
         header("Location: /");
         exit;
     }
+    //nstanciar los modelos para gestionar usuarios normales y artistas para poder utilizar sus metodos
     $usuarioModel = new Usuario($pdo);
     $normalModel = new Normal($pdo);
     $artistaModel = new Artista($pdo);
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = $_POST['email'];
         $password = $_POST['password'];
-
-        $usuario = $usuarioModel->login($email, $password);
+        // Validar que el email tenga un formato correcto en el metodo del login 
+        //comprobamos la contraseña cifrada con la que se ha registrado para ver si coincide
+        $usuario = $usuarioModel->login($email, $password); 
         
         if ($usuario) {
             // Si las credenciales son correctas, guarda los datos en la sesión
@@ -49,7 +51,6 @@
     <link rel="stylesheet" href="css/registro.css">
     <link rel="stylesheet" href="css/footer.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
@@ -72,13 +73,12 @@
                 <input type="email" name="email" placeholder="Correo electrónico" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
                 <button type="submit" name="iniciarSesion">Iniciar sesion</button>
-
-                <?php if (isset($mensaje)): ?>
-                    <p class="mensaje-error"><?= htmlspecialchars($mensaje) ?></p>
-                <?php endif; ?>
             </form>
-
-            <span> <a href="#">¿Olvidaste tu contraseña?</a></span>
+            <span><a href="#">¿Olvidaste tu contraseña?</a></span>
+                    <p class="mensaje-error"><?php if (isset($mensaje)): ?>
+                        <?= htmlspecialchars($mensaje) ?>
+                        <?php endif; ?>
+                    </p>
             <p>No tienes una cuenta?</p>
             <a href="register">Registrate</a>
         </div>

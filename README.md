@@ -1,3 +1,7 @@
+Necesitas postgreSQL la base de datos se tiene que llamar Musicfy pones la contraseña y se deberia hacer sola la conexion
+
+
+
 Cuando ya este instalado para visualizar el proyecto 
  php -S localhost:3000 -t public<br>
 1 PASO:

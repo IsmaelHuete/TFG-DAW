@@ -104,7 +104,7 @@ echo json_encode($resultado);
 /*
 ejemplo de uso en el frontend con ajax haciendo fetch
 
-fetch('/public/buscar.php?q=anuel')
+fetch('/buscar.php?q=anuel')
   .then(res => res.json())
   .then(data => {
     aqui iria el let html con los resultados

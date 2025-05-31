@@ -101,28 +101,6 @@ nav.scroll .nav{
     color: white;
     cursor: pointer;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* .bottom-fade {
-    height: 300px;
-    width: 100%;
-}
-.bottom-fade img{
-    height: 300px;
-    width: 100%;
-    background-size: contain;
-} */
 .nav-section >a>img{
     width: 70px;
     height: 50px; 
@@ -183,7 +161,24 @@ ul li a{
     text-decoration: none;
     color: white;
 } 
+.btn-eliminar-playlist {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: inherit !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.btn-eliminar-playlist svg {
+  width: 30px;
+  height: 30px;
+  display: block;
+}
 /* Botón hamburguesa */
 .menu-icon {
   display: none;

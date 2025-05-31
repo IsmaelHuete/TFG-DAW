@@ -101,10 +101,10 @@
     // llamar los eventos del reproductor y el resaltado de canción
     activarEventosAudio();
     activarResaltadoCancion();
-    </script>
 
-    <script>
-        //windows.artistaActual expone el array de canciones del artista en una variable global
+
+
+       //windows.artistaActual expone el array de canciones del artista en una variable global
         //para que el reproductor pueda acceder a ellas y reproducirlas en orden.
         //también borra la variable global de álbum para evitar conflictos si el usuario cambia de vista
         window.artistaActual = <?= json_encode($canciones, JSON_UNESCAPED_UNICODE) ?>;
@@ -114,4 +114,4 @@ Ejemplo de uso:
 - Cuando el usuario hace clic en una canción de este artista, el reproductor puede usar window.artistaActual
   para saber qué canciones hay en la lista y permitir avanzar/retroceder entre ellas.
 */
-    </script>
+</script>

@@ -216,6 +216,19 @@ h3{
     color: white;
     padding-left: 0;
 }
+#modalEliminarPlaylist div button{
+    padding: 10px;
+    border-radius: 50px;
+    width: 40%;
+    border: none;
+    background: linear-gradient(90deg, #481B9A, #FF4EC4);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    align-self: center;
+}
+
 
 #modal-nueva-playlist button[type="submit"] {
     padding: 10px;
@@ -315,7 +328,31 @@ h3{
   color: white;
 }
 
+.btn-eliminar {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: #fff !important;
+  font-size: 1.2rem !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.btn-eliminar svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  stroke: #fff;
+  transition: stroke 0.2s;
+}
+
+.btn-eliminar:hover svg path {
+  stroke: url(#degradado-x);
+}
 
 
 
@@ -335,6 +372,7 @@ h3{
 }
 .container-cancion:hover {
     background: linear-gradient(90deg, #3a3a3a33, #80808033);
+    border-radius: 10px;
 }
 .img-wrapper {
     position: relative;
@@ -366,7 +404,7 @@ h3{
     justify-content: center;
     opacity: 0;
     transition: opacity 0.3s ease;
-    pointer-events: none; /* evita que tape el click si no hay hover */
+    pointer-events: none; 
     z-index: 1;
 }
 
@@ -430,7 +468,6 @@ h3{
     height: 20px;
 }
 
-/* MODALES CENTRADOS */
 
 .modal {
   position: fixed;
@@ -503,7 +540,6 @@ h3{
   color: white;
 }
 
-/* LISTA DE PLAYLISTS (scroll a los 400px) */
 #lista-playlists {
   display: flex;
   flex-direction: column;
@@ -521,7 +557,6 @@ h3{
   border-radius: 10px;
 }
 
-/* ITEM INDIVIDUAL DE PLAYLIST EN MODAL */
 .playlist-item-modal {
   display: flex;
   align-items: center;
@@ -548,12 +583,6 @@ h3{
   color: white;
   font-size: 0.95rem;
 }
-/* .reproductor{
-    display: flex;
-    flex-direction: column;
-} */
-
-
 
 #reproductor-persistente {
     position: fixed;
@@ -636,10 +665,10 @@ h3{
     position: absolute;
     left: 4px;
     bottom: 0;
-    width: 100%; /* Cambia 95% por 100% */
+    width: 100%;
     height: 6px;
     appearance: none;
-    background: linear-gradient(to right, #3A157F, #DB3DAC);
+    background: linear-gradient(to right, #3A157F 0%, #DB3DAC 0%, #fff 0%, #fff 100%);
     border-radius: 0 0 40px 40px;
     outline: none;
     margin: 0;
@@ -647,23 +676,18 @@ h3{
     z-index: 10000;
 }
 
-#barra-progreso::-webkit-slider-thumb {
-    appearance: none;
-    width: 12px;
-    height: 12px;
-    background: white;
-    border-radius: 50%;
-    margin-bottom: 6px;
-    box-shadow: 0 0 2px rgba(0,0,0,0.3);
-    cursor: pointer;
-}
 
-#barra-progreso::-moz-range-thumb {
-    width: 12px;
-    height: 12px;
-    background: white;
-    border: none;
+
+#barra-progreso::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 14px;
+    width: 14px;
     border-radius: 50%;
+    background: white;
+    border: 2px solid #DB3DAC;
+    margin-top: -5px;
+    margin-right:-12px; 
+    box-shadow: 0 0 2px rgba(0,0,0,0.3);
     cursor: pointer;
 }
 svg.corazon-blanco,
@@ -695,7 +719,7 @@ svg.corazon-gradient {
     
 }
 
-/* Webkit (Chrome, Safari) */
+
 #volumen::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 14px;
@@ -703,11 +727,10 @@ svg.corazon-gradient {
     border-radius: 50%;
     background: white;
     border: 2px solid #DB3DAC;
-    margin-top: 0px; /* Más negativo = más abajo */
+    margin-top: 0px; 
 }
 
 
-/* Modal confirmacion borrar cancion de playlist */
 .modal1 {
     position: fixed;
     top: 0; left: 0;
@@ -720,25 +743,44 @@ svg.corazon-gradient {
 }
 
 .modal-contenido {
-    background: #fff;
-    color: #000;
-    padding: 20px 30px;
-    border-radius: 12px;
-    text-align: center;
+    background: #111;
+    color: white;
+    padding: 30px 25px;
+    border-radius: 15px;
+    min-width: 320px;
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 0 20px rgba(255, 78, 196, 0.3);
     font-family: 'Poppins', sans-serif;
-    max-width: 300px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    position: relative;
+    text-align: center;
 }
 
 .modal1.oculto {
     display: none;
 }
-
-.botones {
-    margin-top: 20px;
+.botones{
     display: flex;
-    justify-content: space-between;
-    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+}
+.botones >button {
+    padding: 10px;
+    border-radius: 50px;
+    width: 40%;
+    border: none;
+    background: linear-gradient(90deg, #481B9A, #FF4EC4);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    align-self: center;
 }
 
 .btn {
@@ -747,11 +789,6 @@ svg.corazon-gradient {
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-}
-
-.btn-rojo {
-    background: #e74c3c;
-    color: #fff;
 }
 
 
@@ -938,7 +975,20 @@ svg.corazon-gradient {
     .modal-content {
         margin: 20px ;
     }
-
+    .reproductor-izquierda div {
+        font-size: 0.7rem !important;
+    }
+    .reproductor-centro {
+        width: 50% !important;
+        margin-left: 20px;
+    }
+    .reproductor-derecha {
+        width: 25% !important;
+    }
+    #volumen {
+        margin-right: 0;
+        width: 80%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -955,5 +1005,29 @@ svg.corazon-gradient {
     #contenido-default #tendencias .grid .card img {
         height: 130px !important;
         width: 120px  !important ;
+    }
+    /* #resultados-dinamicos img {
+        width: 80px !important;
+        height: 80px !important;
+        object-fit: cover;
+        border-radius: 10px;
+        display: block;
+        margin: 0 auto;
+    } */
+    #resultados-dinamicos .img-wrapper img{
+        width: 80px !important;
+        height: 80px !important;
+        margin-right: 8px;
+        margin-left: 0;
+        z-index: 999;
+        width: 40%;
+    }
+
+    .cancion{
+        width: 70%;
+        font-size: 0.7rem !important;
+    }
+    .info-cancion span{
+        font-size: 0.7rem !important;
     }
 }

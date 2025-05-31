@@ -17,7 +17,8 @@ main {
     box-shadow: 0 0 0 0.5px gray;
     border-radius: 10px;
 }
-/* FORMULARIO CANCIÓN */
+
+
 form {
     display: flex;
     flex-direction: column;
@@ -69,7 +70,7 @@ label {
     margin-top: 10px;
 }
 
-/* CUADRO MENSAJE */
+
 main p {
     margin-top: 20px;
     background: #222;
@@ -80,7 +81,6 @@ main p {
     font-weight: bold;
 }
 
-/* FORMULARIO ÁLBUM */
 form .bloque-cancion {
     margin-top: 15px;
     background: #1a1a1a;
