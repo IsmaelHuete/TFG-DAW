@@ -46,6 +46,50 @@ input[type="file"]::file-selector-button {
     font-weight: bold;
 }
 
+.bloque-cancion {
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#contenedor-canciones {
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    margin-bottom: 15px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background: #181818;
+    padding: 10px;
+    box-sizing: border-box;
+}
+#contenedor-canciones::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 6px;
+    background: #181818;
+}
+
+#contenedor-canciones::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: linear-gradient(180deg, #3A157F 0%, #DB3DAC 100%);
+}
+
+#contenedor-canciones::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #DB3DAC 0%, #3A157F 100%);
+}
+
+
+#contenedor-canciones {
+    scrollbar-width: thin;
+    scrollbar-color: #DB3DAC #181818;
+}
+.album form {
+    max-width: 420px;
+    width: 100%;
+    margin: 0 auto;
+}
 input[type="file"]::file-selector-button:hover {
     background: #DB3DAC;
 }
